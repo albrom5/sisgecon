@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        <h2>{{ produto.descricao }}</h2>
+
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </form>
+{% endblock %}

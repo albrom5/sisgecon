@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+    <div class="container-fluid">
+       <h1>Produtos</h1>
+        <a href="{% url 'produto_novo' %}" class="btn btn-info">Cadastrar Produto</a>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Sigla</th>
+                  <th scope="col">Produto</th>
+                  <th scope="col">Classe - Grupo - SubGrupo</th>
+                  <th scope="col">Tabela de Eventos</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for produto in object_list %}
+                <tr class="clickable-row" data-href="{% url 'produto_detail' produto.id %}">
+                  <td>{{ produto.id }}</td>
+                  <td>{{ produto.sigla }}</td>
+                  <td>{{ produto.descricao }}</td>
+                  <td>{{ produto.subgrupo }}</td>
+                  <td>{{ produto.tabela_eventos }}</td>
+                </tr>
+                {% empty %}
+                    <li>Sem produtos cadastrados ainda.</li>
+                {% endfor %}
+             </tbody>
+        </table>
+    </div>
+{% endblock %}
