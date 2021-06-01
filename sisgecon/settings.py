@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'cuser',
     'smart_selects',
     'easyaudit',
+    'crispy_forms',
     # Apps padrão do Django
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Apps específicos do Sistema de Gestão de Contratos e Eventos
     'apps.base',
-    'apps.produtos'
+    'apps.produtos',
+    'apps.compras',
 ]
 
 MIDDLEWARE = [
@@ -151,3 +153,5 @@ LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 USE_DJANGO_JQUERY = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

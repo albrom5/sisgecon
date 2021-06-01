@@ -13,3 +13,9 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True  # Set this model as Abstract
+
+class Processo(BaseModel):
+    numero_sei = models.CharField(verbose_name='Número SEI', max_length=19, unique=True)
+
+    def __str__(self):
+        return self.numero_sei

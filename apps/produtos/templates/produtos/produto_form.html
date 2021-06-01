@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block main %}
     <form method="post">
         {% csrf_token %}
-        <h2>{{ produto.descricao }}</h2>
+        {% if produto %}
+            <h2>{{ produto.descricao }}</h2>
+        {% else %}
+            <h2>Cadastro de novo produto</h2>
+        {% endif %}
+        {{ form|crispy }}
 
-        {{ form.as_p }}
+
+
 
         <button type="submit" class="btn btn-success">Salvar</button>
     </form>

@@ -17,7 +17,8 @@ class ClasseProduto(BaseModel):
 
 
 class GrupoProduto(BaseModel):
-    classe = models.ForeignKey(ClasseProduto, on_delete=models.PROTECT, limit_choices_to={'ativo': True})
+    classe = models.ForeignKey(ClasseProduto, on_delete=models.PROTECT,
+                               limit_choices_to={'ativo': True})
     descricao = models.CharField('Descrição', max_length=200)
 
     def __str__(self):
@@ -30,7 +31,8 @@ class GrupoProduto(BaseModel):
 
 
 class SubGrupoProduto(BaseModel):
-    classe = models.ForeignKey(ClasseProduto, on_delete=models.PROTECT, limit_choices_to={'ativo': True})
+    classe = models.ForeignKey(ClasseProduto, on_delete=models.PROTECT,
+                               limit_choices_to={'ativo': True})
     grupo = ChainedForeignKey(
         GrupoProduto,
         chained_field='classe',
@@ -63,14 +65,24 @@ class UnidadeMedida(BaseModel):
 
 
 class Produto(BaseModel):
-    descricao = models.CharField(verbose_name='Descrição', max_length=200, unique=True)
-    subgrupo = models.ForeignKey(SubGrupoProduto, null=True, blank=True, on_delete=models.SET_NULL,
-                                 limit_choices_to={'ativo': True}, related_name="produto_subgrupo")
-    unidade = models.ForeignKey(UnidadeMedida, null=True, on_delete=models.SET_NULL, limit_choices_to={'ativo': True})
+    descricao = models.CharField(verbose_name='Descrição', max_length=200,
+                                 unique=True)
+    subgrupo = models.ForeignKey(SubGrupoProduto, null=True, blank=True,
+                                 on_delete=models.SET_NULL,
+                                 limit_choices_to={'ativo': True},
+                                 related_name="produto_subgrupo")
+    unidade = models.ForeignKey(UnidadeMedida, null=True,
+                                on_delete=models.SET_NULL,
+                                limit_choices_to={'ativo': True})
     sigla = models.CharField(max_length=5, null=True, blank=True, unique=True)
     especifica = models.TextField(max_length=1000, null=True, blank=True)
-    numprotheus = models.CharField(max_length=15, null=True, blank=True, unique=True)
-    ultimoprecocompra = models.DecimalField(max_digits=19, decimal_places=6, null=True, blank=True)
+    numprotheus = models.CharField(max_length=15, null=True, blank=True,
+                                   unique=True)
+    ultimoprecocompra = models.DecimalField(
+        verbose_name='Último Preço de Compra',
+        max_digits=19,
+        decimal_places=6,
+        null=True, blank=True)
     tabela_eventos = models.BooleanField(default=False)
 
     def __str__(self):
@@ -91,10 +103,12 @@ class SubProduto(BaseModel):
         (ACRESCIMO, 'Acréscimo'),
         (DESCONTO, 'Desconto'),
     ]
-    produto = models.ForeignKey(Produto, related_name="subproduto_produto", on_delete=models.CASCADE,
+    produto = models.ForeignKey(Produto, related_name="subproduto_produto",
+                                on_delete=models.CASCADE,
                                 limit_choices_to={'ativo': True})
     descricao = models.CharField('Descrição', max_length=200)
-    fator = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    fator = models.DecimalField(max_digits=9, decimal_places=6, null=True,
+                                blank=True)
     tipofator = models.CharField(
         max_length=9,
         null=True,
