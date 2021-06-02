@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+    <div class="container-fluid">
+       <h1>Processos de Compras</h1>
+        <a href="{% url 'processo_novo' %}" class="btn btn-info">
+            Cadastrar Novo Processo
+        </a>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">Número SEI</th>
+                  <th scope="col">Objeto</th>
+                  <th scope="col">Modalidade</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Data de Entrada</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for processo in object_list %}
+                <tr class="clickable-row"
+                    data-href="{% url 'processo_detail' processo.id %}">
+                  <td>{{ processo.numero_sei }}</td>
+                  <td>{{ processo.descricao }}</td>
+                  <td>{{ processo.modalidade }}</td>
+                  <td>{{ processo.status }}</td>
+                  <td>{{ processo.data_gco }}</td>
+                </tr>
+                {% empty %}
+                    <li>Sem processos cadastrados ainda.</li>
+                {% endfor %}
+             </tbody>
+        </table>
+    </div>
+{% endblock %}

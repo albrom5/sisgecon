@@ -15,9 +15,11 @@ class ProdutoDetail(DetailView):
 
 class ProdutoNovo(CreateView):
     model = Produto
-    fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica', 'numprotheus', 'tabela_eventos']
+    fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica',
+              'numprotheus', 'tabela_eventos']
 
 
 class ProdutoEdit(UpdateView):
     model = Produto
-    fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica', 'numprotheus', 'tabela_eventos']
+    fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica',
+              'numprotheus', 'tabela_eventos']

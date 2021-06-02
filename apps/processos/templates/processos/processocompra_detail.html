@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+
+        {{ processo }}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Produto</th>
+                  <th scope="col">Tipo de Fator</th>
+                  <th scope="col">Fator</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for subproduto in object.subproduto_produto.all %}
+                <tr class="clickable-row" data-href="">
+                  <td>{{ subproduto }}</td>
+                  <td>{{ subproduto.descricao }}</td>
+                  <td>{{ subproduto.tipofator }}</td>
+                  <td>{{ subproduto.fator }}</td>
+                </tr>
+                {% empty %}
+                    <li>Sem SC's cadastradas ainda.</li>
+                {% endfor %}
+             </tbody>
+        </table>
+        <a href="{% url 'processo_edit' object.id %}" class="btn btn-info">
+            Alterar dados
+        </a>
+    </form>
+{% endblock %}

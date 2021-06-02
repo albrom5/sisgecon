@@ -1,1 +1,2 @@
-from .compras import ProcessoCompra, SolicitacaoCompra, ItemSC
+from .compras import SolicitacaoCompra, ItemSC
+
