@@ -35,7 +35,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 INSTALLED_APPS = [
     # Apps de dependências
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
     'django_filters',
     'cuser',
     'smart_selects',
