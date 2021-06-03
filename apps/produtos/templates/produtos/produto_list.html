@@ -1,10 +1,40 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block main %}
 
     <div class="container-fluid">
        <h1>Produtos</h1>
-        <a href="{% url 'produto_novo' %}" class="btn btn-info">Cadastrar Produto</a>
+        <a href="{% url 'produto_novo' %}" class="btn btn-info">Cadastrar Novo Produto</a>
+        <br>
+        <br>
+
+             <form method="GET">
+               <table id="filtra-produtos" class="table table-bordered table-striped">
+                 <thead>
+                   <tr>
+                    <th>Sigla</th>
+                    <th>Produto</th>
+                    <th>Subgrupo</th>
+                    <th>Tabela de Eventos</th>
+                   </tr>
+                 </thead>
+               <tbody>
+                <tr>
+                 <td>{{filter.form.sigla}}</td>
+                 <td>{{filter.form.descricao}}</td>
+                 <td>{{filter.form.subgrupo}}</td>
+                 <td>{{filter.form.tabela_eventos}}</td>
+                </tr>
+               </tbody>
+               </table>
+
+               <button id="filtrabtn" class="btn btn-info" type="submit">
+                   <i class="material-icons">&#xE8B6;</i>
+                   <span> FILTRAR</span>
+               </button>
+
+             </form>
 
         <table class="table table-hover">
             <thead>
@@ -17,7 +47,7 @@
                 </tr>
             </thead>
              <tbody>
-                {% for produto in object_list %}
+                {% for produto in filter.qs %}
                 <tr class="clickable-row" data-href="{% url 'produto_detail' produto.id %}">
                   <td>{{ produto.id }}</td>
                   <td>{{ produto.sigla }}</td>
@@ -26,7 +56,7 @@
                   <td>{{ produto.tabela_eventos }}</td>
                 </tr>
                 {% empty %}
-                    <li>Sem produtos cadastrados ainda.</li>
+                    <li>Não há produtos que atendam aos critérios selecionados.</li>
                 {% endfor %}
              </tbody>
         </table>

@@ -1,1 +1,1 @@
-from .processos import Processo
+from .processos import Processo, Modalidade, Sistema

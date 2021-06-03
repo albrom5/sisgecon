@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import django_heroku
 import os
 from pathlib import Path
 
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'smart_selects',
     'easyaudit',
     'crispy_forms',
+    'debug_toolbar',
+    'django_extensions',
     # Apps padrão do Django
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +55,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # Debug Toolbar
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # Padrão Django
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -137,8 +143,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "staticfiles"),
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 LOGOUT_REDIRECT_URL = 'login'
 
@@ -156,3 +164,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 USE_DJANGO_JQUERY = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Django Toolbar
+INTERNAL_IPS = ['127.0.0.1']
+
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)
+
+# Activate Django-Heroku.git
+django_heroku.settings(locals())

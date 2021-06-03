@@ -2,5 +2,6 @@ venv
 .idea
 *.pyc
 *.sqlite3
-static/bootstrap
-static/jquery
+staticfiles/bootstrap
+staticfiles/jquery
+static
