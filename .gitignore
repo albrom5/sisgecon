@@ -5,3 +5,4 @@ venv
 static/bootstrap
 static/jquery
 .env
+staticfiles
