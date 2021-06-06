@@ -1,5 +1,6 @@
 from django import template
 
+
 register = template.Library()
 
 
@@ -30,3 +31,22 @@ def param_replace(context, **kwargs):
     for k in [k for k, v in d.items() if not v]:
         del d[k]
     return d.urlencode()
+
+
+@register.filter
+def htmlattributes(value, arg):
+    """ Allows adding of attributes to tagged form elements. """
+    attrs = value.field.widget.attrs
+    components = arg.split(',')
+
+    for string in components:
+        key, values_string = string.split(':')
+        values = values_string.strip()
+
+        if attrs.get(key):
+            values = attrs.get(key) + ' ' + values
+
+        attrs.update({key: values})
+
+    rendered = str(value)
+    return rendered

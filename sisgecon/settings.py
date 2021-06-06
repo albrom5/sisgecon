@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'debug_toolbar',
     'django_extensions',
-    "django_tables2",
     # Apps padrão do Django
     'django.contrib.admin',
     'django.contrib.auth',

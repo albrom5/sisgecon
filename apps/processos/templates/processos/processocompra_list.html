@@ -16,28 +16,48 @@ Processos de Compras
         <br>
         <br>
 
-        <form method="GET">
-               <table id="filtra-processos" class="table table-bordered table-striped">
-                 <thead>
-                   <tr>
-                    <th>Número</th>
-                    <th>Objeto</th>
-                    <th>Modalidade</th>
-                    <th>Status</th>
-                    <th>Data de entrada</th>
-                   </tr>
-                 </thead>
-               <tbody>
-                <tr>
-                 <td>{{filter.form.processo_id__numero_sei}}</td>
-                 <td>{{filter.form.processo_id__descricao}}</td>
-                 <td>{{filter.form.modalidade}}</td>
-                 <td>{{filter.form.status}}</td>
-                 <td>{{filter.form.data_gco}}</td>
-                </tr>
-               </tbody>
-               </table>
-
+        <form method="GET" class="form-control">
+            <p>Filtros</p>
+            <div class="row g-2 p-2">
+              <div class="col-md">
+                <div class="form-floating">
+                  {{filter.form.processo_id__numero_sei|htmlattributes:"class: form-control form-control-sm" }}
+                  <label for="floatingInputNumSei">Número SEI</label>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating">
+                  {{filter.form.processo_id__descricao|htmlattributes:"class: form-control form-control-sm" }}
+                  <label for="floatingInputObjeto">Objeto</label>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating">
+                  {{filter.form.modalidade|htmlattributes:"class: form-select form-select-sm" }}
+                  <label for="floatingSelectModalidade">Modalidade</label>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating">
+                  {{filter.form.status|htmlattributes:"class: form-select form-select-sm" }}
+                  <label for="floatingSelectStatus">Status</label>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating">
+                  {{filter.form.data_gco|htmlattributes:"class: form-control form-control-sm" }}
+                  <label for="floatingInputDataGCO">Data de entrada na GCO</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2"">
+              <div class="col-md">
+                <div class="form-floating">
+                  {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
+                  <label for="floatingSelectOrdem">Ordenar por:</label>
+                </div>
+              </div>
+            </div>
                <button id="filtrabtn" class="btn btn-info" type="submit">
                    <i class="material-icons">&#xE8B6;</i>
                    <span> FILTRAR</span>

@@ -1,7 +1,10 @@
 import django_filters
+from django import forms
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
+from django_filters import OrderingFilter
+from django.forms import widgets
 from .models import Processo, ProcessoCompra
 from .forms import ProcessoCompraForm
 from apps.base.views import FilteredListView
@@ -61,6 +64,18 @@ class ProcessoCompraEdit(UpdateView):
 class ProcessoFilter(django_filters.FilterSet):
     processo_id__numero_sei = django_filters.CharFilter(lookup_expr='iexact')
     processo_id__descricao = django_filters.CharFilter(lookup_expr='icontains')
+    ordem = OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('processo_id__numero_sei', 'processo_id__numero_sei'),
+            ('data_gco', 'data_gco'),
+        ),
+        # labels do not need to retain order
+        field_labels={
+            'processo_id__numero_sei': 'Número SEI',
+            'data_gco': 'Data de entrada na GCO',
+        },
+    )
 
     class Meta:
         model = ProcessoCompra
