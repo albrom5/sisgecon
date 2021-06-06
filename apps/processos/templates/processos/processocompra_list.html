@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load my_tags %}
+
+{% block title %}
+Processos de Compras
+{% endblock %}
 
 {% block main %}
 
@@ -23,8 +29,8 @@
                  </thead>
                <tbody>
                 <tr>
-                 <td>{{filter.form.numero_sei}}</td>
-                 <td>{{filter.form.descricao}}</td>
+                 <td>{{filter.form.processo_id__numero_sei}}</td>
+                 <td>{{filter.form.processo_id__descricao}}</td>
                  <td>{{filter.form.modalidade}}</td>
                  <td>{{filter.form.status}}</td>
                  <td>{{filter.form.data_gco}}</td>
@@ -38,7 +44,7 @@
                </button>
 
              </form>
-        <table class="table table-hover">
+        <table id="processos_filtrados" class="table table-hover">
             <thead>
                 <tr>
                   <th scope="col">Número SEI</th>
@@ -49,21 +55,41 @@
                 </tr>
             </thead>
              <tbody>
-                {% for processo in filter.qs %}
+                {% for processo in object_list %}
                 <tr class="clickable-row"
-                    data-href="{% url 'processo_detail' processo.id %}">
-                  <td>{{ processo.numero_sei }}</td>
-                  <td>{{ processo.descricao }}</td>
+                    data-href="{% url 'processo_detail' processo.processo_id.id %}">
+                  <td>{{ processo.processo_id.numero_sei }}</td>
+                  <td>{{ processo.processo_id.descricao }}</td>
                   <td>{{ processo.modalidade }}</td>
                   <td>{{ processo.status }}</td>
                   <td>{{ processo.data_gco }}</td>
                 </tr>
                 {% empty %}
-                    <li>Sem processos cadastrados ainda.</li>
+                    <li>Não há processos que atendam aos critérios de busca selecionados.</li>
                 {% endfor %}
              </tbody>
         </table>
     </div>
+    {% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a href="?{% param_replace page=1 %}">Primeira</a>
+        {% if page_obj.previous_page_number != 1 %}
+          <a href="?{% param_replace page=page_obj.previous_page_number %}">Anterior</a>
+        {% endif %}
+      {% endif %}
+
+      Página {{ page_obj.number }} de {{ paginator.num_pages }}
+
+      {% if page_obj.has_next %}
+        {% if page_obj.next_page_number != paginator.num_pages %}
+          <a href="?{% param_replace page=page_obj.next_page_number %}">Próxima</a>
+        {% endif %}
+        <a href="?{% param_replace page=paginator.num_pages %}">Última</a>
+      {% endif %}
+
+      <p>Exibindo processos de {{ page_obj.start_index }} a {{ page_obj.end_index }}</p>
+    {% endif %}
+
 {% endblock %}
 {% block script %}
     <script type="text/javascript">
