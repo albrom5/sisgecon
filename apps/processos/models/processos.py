@@ -23,6 +23,17 @@ class Processo(BaseModel):
                                   unique=True)
     tipo = models.CharField(max_length=2, choices=TIPO_PROCESSO)
     descricao = models.CharField(max_length=250, null=True, blank=True)
+    data_autuacao = models.DateField(verbose_name='Autuado em:', null=True,
+                                     blank=True)
+
+    def __str__(self):
+        return f'{self.numero_sei} - {self.descricao}'
+
+
+class ProcessoCompra(BaseModel):
+    processo_id = models.OneToOneField(Processo, on_delete=models.PROTECT,
+                                       primary_key=True,
+                                       related_name='processo_compra')
     modalidade = models.ForeignKey(Modalidade, on_delete=models.PROTECT,
                                    null=True, blank=True)
     numero_edital = models.CharField(max_length=12, null=True, blank=True)
@@ -31,8 +42,6 @@ class Processo(BaseModel):
     refer_sistema = models.CharField(
         verbose_name='Número de Referência no Sistema', max_length=15,
         null=True, blank=True)
-    data_autuacao = models.DateField(verbose_name='Autuado em:', null=True,
-                                     blank=True)
     data_gco = models.DateField(verbose_name='Recebido na GCO em:', null=True,
                                 blank=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True,
@@ -41,4 +50,4 @@ class Processo(BaseModel):
 # TODO Criar campos responsável, área (com relacionamentos)
 
     def __str__(self):
-        return f'{self.numero_sei} - {self.descricao}'
+        return f'{self.processo_id.numero_sei} - {self.processo_id.descricao}'

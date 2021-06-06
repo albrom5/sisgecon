@@ -4,7 +4,7 @@
     <form method="post">
         {% csrf_token %}
 
-        {{ processo }}
+        {{ object.processo_id }}
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -27,7 +27,7 @@
                 {% endfor %}
              </tbody>
         </table>
-        <a href="{% url 'processo_edit' object.id %}" class="btn btn-info">
+        <a href="{% url 'processo_edit' object.processo_id.id %}" class="btn btn-info">
             Alterar dados
         </a>
     </form>

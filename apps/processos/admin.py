@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Modalidade, Sistema, Processo
+from .models import Modalidade, Sistema, Processo, ProcessoCompra
 
 
 @admin.register(Modalidade)
@@ -56,13 +56,7 @@ class ProcessoAdmin(admin.ModelAdmin):
         'numero_sei',
         'tipo',
         'descricao',
-        'modalidade',
-        'numero_edital',
-        'sistema',
-        'refer_sistema',
         'data_autuacao',
-        'data_gco',
-        'status',
     )
     list_filter = (
         'ativo',
@@ -70,10 +64,8 @@ class ProcessoAdmin(admin.ModelAdmin):
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'modalidade',
-        'sistema',
         'data_autuacao',
-        'data_gco',
-        'status',
     )
 
+
+admin.site.register(ProcessoCompra)
