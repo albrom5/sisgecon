@@ -1,10 +1,33 @@
 {% extends 'base.html' %}
 
-{% block main %}
-    <form method="post">
-        {% csrf_token %}
+{% block title %}
+{{ object.processo_id.get_tipo_display }} nº: {{ object.processo_id }}
+{% endblock %}
 
-        {{ object.processo_id }}
+{% block main %}
+
+     <div class="container-fluid">
+         <div class="row g-2 p-2">
+              <div class="col-md">
+                  <h4>{{ object.processo_id.get_tipo_display }} nº: {{ object.processo_id.numero_sei }}</h4>
+              </div>
+         </div>
+         <div class="row g-2 p-2">
+              <div class="col-md">
+                  <h4>Objeto: {{ object.processo_id.descricao }}</h4>
+              </div>
+         </div>
+         <div class="row g-2 p-2">
+              <div class="col-md">
+                  Status: {{ object.status }}
+              </div>
+              <div class="col-md">
+                  Data de entrada na GCO: {{ object.data_gco }}
+              </div>
+              <div class="col-md">
+                  Modalidade: {{ object.modalidade }}
+              </div>
+         </div>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -30,5 +53,5 @@
         <a href="{% url 'processo_edit' object.processo_id.id %}" class="btn btn-info">
             Alterar dados
         </a>
-    </form>
+     </div>
 {% endblock %}

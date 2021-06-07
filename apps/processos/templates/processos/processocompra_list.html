@@ -9,114 +9,154 @@ Processos de Compras
 {% block main %}
 
     <div class="container-fluid">
-       <h1>Processos de Compras</h1>
-        <a href="{% url 'processo_novo' %}" class="btn btn-info">
-            Cadastrar Novo Processo
-        </a>
-        <br>
-        <br>
+        <div class="row g-2 p-2">
+              <div class="col-lg-9">
+                <h1>Processos de Compras</h1>
+              </div>
+              <div class="col-lg-3 align-items-end">
+                <a href="{% url 'processo_novo' %}" class="btn btn-primary">
+                    Cadastrar Novo Processo
+                </a>
+              </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-lg-12">
+                <p>
+                  <button class="btn btn-toggle align-items-center rounded collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFiltros" aria-expanded="false" aria-controls="collapseExample">
+                    Filtros
+                  </button>
+                </p>
+                <div class="collapse" id="collapseFiltros">
+                    <form method="GET">
+                            <div class="row g-2 p-2">
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.processo_id__numero_sei|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputNumSei">Número SEI</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.processo_id__descricao|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputObjeto">Objeto</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.modalidade|htmlattributes:"class: form-select form-select-sm" }}
+                                  <label for="floatingSelectModalidade">Modalidade</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.status|htmlattributes:"class: form-select form-select-sm" }}
+                                  <label for="floatingSelectStatus">Status</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2 form-in">
+                              <div class="col-3">
+                                  <label class="form-label" style="opacity: 0.65; font-size: small">Entrou na GCO entre:</label><br>
 
-        <form method="GET" class="form-control">
-            <p>Filtros</p>
-            <div class="row g-2 p-2">
-              <div class="col-md">
-                <div class="form-floating">
-                  {{filter.form.processo_id__numero_sei|htmlattributes:"class: form-control form-control-sm" }}
-                  <label for="floatingInputNumSei">Número SEI</label>
-                </div>
-              </div>
-              <div class="col-md">
-                <div class="form-floating">
-                  {{filter.form.processo_id__descricao|htmlattributes:"class: form-control form-control-sm" }}
-                  <label for="floatingInputObjeto">Objeto</label>
-                </div>
-              </div>
-              <div class="col-md">
-                <div class="form-floating">
-                  {{filter.form.modalidade|htmlattributes:"class: form-select form-select-sm" }}
-                  <label for="floatingSelectModalidade">Modalidade</label>
-                </div>
-              </div>
-              <div class="col-md">
-                <div class="form-floating">
-                  {{filter.form.status|htmlattributes:"class: form-select form-select-sm" }}
-                  <label for="floatingSelectStatus">Status</label>
-                </div>
-              </div>
-              <div class="col-md">
-                <div class="form-floating">
-                  {{filter.form.data_gco|htmlattributes:"class: form-control form-control-sm" }}
-                  <label for="floatingInputDataGCO">Data de entrada na GCO</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2"">
-              <div class="col-md">
-                <div class="form-floating">
-                  {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
-                  <label for="floatingSelectOrdem">Ordenar por:</label>
-                </div>
-              </div>
-            </div>
-               <button id="filtrabtn" class="btn btn-info" type="submit">
-                   <i class="material-icons">&#xE8B6;</i>
-                   <span> FILTRAR</span>
-               </button>
+                                    {{ filter.form.data_gco }}
 
-             </form>
-        <table id="processos_filtrados" class="table table-hover">
-            <thead>
-                <tr>
-                  <th scope="col">Número SEI</th>
-                  <th scope="col">Objeto</th>
-                  <th scope="col">Modalidade</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Data de Entrada</th>
-                </tr>
-            </thead>
-             <tbody>
-                {% for processo in object_list %}
-                <tr class="clickable-row"
-                    data-href="{% url 'processo_detail' processo.processo_id.id %}">
-                  <td>{{ processo.processo_id.numero_sei }}</td>
-                  <td>{{ processo.processo_id.descricao }}</td>
-                  <td>{{ processo.modalidade }}</td>
-                  <td>{{ processo.status }}</td>
-                  <td>{{ processo.data_gco }}</td>
-                </tr>
-                {% empty %}
-                    <li>Não há processos que atendam aos critérios de busca selecionados.</li>
-                {% endfor %}
-             </tbody>
-        </table>
+                              </div>
+
+                              <div class="col-9">
+                                <div class="form-floating">
+                                  {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
+                                  <label for="floatingSelectOrdem">Ordenar por:</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2">
+                                <div class="col-md">
+                                    <button id="filtrabtn" class="btn btn-outline-primary btn-sm d-flex" type="submit">
+                                       <i class="material-icons">&#xE8B6;</i>
+                                       <span class=""> Filtrar/Ordenar</span>
+                                    </button>
+                                </div>
+                            </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-lg-12">
+                <table id="processos_filtrados" class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">Número SEI</th>
+                          <th scope="col">Objeto</th>
+                          <th scope="col">Modalidade</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Data de Entrada</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        {% for processo in object_list %}
+                        <tr class="clickable-row"
+                            data-href="{% url 'processo_detail' processo.processo_id.id %}">
+                          <td>{{ processo.processo_id.numero_sei }}</td>
+                          <td>{{ processo.processo_id.descricao }}</td>
+                          <td>{{ processo.modalidade }}</td>
+                          <td>{{ processo.status }}</td>
+                          <td>{{ processo.data_gco }}</td>
+                        </tr>
+                        {% empty %}
+                            <li>Não há processos que atendam aos critérios de busca selecionados.</li>
+                        {% endfor %}
+                     </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                Exibindo processos {{ page_obj.start_index }} a {{ page_obj.end_index }} de um total de {{ filter.qs.count }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if is_paginated %}Ir para:
+                  {% if page_obj.has_previous %}
+                    <a href="?{% param_replace page=1 %}">Primeira</a>
+                    {% if page_obj.previous_page_number != 1 %}
+                      <a href="?{% param_replace page=page_obj.previous_page_number %}">Anterior</a>
+                    {% endif %}
+                  {% endif %}
+                  {% if page_obj.has_next %}
+                    {% if page_obj.next_page_number != paginator.num_pages %}
+                      <a href="?{% param_replace page=page_obj.next_page_number %}">Próxima</a>
+                    {% endif %}
+                    <a href="?{% param_replace page=paginator.num_pages %}">Última</a>
+                  {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                  Página {{ page_obj.number }} de {{ paginator.num_pages }}
+                {% endif %}
+            </div>
+        </div>
     </div>
-    {% if is_paginated %}
-      {% if page_obj.has_previous %}
-        <a href="?{% param_replace page=1 %}">Primeira</a>
-        {% if page_obj.previous_page_number != 1 %}
-          <a href="?{% param_replace page=page_obj.previous_page_number %}">Anterior</a>
-        {% endif %}
-      {% endif %}
-
-      Página {{ page_obj.number }} de {{ paginator.num_pages }}
-
-      {% if page_obj.has_next %}
-        {% if page_obj.next_page_number != paginator.num_pages %}
-          <a href="?{% param_replace page=page_obj.next_page_number %}">Próxima</a>
-        {% endif %}
-        <a href="?{% param_replace page=paginator.num_pages %}">Última</a>
-      {% endif %}
-
-      <p>Exibindo processos de {{ page_obj.start_index }} a {{ page_obj.end_index }}</p>
-    {% endif %}
-
 {% endblock %}
 {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
         $(".clickable-row").click(function() {
             window.location = $(this).data("href");
             });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#id_data_gco_0').mask('00/00/0000');
+            $('#id_data_gco_1').mask('00/00/0000');
+            $('#id_processo_id__numero_sei').mask('0000.0000/0000000-0');
         });
     </script>
 {% endblock %}

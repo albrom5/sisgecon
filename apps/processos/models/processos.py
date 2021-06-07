@@ -35,7 +35,8 @@ class ProcessoCompra(BaseModel):
                                        primary_key=True,
                                        related_name='processo_compra')
     modalidade = models.ForeignKey(Modalidade, on_delete=models.PROTECT,
-                                   null=True, blank=True)
+                                   null=True, blank=True,
+                                   limit_choices_to={'ativo': True})
     numero_edital = models.CharField(max_length=12, null=True, blank=True)
     sistema = models.ForeignKey(Sistema, on_delete=models.SET_NULL, null=True,
                                 blank=True, limit_choices_to={'ativo': True})
@@ -45,7 +46,8 @@ class ProcessoCompra(BaseModel):
     data_gco = models.DateField(verbose_name='Recebido na GCO em:', null=True,
                                 blank=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True,
-                               blank=True, limit_choices_to={'tipo': 'LC'})
+                               blank=True, limit_choices_to={'tipo': 'PC',
+                                                             'ativo': True})
 
 # TODO Criar campos responsável, área (com relacionamentos)
 

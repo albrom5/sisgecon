@@ -1,11 +1,11 @@
  {% block sidebar %}
     {% if user.is_authenticated %}
-    <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+    <div class="flex-shrink-0 px-1 py-1 bg-light" >
+        <a href="/" class="d-flex align-items-center px-1 py-3 link-dark text-decoration-none border-bottom">
           <svg class="bi me-2" width="30" height="24"></svg>
           <span class="fs-5 fw-semibold">Sistema de Gestão de Contratos</span>
         </a>
-        <ul class="list-unstyled ps-0">
+        <ul class="list-unstyled ps-3 pt-3">
           <li class="mb-1">
             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
               Cadastros

@@ -5,9 +5,10 @@ from .models import ProcessoCompra
 
 class ProcessoCompraForm(forms.ModelForm):
 
-    numero_sei = forms.CharField(max_length=19, required=True)
+    numero_sei = forms.CharField(max_length=19, required=True,
+                                 label='Número SEI')
     objeto = forms.CharField(max_length=250)
-
+    # data_autuacao = forms.DateField()
     # def __init__(self, *args, **kwargs):
     #     if 'instance' in kwargs:
     #         instance = kwargs.pop('instance')

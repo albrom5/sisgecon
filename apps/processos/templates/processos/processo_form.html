@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+Novo Processo de Compra
+{% endblock %}
+
 {% block main %}
+    <div class="container-fluid">
     <form method="post">
         {% csrf_token %}
         {% if processo %}
@@ -9,11 +14,22 @@
         {% else %}
             <h2>Cadastro de novo processo</h2>
         {% endif %}
-        {{ form|crispy }}
-
-
-
-        <br>
-        <button type="submit" class="btn btn-success">Salvar</button>
+        <div class="row g-2 p-2">
+          <div class="col-md">
+              {{ form.numero_sei|as_crispy_field }}
+          </div>
+          <div class="col-md">
+              {{ form.objeto|as_crispy_field }}
+          </div>
+          <div class="col-md">
+              {{ form.data_gco|as_crispy_field }}
+          </div>
+        </div>
+        <div class="row g-2 p-2">
+          <div class="col-md">
+            <button type="submit" class="btn btn-success">Salvar</button>
+          </div>
+        </div>
     </form>
+    </div>
 {% endblock %}
