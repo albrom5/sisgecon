@@ -22,36 +22,50 @@
                   Status: {{ object.status }}
               </div>
               <div class="col-md">
-                  Data de entrada na GCO: {{ object.data_gco }}
+                  Data de entrada na GCO: {{ object.data_gco|date:"SHORT_DATE_FORMAT" }}
               </div>
               <div class="col-md">
                   Modalidade: {{ object.modalidade }}
               </div>
          </div>
+        <div class="row g-2 p-2">
+        {{ object }}
         <table class="table table-hover">
             <thead>
                 <tr>
                   <th scope="col">ID</th>
+                  <th scope="col">Número</th>
                   <th scope="col">Produto</th>
-                  <th scope="col">Tipo de Fator</th>
-                  <th scope="col">Fator</th>
+                  <th scope="col">Quantidade</th>
                 </tr>
             </thead>
              <tbody>
-                {% for subproduto in object.subproduto_produto.all %}
+                {% for sc in object.solicitacaocompra_set.all %}
                 <tr class="clickable-row" data-href="">
-                  <td>{{ subproduto }}</td>
-                  <td>{{ subproduto.descricao }}</td>
-                  <td>{{ subproduto.tipofator }}</td>
-                  <td>{{ subproduto.fator }}</td>
+                  <td></td>
+                  <td>{{ sc.numsc }}</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 {% empty %}
                     <li>Sem SC's cadastradas ainda.</li>
                 {% endfor %}
              </tbody>
         </table>
-        <a href="{% url 'processo_edit' object.processo_id.id %}" class="btn btn-info">
-            Alterar dados
-        </a>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-3">
+                <a href="{% url 'processo_edit' object.processo_id.id %}" class="btn btn-primary">
+                    Alterar dados
+                </a>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-3">
+                <a href="{% url 'processos_list' %}" class="btn btn-secondary">
+                    Voltar para lista de processos
+                </a>
+            </div>
+        </div>
      </div>
 {% endblock %}

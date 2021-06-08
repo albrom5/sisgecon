@@ -1,6 +1,5 @@
 import django_filters
 from django_filters import OrderingFilter
-from django_filters.widgets import RangeWidget
 
 from apps.processos.models import ProcessoCompra
 
@@ -8,9 +7,10 @@ from apps.processos.models import ProcessoCompra
 class ProcessoFilter(django_filters.FilterSet):
     processo_id__numero_sei = django_filters.CharFilter(lookup_expr='iexact')
     processo_id__descricao = django_filters.CharFilter(lookup_expr='icontains')
-    data_gco = django_filters.DateFromToRangeFilter(
-        widget=RangeWidget(attrs={'class': 'form-control-sm',
-                                  'style': 'width:100px; border: 1px solid #ced4da;'}))
+    data_gco_ini = django_filters.DateFilter(field_name='data_gco',
+                                             lookup_expr='gte')
+    data_gco_fim = django_filters.DateFilter(field_name='data_gco',
+                                             lookup_expr='lte')
     ordem = OrderingFilter(
         # tuple-mapping retains order
         fields=(
@@ -26,7 +26,7 @@ class ProcessoFilter(django_filters.FilterSet):
 
     class Meta:
         model = ProcessoCompra
-        fields = ['modalidade', 'status', 'data_gco']
+        fields = ['modalidade', 'status']
 
     @property
     def qs(self):

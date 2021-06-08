@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Nova Solicitação de Compra
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+        <h4>Cadastro de nova Solicitação de Compra</h4>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.numsc }}
+            {{ form.processo }}
+
+            <div class="row g-2 p-2">
+              <div class="col-2">
+                <button type="submit" class="btn btn-success">Salvar</button>
+              </div>
+               <div class="col-2">
+                <a href="" class="btn btn-danger">
+                        Sair sem salvar
+                </a>
+              </div>
+        </div>
+        </form>
+    </div>
+{% endblock %}

@@ -6,7 +6,7 @@ from django.db.models import Sum
 
 from apps.base.models import BaseModel
 from apps.produtos.models import Produto, SubGrupoProduto
-from apps.processos.models import Processo
+from apps.processos.models import ProcessoCompra
 
 
 class SolicitacaoCompra(BaseModel):
@@ -14,7 +14,7 @@ class SolicitacaoCompra(BaseModel):
     data_emissao = models.DateField(null=True, blank=True)
     prazo = models.DateField(null=True, blank=True)
     data_rec_compras = models.DateField(null=True, blank=True)
-    processo = models.ForeignKey(Processo, null=True, blank=True,
+    processo = models.ForeignKey(ProcessoCompra, null=True, blank=True,
                                  on_delete=models.SET_NULL,
                                  limit_choices_to={'ativo': True})
     objeto = models.CharField(max_length=250, null=True, blank=True)

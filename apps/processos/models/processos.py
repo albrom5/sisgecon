@@ -53,3 +53,6 @@ class ProcessoCompra(BaseModel):
 
     def __str__(self):
         return f'{self.processo_id.numero_sei} - {self.processo_id.descricao}'
+
+    class Meta:
+        ordering = ['-data_gco']

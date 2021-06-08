@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 
+from apps.base.custom_views import CustomListView
+
 
 def home(request):
     data = {}
@@ -8,7 +10,7 @@ def home(request):
     return render(request, 'base/index.html', data)
 
 
-class FilteredListView(ListView):
+class FilteredListView(CustomListView):
     filterset_class = None
 
     def get_queryset(self):
@@ -27,3 +29,5 @@ class FilteredListView(ListView):
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         return context
+
+

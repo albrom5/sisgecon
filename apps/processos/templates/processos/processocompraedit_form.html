@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block title %}
+Novo Processo de Compra
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+        <h4>{{ object.processo_id.get_tipo_display }} nº: {{ object }}</h4>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-2 p-2">
+              <div class="col-3">
+                  <div class="form-floating">
+                      {{ form.numero_sei|htmlattributes:"class: form-control" }}
+                      <label>Número SEI</label>
+                  </div>
+              </div>
+              <div class="col-9">
+                  <div class="form-floating">
+                      {{ form.objeto|htmlattributes:"class: form-control" }}
+                      <label>Objeto</label>
+                  </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-md">
+                  <div class="form-floating">
+                      {{ form.status|htmlattributes:"class: form-select form-select-sm" }}
+                      <label>Status</label>
+                  </div>
+              </div>
+              <div class="col-md">
+                  <div class="form-floating">
+                  {{ form.modalidade|htmlattributes:"class: form-select form-select-sm" }}
+                  <label>Modalidade</label>
+                  </div>
+              </div>
+              <div class="col-md">
+                  <div class="form-floating">
+                  {{ form.data_gco|htmlattributes:"class: form-control" }}
+                  <label>Data de entrada na GCO</label>
+                  </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-md">
+                  <a href="{% url 'sc_nova' object.processo_id.id %}" class="btn btn-primary">
+                        Criar Solicitação de Compra
+                  </a>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-2">
+                <button type="submit" class="btn btn-success">Salvar</button>
+              </div>
+               <div class="col-2">
+                <a href="{% url 'processo_detail' object.processo_id.id %}" class="btn btn-danger">
+                        Sair sem salvar
+                </a>
+              </div>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

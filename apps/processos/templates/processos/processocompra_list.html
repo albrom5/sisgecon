@@ -27,7 +27,7 @@ Processos de Compras
                   </button>
                 </p>
                 <div class="collapse" id="collapseFiltros">
-                    <form method="GET">
+                    <form method="GET" id="filtra_processos">
                             <div class="row g-2 p-2">
                               <div class="col-md">
                                 <div class="form-floating">
@@ -56,13 +56,19 @@ Processos de Compras
                             </div>
                             <div class="row g-2 p-2 form-in">
                               <div class="col-3">
-                                  <label class="form-label" style="opacity: 0.65; font-size: small">Entrou na GCO entre:</label><br>
-
-                                    {{ filter.form.data_gco }}
-
+                                  <div class="form-floating">
+                                    {{filter.form.data_gco_ini|htmlattributes:"class: form-control form-control-sm" }}
+                                    <label for="data_ini">Entrada na GCO a partir de</label>
+                                  </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.data_gco_fim|htmlattributes:"class: form-control form-control-sm" }}
+                                    <label for="data_ini">Até</label>
+                                  </div>
                               </div>
 
-                              <div class="col-9">
+                              <div class="col-6">
                                 <div class="form-floating">
                                   {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
                                   <label for="floatingSelectOrdem">Ordenar por:</label>
@@ -104,7 +110,7 @@ Processos de Compras
                           <td>{{ processo.processo_id.descricao }}</td>
                           <td>{{ processo.modalidade }}</td>
                           <td>{{ processo.status }}</td>
-                          <td>{{ processo.data_gco }}</td>
+                          <td>{{ processo.data_gco|date:"SHORT_DATE_FORMAT"}}</td>
                         </tr>
                         {% empty %}
                             <li>Não há processos que atendam aos critérios de busca selecionados.</li>
@@ -136,9 +142,23 @@ Processos de Compras
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md">
                   Página {{ page_obj.number }} de {{ paginator.num_pages }}
-                {% endif %}
+                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                    <label for="id_pg_sz">Itens por página</label>
+                    <select class="form-select-sm" name="page_size" id="id_pg_sz" form="filtra_processos" onchange="this.form.submit()">
+                        <option value="">--</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="20">50</option>
+                        <option value="20">100</option>
+                    </select>
+
             </div>
         </div>
     </div>
@@ -154,8 +174,8 @@ Processos de Compras
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#id_data_gco_0').mask('00/00/0000');
-            $('#id_data_gco_1').mask('00/00/0000');
+            $('#id_data_gco_ini').mask('00/00/0000');
+            $('#id_data_gco_fim').mask('00/00/0000');
             $('#id_processo_id__numero_sei').mask('0000.0000/0000000-0');
         });
     </script>
