@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from apps.base.models import Status, BaseModel
 
@@ -25,6 +26,15 @@ class Processo(BaseModel):
     descricao = models.CharField(max_length=250, null=True, blank=True)
     data_autuacao = models.DateField(verbose_name='Autuado em:', null=True,
                                      blank=True)
+
+    def validate_unique(self, exclude=None):
+        qs = Processo.objects.filter(numero_sei=self.numero_sei)
+        if qs:
+            raise ValidationError('Número de processo já cadastrado.')
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+        super(Processo, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.numero_sei} - {self.descricao}'
