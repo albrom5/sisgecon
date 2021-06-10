@@ -25,7 +25,7 @@ class ProcessoCompraForm(forms.ModelForm):
         model = ProcessoCompra
         fields = ['modalidade', 'data_gco', 'status']
 
-
+# TODO Validar número de processo quando ele for alterado
 class ProcessoCompraEditForm(forms.ModelForm):
     numero_sei = forms.CharField(max_length=19, required=True,
                                  label='Número SEI')

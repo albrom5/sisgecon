@@ -17,7 +17,7 @@ class Sistema(BaseModel):
     def __str__(self):
         return self.descricao
 
-
+# TODO Testar validate_unique na criação e atualização de processo
 class Processo(BaseModel):
     TIPO_PROCESSO = [('PC', 'Processo de Compra')]
     numero_sei = models.CharField(verbose_name='Número SEI', max_length=19,
@@ -26,14 +26,15 @@ class Processo(BaseModel):
     descricao = models.CharField(max_length=250, null=True, blank=True)
     data_autuacao = models.DateField(verbose_name='Autuado em:', null=True,
                                      blank=True)
-
+    # TODO Testar exclude self.pk no filtro
     def validate_unique(self, exclude=None):
         qs = Processo.objects.filter(numero_sei=self.numero_sei)
         if qs:
             raise ValidationError('Número de processo já cadastrado.')
 
     def save(self, *args, **kwargs):
-        self.validate_unique()
+        if not object:
+            self.validate_unique()
         super(Processo, self).save(*args, **kwargs)
 
     def __str__(self):
