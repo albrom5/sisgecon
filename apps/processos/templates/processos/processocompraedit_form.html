@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% load my_tags %}
+{% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-Novo Processo de Compra
+Editar Processo de Compra nº {{ object }}
 {% endblock %}
 
 {% block main %}
@@ -13,36 +14,21 @@ Novo Processo de Compra
 
             <div class="row g-2 p-2">
               <div class="col-3">
-                  <div class="form-floating">
-                      {{ form.numero_sei|htmlattributes:"class: form-control" }}
-                      <label>Número SEI</label>
-                  </div>
+                  {{ form.numero_sei|as_crispy_field }}
               </div>
               <div class="col-9">
-                  <div class="form-floating">
-                      {{ form.objeto|htmlattributes:"class: form-control" }}
-                      <label>Objeto</label>
-                  </div>
+                  {{ form.objeto|as_crispy_field }}
               </div>
             </div>
             <div class="row g-2 p-2">
               <div class="col-md">
-                  <div class="form-floating">
-                      {{ form.status|htmlattributes:"class: form-select form-select-sm" }}
-                      <label>Status</label>
-                  </div>
+                      {{ form.status|as_crispy_field }}
               </div>
               <div class="col-md">
-                  <div class="form-floating">
-                  {{ form.modalidade|htmlattributes:"class: form-select form-select-sm" }}
-                  <label>Modalidade</label>
-                  </div>
+                  {{ form.modalidade|as_crispy_field }}
               </div>
               <div class="col-md">
-                  <div class="form-floating">
-                  {{ form.data_gco|htmlattributes:"class: form-control" }}
-                  <label>Data de entrada na GCO</label>
-                  </div>
+                  {{ form.data_gco|as_crispy_field }}
               </div>
             </div>
             <div class="row g-2 p-2">
@@ -65,4 +51,9 @@ Novo Processo de Compra
         </form>
 
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'customjs/fieldmasks.js' %}"></script>
 {% endblock %}

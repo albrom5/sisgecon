@@ -31,7 +31,7 @@ Processos de Compras
                             <div class="row g-2 p-2">
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.processo_id__numero_sei|htmlattributes:"class: form-control form-control-sm" }}
+                                  {{filter.form.processo_id__numero_sei|htmlattributes:"class: form-control form-control-sm procmask" }}
                                   <label for="floatingInputNumSei">Número SEI</label>
                                 </div>
                               </div>
@@ -57,13 +57,13 @@ Processos de Compras
                             <div class="row g-2 p-2 form-in">
                               <div class="col-3">
                                   <div class="form-floating">
-                                    {{filter.form.data_gco_ini|htmlattributes:"class: form-control form-control-sm" }}
+                                    {{filter.form.data_gco_ini|htmlattributes:"class: form-control form-control-sm datemask" }}
                                     <label for="data_ini">Entrada na GCO a partir de</label>
                                   </div>
                               </div>
                               <div class="col-3">
                                   <div class="form-floating">
-                                    {{filter.form.data_gco_fim|htmlattributes:"class: form-control form-control-sm" }}
+                                    {{filter.form.data_gco_fim|htmlattributes:"class: form-control form-control-sm datemask" }}
                                     <label for="data_ini">Até</label>
                                   </div>
                               </div>
@@ -165,18 +165,6 @@ Processos de Compras
 {% endblock %}
 {% block script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-        $(".clickable-row").click(function() {
-            window.location = $(this).data("href");
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#id_data_gco_ini').mask('00/00/0000');
-            $('#id_data_gco_fim').mask('00/00/0000');
-            $('#id_processo_id__numero_sei').mask('0000.0000/0000000-0');
-        });
-    </script>
+    <script src="{% static 'customjs/clickablerow.js' %}"></script>
+    <script src="{% static 'customjs/fieldmasks.js' %}"></script>
 {% endblock %}
