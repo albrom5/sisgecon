@@ -29,7 +29,7 @@ Produtos
                             <div class="row g-2 p-2">
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.id|htmlattributes:"class: form-control form-control-sm procmask" }}
+                                  {{filter.form.id|htmlattributes:"class: form-control form-control-sm" }}
                                   <label for="floatingInputNumSei">Código</label>
                                 </div>
                               </div>
@@ -86,7 +86,7 @@ Produtos
                 </div>
             </div>
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover table-sm">
             <thead>
                 <tr>
                   <th scope="col">COD</th>
@@ -94,18 +94,18 @@ Produtos
                   <th scope="col">Sigla</th>
                   <th scope="col">Produto</th>
                   <th scope="col">Classe - Grupo - SubGrupo</th>
-                  <th scope="col">Tabela de Eventos</th>
+                  <th class="text-center" scope="col">Tabela de Eventos</th>
                 </tr>
             </thead>
              <tbody>
                 {% for produto in object_list %}
                 <tr class="clickable-row" data-href="{% url 'produto_detail' produto.id %}">
                   <td>{{ produto.id }}</td>
-                  <td>{{ produto.numprotheus }}</td>
-                  <td>{{ produto.sigla }}</td>
+                  <td>{% if produto.numprotheus %}{{ produto.numprotheus }}{% else %}----{% endif %}</td>
+                  <td>{% if produto.sigla %}{{ produto.sigla }}{% else %}----{% endif %}</td>
                   <td>{{ produto.descricao }}</td>
-                  <td>{{ produto.subgrupo }}</td>
-                  <td>{{ produto.tabela_eventos }}</td>
+                  <td>{% if produto.subgrupo %}{{ produto.subgrupo }}{% else %}----{% endif %}</td>
+                  <td class="text-center">{% if produto.tabela_eventos %}<i class="material-icons">check_circle_outline</i>{% else %}<span class="material-icons">highlight_off</span>{% endif %}</td>
                 </tr>
                 {% empty %}
                     <li>Não há produtos que atendam aos critérios selecionados.</li>
@@ -157,11 +157,5 @@ Produtos
     </div>
 {% endblock %}
 {% block script %}
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-        $(".clickable-row").click(function() {
-            window.location = $(this).data("href");
-            });
-        });
-    </script>
+    <script src="{% static 'customjs/clickablerow.js' %}"></script>
 {% endblock %}

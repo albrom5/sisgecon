@@ -7,13 +7,13 @@ from .models import Status
 class StatusAdmin(admin.ModelAdmin):
     list_display = (
         'id',
+        'tipo',
+        'descricao',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'tipo',
-        'descricao',
     )
     list_filter = (
         'ativo',

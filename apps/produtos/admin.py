@@ -13,13 +13,13 @@ from .models import (
 @admin.register(ClasseProduto)
 class ClasseProdutoAdmin(admin.ModelAdmin):
     list_display = (
+        'descricao',
         'id',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'descricao',
     )
     list_filter = (
         'ativo',
@@ -33,60 +33,60 @@ class ClasseProdutoAdmin(admin.ModelAdmin):
 @admin.register(GrupoProduto)
 class GrupoProdutoAdmin(admin.ModelAdmin):
     list_display = (
+        'classe',
+        'descricao',
         'id',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'classe',
-        'descricao',
     )
     list_filter = (
+        'classe',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'classe',
     )
 
 
 @admin.register(SubGrupoProduto)
 class SubGrupoProdutoAdmin(admin.ModelAdmin):
     list_display = (
+        'classe',
+        'grupo',
+        'descricao',
         'id',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'classe',
-        'grupo',
-        'descricao',
     )
     list_filter = (
+        'classe',
+        'grupo',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'classe',
-        'grupo',
     )
 
 
 @admin.register(UnidadeMedida)
 class UnidadeMedidaAdmin(admin.ModelAdmin):
     list_display = (
+        'sigla',
+        'descricao',
         'id',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
-        'sigla',
-        'descricao',
     )
     list_filter = (
         'ativo',
@@ -100,12 +100,6 @@ class UnidadeMedidaAdmin(admin.ModelAdmin):
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
     list_display = (
-        'id',
-        'ativo',
-        'criado_em',
-        'criador',
-        'modificado_em',
-        'ultimo_editor',
         'descricao',
         'subgrupo',
         'unidade',
@@ -114,16 +108,22 @@ class ProdutoAdmin(admin.ModelAdmin):
         'numprotheus',
         'ultimoprecocompra',
         'tabela_eventos',
-    )
-    list_filter = (
+        'id',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
+    )
+    list_filter = (
         'subgrupo',
         'unidade',
         'tabela_eventos',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
     )
 
 
@@ -131,21 +131,21 @@ class ProdutoAdmin(admin.ModelAdmin):
 class SubProdutoAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'ativo',
-        'criado_em',
-        'criador',
-        'modificado_em',
-        'ultimo_editor',
         'produto',
         'descricao',
         'fator',
         'tipofator',
-    )
-    list_filter = (
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
+    )
+    list_filter = (
         'produto',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
     )

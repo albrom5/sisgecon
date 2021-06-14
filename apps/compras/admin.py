@@ -7,17 +7,12 @@ from .models import SolicitacaoCompra, ItemSC
 class SolicitacaoCompraAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'ativo',
-        'criado_em',
-        'criador',
-        'modificado_em',
-        'ultimo_editor',
         'numsc',
+        'processo',
+        'objeto',
         'data_emissao',
         'prazo',
         'data_rec_compras',
-        'processo',
-        'objeto',
         'justificativa',
         'valor_total',
         'centro_custo',
@@ -25,8 +20,14 @@ class SolicitacaoCompraAdmin(admin.ModelAdmin):
         'contr_evento',
         'evento',
         'cadtec',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
     )
     list_filter = (
+        'processo',
         'ativo',
         'criado_em',
         'criador',
@@ -35,19 +36,12 @@ class SolicitacaoCompraAdmin(admin.ModelAdmin):
         'data_emissao',
         'prazo',
         'data_rec_compras',
-        'processo',
     )
 
 
 @admin.register(ItemSC)
 class ItemSCAdmin(admin.ModelAdmin):
     list_display = (
-        'id',
-        'ativo',
-        'criado_em',
-        'criador',
-        'modificado_em',
-        'ultimo_editor',
         'solicitacao',
         'ord_item',
         'subgrupo',
@@ -57,14 +51,20 @@ class ItemSCAdmin(admin.ModelAdmin):
         'diaria',
         'valor_unit',
         'valor_total',
-    )
-    list_filter = (
+        'id',
         'ativo',
         'criado_em',
         'criador',
         'modificado_em',
         'ultimo_editor',
+    )
+    list_filter = (
         'solicitacao',
         'subgrupo',
         'produto',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
     )
