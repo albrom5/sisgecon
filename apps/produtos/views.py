@@ -1,19 +1,17 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import DetailView, CreateView, UpdateView
 
 from .filters import ProdutoFilter
 from .models.produtos import Produto
 
+from apps.base.views import FilteredListView
 
-# class ProdutosList(ListView):
-#     model = Produto
-#
-#     def get_queryset(self):
-#         return Produto.objects.filter(ativo=True)
 
-def produto_list(request):
-    f = ProdutoFilter(request.GET, queryset=Produto.objects.all())
-    return render(request, 'produtos/produto_list.html', {'filter': f})
+class ProdutosList(FilteredListView):
+    filterset_class = ProdutoFilter
+    template_name = 'produtos/produto_list.html'
+    queryset = Produto.objects.all()
+    paginate_by = 10
+    permission_codename = 'produtos.view_produto'
 
 
 class ProdutoDetail(DetailView):

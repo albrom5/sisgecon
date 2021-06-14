@@ -34,7 +34,7 @@ class SolicitacaoCompra(BaseModel):
     @property
     def valor_total_sc(self):
         total = self.itemsc_sc.filter(ativo=True).aggregate(
-            Sum('valor_total'))['total__sc']
+            Sum('valor_total'))['valor_total__sum']
         return total or 0
 
     def __str__(self):
@@ -76,6 +76,15 @@ class ItemSC(BaseModel):
                                           MinValueValidator(
                                               Decimal('0.000000'))], null=True,
                                       blank=True)
+
+    @property
+    def valor_total_item(self):
+        tot_item = self.quantidade * self.valor_unit
+        return tot_item or 0
+
+    def save(self, *args, **kwargs):
+        self.valor_total = self.valor_total_item
+        super(ItemSC, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.ord_item} - {self.produto}'

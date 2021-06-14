@@ -1,14 +1,28 @@
 import django_filters
 
-from .models import Produto
+from apps.produtos.models import Produto
 
 
 class ProdutoFilter(django_filters.FilterSet):
     descricao = django_filters.CharFilter(lookup_expr='icontains')
 
+    ordem = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('descricao', 'descricao'),
+            ('numprotheus', 'numprotheus'),
+        ),
+        # labels do not need to retain order
+        field_labels={
+            'descricao': 'Nome',
+            'numprotheus': 'Número Protheus',
+        },
+    )
+
     class Meta:
         model = Produto
-        fields = ['sigla', 'descricao', 'subgrupo', 'tabela_eventos']
+        fields = ['id', 'sigla', 'descricao', 'subgrupo', 'tabela_eventos',
+                  'numprotheus']
 
     @property
     def qs(self):

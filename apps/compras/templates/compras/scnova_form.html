@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}
 Nova Solicitação de Compra
@@ -11,19 +12,51 @@ Nova Solicitação de Compra
 
         <form method="post">
             {% csrf_token %}
-            {{ form.numsc }}
-            {{ form.processo }}
-
+            <div class="row g-2 p-2">
+                <div class="col-md">
+                    {{ form.numsc|as_crispy_field }}
+                </div>
+                <div class="col-md">
+                    {{ form.data_emissao|as_crispy_field }}
+                </div>
+                <div class="col-md">
+                    {{ form.prazo|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row g-2 p-2">
+            {{ itens.management_form }}
+                {% for item in itens %}
+                    <div class="row g-2 p-2">
+                        <div class="col">
+                            {{ item.ord_item|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ item.produto|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ item.quantidade|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ item.valor_unit|as_crispy_field }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
             <div class="row g-2 p-2">
               <div class="col-2">
                 <button type="submit" class="btn btn-success">Salvar</button>
               </div>
                <div class="col-2">
-                <a href="" class="btn btn-danger">
+                <a href="{% url 'processo_edit' view.kwargs.processo_id %}" class="btn btn-danger">
                         Sair sem salvar
                 </a>
               </div>
         </div>
         </form>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'customjs/fieldmasks.js' %}"></script>
 {% endblock %}

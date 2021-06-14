@@ -1,45 +1,96 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+{% load my_tags %}
+
+{% block title %}
+Produtos
+{% endblock %}
 
 {% block main %}
 
     <div class="container-fluid">
-       <h1>Produtos</h1>
-        <a href="{% url 'produto_novo' %}" class="btn btn-info">Cadastrar Novo Produto</a>
-        <br>
-        <br>
-
-             <form method="GET">
-               <table id="filtra-produtos" class="table table-bordered table-striped">
-                 <thead>
-                   <tr>
-                    <th>Sigla</th>
-                    <th>Produto</th>
-                    <th>Subgrupo</th>
-                    <th>Tabela de Eventos</th>
-                   </tr>
-                 </thead>
-               <tbody>
-                <tr>
-                 <td>{{filter.form.sigla}}</td>
-                 <td>{{filter.form.descricao}}</td>
-                 <td>{{filter.form.subgrupo}}</td>
-                 <td>{{filter.form.tabela_eventos}}</td>
-                </tr>
-               </tbody>
-               </table>
-
-               <button id="filtrabtn" class="btn btn-info" type="submit">
-                   <i class="material-icons">&#xE8B6;</i>
-                   <span> FILTRAR</span>
-               </button>
-
-             </form>
-
+        <div class="row g-2 p-2">
+            <div class="col-lg-9">
+                <h1>Produtos</h1>
+            </div>
+            <div class="col-lg-3 align-items-end">
+                <a href="{% url 'produto_novo' %}" class="btn btn-primary">Cadastrar Novo Produto</a>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-lg-12">
+                <p>
+                  <button class="btn btn-toggle align-items-center rounded collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFiltros" aria-expanded="false" aria-controls="collapseExample">
+                    Filtros
+                  </button>
+                </p>
+                <div class="collapse" id="collapseFiltros">
+                    <form method="GET" id="filtra_produtos">
+                            <div class="row g-2 p-2">
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.id|htmlattributes:"class: form-control form-control-sm procmask" }}
+                                  <label for="floatingInputNumSei">Código</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.numprotheus|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputObjeto">Número Protheus</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.subgrupo|htmlattributes:"class: form-select form-select-sm" }}
+                                  <label for="floatingSelectModalidade">Subgrupo</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.descricao|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingSelectStatus">Nome</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2 form-in">
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.sigla|htmlattributes:"class: form-control form-control-sm" }}
+                                    <label for="floatingInputSigla">Sigla</label>
+                                  </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                      {{filter.form.tabela_eventos|htmlattributes:"class: form-select form-select-sm"}}
+                                      <label for="floatingSelectTabela_Eventos">
+                                        Pertence à tabela de eventos?
+                                      </label>
+                                  </div>
+                              </div>
+                              <div class="col-6">
+                                <div class="form-floating">
+                                  {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
+                                  <label for="floatingSelectOrdem">Ordenar por:</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2">
+                                <div class="col-md">
+                                    <button id="filtrabtn" class="btn btn-outline-primary btn-sm d-flex" type="submit">
+                                       <i class="material-icons">&#xE8B6;</i>
+                                       <span class=""> Filtrar/Ordenar</span>
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">COD</th>
+                  <th scope="col">Nº Protheus</th>
                   <th scope="col">Sigla</th>
                   <th scope="col">Produto</th>
                   <th scope="col">Classe - Grupo - SubGrupo</th>
@@ -47,9 +98,10 @@
                 </tr>
             </thead>
              <tbody>
-                {% for produto in filter.qs %}
+                {% for produto in object_list %}
                 <tr class="clickable-row" data-href="{% url 'produto_detail' produto.id %}">
                   <td>{{ produto.id }}</td>
+                  <td>{{ produto.numprotheus }}</td>
                   <td>{{ produto.sigla }}</td>
                   <td>{{ produto.descricao }}</td>
                   <td>{{ produto.subgrupo }}</td>
@@ -60,6 +112,48 @@
                 {% endfor %}
              </tbody>
         </table>
+        <div class="row">
+            <div class="col-lg-12">
+                Exibindo produtos {{ page_obj.start_index }} a {{ page_obj.end_index }} de um total de {{ filter.qs.count }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if is_paginated %}Ir para:
+                  {% if page_obj.has_previous %}
+                    <a href="?{% param_replace page=1 %}">Primeira</a>
+                    {% if page_obj.previous_page_number != 1 %}
+                      <a href="?{% param_replace page=page_obj.previous_page_number %}">Anterior</a>
+                    {% endif %}
+                  {% endif %}
+                  {% if page_obj.has_next %}
+                    {% if page_obj.next_page_number != paginator.num_pages %}
+                      <a href="?{% param_replace page=page_obj.next_page_number %}">Próxima</a>
+                    {% endif %}
+                    <a href="?{% param_replace page=paginator.num_pages %}">Última</a>
+                  {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                  Página {{ page_obj.number }} de {{ paginator.num_pages }}
+                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                    <label for="id_pg_sz">Itens por página</label>
+                    <select class="form-select-sm" name="page_size" id="id_pg_sz" form="filtra_produtos" onchange="this.form.submit()">
+                        <option value="">--</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="20">50</option>
+                        <option value="20">100</option>
+                    </select>
+
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block script %}
