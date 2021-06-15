@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'apps.produtos',
     'apps.compras',
     'apps.processos',
+    'apps.empresa',
 ]
 
 MIDDLEWARE = [
@@ -164,12 +165,30 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+LOGIN_REDIRECT_URL = 'home'
+
 LOGOUT_REDIRECT_URL = 'login'
+
+# Email settings
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+DEFAULT_FROM_EMAIL = 'SGCon <postmaster@mg.sgcon.xyz>'
+EMAIL_SUBJECT_PREFIX = '[SGCon] '
 
 LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
     'login',
     'admin:index',
     'admin:login',
+    'password_change',
+    'password_change_done',
+    'password_reset',
+    'password_reset_done',
+    'password_reset_confirm',
+    'password_reset_complete',
 ]
 
 # Default primary key field type

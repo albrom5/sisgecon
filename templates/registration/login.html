@@ -1,24 +1,44 @@
-{% extends 'base.html' %}
+{%  extends 'loginbase.html' %}
 {% load static %}
-{% block main %}
+{% load my_tags %}
+{% load crispy_forms_tags %}
+{% block title %}Sistema de Gestão de Contratos - Login{% endblock %}
+{% block content %}
+    <div class="container-sm p-2">
+                <div class="card align-items-sm-center">
+                  <form method="post">
+                   {% csrf_token %}
+                    <img class="mb-4" src="{% static 'img/logo.png' %}" alt="" width="200" height="200">
+                      <div class="row p-2 g-2">
+                       <div class="col-md">
+                          {{form.username|as_crispy_field }}
+                       </div>
+                      </div>
+                      <div class="row p-2 g-2">
+                       <div class="col-md">
+                          {{form.password|as_crispy_field }}
+                       </div>
+                      </div>
+                      <div class="row p-2 g-2">
+                       <div class="col-md">
+                      {% if form.errors %}
+                       <p class="alert-danger">Nome de usuário e/ou senha incorretos.</p>
+                      {% endif %}
+                       </div>
+                      </div>
+                      <div class="row p-2 g-2">
+                       <div class="col-md">
+                        <button class="btn btn-primary" type="submit">Login</button>
+                       </div>
+                      </div>
+                      <div class="row p-2 g-2">
+                       <div class="col-md">
+                        <a href="{% url 'password_reset' %}" class="btn btn-outline-primary">Esqueceu sua senha?</a>
+                       </div>
+                      </div>
 
-
-<main class="form-signin">
-    <div class="row align-content-center">
-      <form method="post">
-            {% csrf_token %}
-
-        <img class="mb-4" src="{% static 'img/logo.png' %}" alt="" width="200" height="200">
-
-        <div class="form-floating">
-
-            {{ form.as_p }}
-
-        </div>
-
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
-      </form>
+                    <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+                  </form>
+            </div>
     </div>
-</main>
 {% endblock %}

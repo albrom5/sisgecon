@@ -46,14 +46,14 @@
           <li class="border-top my-3"></li>
           <li class="mb-1">
             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-              {{ user }}
+              {{ user.first_name }}
             </button>
             <div class="collapse" id="account-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" class="link-dark rounded">New...</a></li>
+                <li><a href="{% url 'password_change' %}" class="link-dark rounded">Trocar senha</a></li>
                 <li><a href="#" class="link-dark rounded">Profile</a></li>
                 <li><a href="#" class="link-dark rounded">Settings</a></li>
-                <li><a href="{% url 'logout' %}" class="link-dark rounded">Logoff</a></li>
+                <li><a href="{% url 'logout' %}" class="link-dark rounded">Logout</a></li>
               </ul>
             </div>
           </li>
