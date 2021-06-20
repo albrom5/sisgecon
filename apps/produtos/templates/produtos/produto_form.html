@@ -2,18 +2,59 @@
 {% load crispy_forms_tags %}
 
 {% block main %}
-    <form method="post">
-        {% csrf_token %}
+    <div class="container-fluid">
         {% if produto %}
             <h2>{{ produto.descricao }}</h2>
         {% else %}
             <h2>Cadastro de novo produto</h2>
         {% endif %}
-        {{ form|crispy }}
-
-
-
-
-        <button type="submit" class="btn btn-success">Salvar</button>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row g-2 p-2">
+              <div class="col-md">
+                  {{ form.descricao|as_crispy_field }}
+              </div>
+              <div class="col-md">
+                  {{ form.unidade|as_crispy_field }}
+              </div>
+              <div class="col-md">
+                  {{ form.sigla|as_crispy_field }}
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-md">
+                  {{ form.subgrupo|as_crispy_field }}
+              </div>
+              <div class="col-md">
+                  {{ form.numprotheus|as_crispy_field }}
+              </div>
+              <div class="col-md py-4">
+                  <div class="form-check">
+                 {{ form.tabela_eventos|as_crispy_field }}
+                  </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-md">
+                  {{ form.especifica|as_crispy_field }}
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-2">
+                <button type="submit" class="btn btn-success">Salvar</button>
+              </div>
+               <div class="col-2">
+                {% if object %}
+                <a href="{% url 'produto_detail' produto.id %}" class="btn btn-danger">
+                        Sair sem salvar
+                </a>
+                {% else %}
+                <a href="{% url 'produtos_list' %}" class="btn btn-danger">
+                        Sair sem salvar
+                </a>
+                {% endif %}
+              </div>
+            </div>
     </form>
+    </div>
 {% endblock %}

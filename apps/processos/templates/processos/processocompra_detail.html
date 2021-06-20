@@ -8,6 +8,8 @@
 {% block main %}
 
      <div class="container-fluid">
+        {# Início do cabeçalho da DetailView #}
+        <div id="detailheader">
          <div class="row g-2 p-2">
               <div class="col-md">
                   <h4>{{ object.processo_id.get_tipo_display }} nº: {{ object.processo_id.numero_sei }}</h4>
@@ -20,16 +22,20 @@
          </div>
          <div class="row g-2 p-2">
               <div class="col-md">
-                  Status: {{ object.status }}
+                  <strong>Status:</strong> {{ object.status }}
               </div>
               <div class="col-md">
-                  Data de entrada na GCO: {{ object.data_gco|date:"SHORT_DATE_FORMAT" }}
+                  <strong>Data de entrada na GCO:</strong>  {{ object.data_gco|date:"SHORT_DATE_FORMAT" }}
               </div>
               <div class="col-md">
-                  Modalidade: {{ object.modalidade }}
+                  <strong>Modalidade:</strong> {{ object.modalidade }}
               </div>
          </div>
-        <div class="row g-2 p-2"></div>
+        </div>
+        {# Fim do cabeçalho da DetailView #}
+
+        <div class="row g-2 p-2 my-2">
+         <h5>Solicitações de Compra vinculadas</h5>
         {% for sc in object.solicitacaocompra_set.all %}
         <div class="row g-2 p-2 border-top">
             <div class="col-md">
@@ -73,11 +79,14 @@
         </div>
             {% empty %}
             <div class="row g-2 p-2">
-            Processo sem SC's cadastradas.
+                <div class="col-md">
+                Processo sem SC's cadastradas.
+                </div>
             </div>
+        </div>
         {% endfor %}
-
-
+        {# Início da seção de botões #}
+        <div id="botoes">
         <div class="row g-2 p-2">
             <div class="col-3">
                 <a href="{% url 'processo_edit' object.processo_id.id %}" class="btn btn-primary">
@@ -92,5 +101,7 @@
                 </a>
             </div>
         </div>
+        </div>
+        {# Fim da seção de botões #}
      </div>
 {% endblock %}

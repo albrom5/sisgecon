@@ -13,6 +13,14 @@ from apps.base.custom_views import (
 
 # TODO Fazer consulta Ajax para saber se o número de Processo ou SC já existe
 class ProcessoCompraNovo(CustomCreateView):
+    '''
+    Cria um novo processo de compra.
+    O método form_valid define a criação de uma instância no modelo "pai"
+    (Processo) contendo número SEI e objeto vindos de campos no form.
+    O processo de compra sempre nasce com o status inicial e a modalidade
+    indefinida. Estes campos serão definidos posteriormente pela equipe de
+    Compras.
+    '''
     form_class = ProcessoCompraForm
     template_name = 'processos/processocompra_form.html'
     permission_codename = 'processos.add_processocompra'

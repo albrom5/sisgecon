@@ -7,7 +7,7 @@ class ProcessoCompraForm(forms.ModelForm):
 
     numero_sei = forms.CharField(max_length=19, required=True,
                                  label='Número SEI')
-    objeto = forms.CharField(max_length=250)
+    objeto = forms.CharField(max_length=500)
     numero_sei.widget.attrs.update({'class': 'procmask'})
 
     def __init__(self, *args, **kwargs):
@@ -37,7 +37,7 @@ class ProcessoCompraForm(forms.ModelForm):
 class ProcessoCompraEditForm(forms.ModelForm):
     numero_sei = forms.CharField(max_length=19, required=True,
                                  label='Número SEI')
-    objeto = forms.CharField(max_length=250)
+    objeto = forms.CharField(max_length=500)
     numero_sei.widget.attrs.update({'class': 'procmask'})
 
     def __init__(self, *args, **kwargs):

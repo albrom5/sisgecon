@@ -1,15 +1,15 @@
 from django.urls import path
+from django.views.decorators.cache import never_cache
+
 from .views import (ProcessoCompraNovo,
                     ProcessoCompraDetail,
                     ProcessoCompraEdit,
-                    # processo_list)
                     ProcessosCompraList)
 
 
 urlpatterns = [
-    path('', ProcessosCompraList.as_view(),
+    path('', never_cache(ProcessosCompraList.as_view()),
          name='processos_list'),
-    # path('', processo_list, name='processos_list'),
     path('<int:pk>', ProcessoCompraDetail.as_view(),
          name='processo_detail'),
     path('novo/', ProcessoCompraNovo.as_view(),

@@ -65,7 +65,7 @@ class UnidadeMedida(BaseModel):
 
 
 class Produto(BaseModel):
-    descricao = models.CharField(verbose_name='Descrição', max_length=200,
+    descricao = models.CharField(verbose_name='Nome', max_length=300,
                                  unique=True)
     subgrupo = models.ForeignKey(SubGrupoProduto, null=True, blank=True,
                                  on_delete=models.SET_NULL,
@@ -75,15 +75,18 @@ class Produto(BaseModel):
                                 on_delete=models.SET_NULL,
                                 limit_choices_to={'ativo': True})
     sigla = models.CharField(max_length=5, null=True, blank=True, unique=True)
-    especifica = models.TextField(max_length=1000, null=True, blank=True)
-    numprotheus = models.CharField(max_length=15, null=True, blank=True,
+    especifica = models.TextField(verbose_name='Especificações adicionais',
+                                  max_length=1000, null=True, blank=True)
+    numprotheus = models.CharField(verbose_name='COD Protheus',
+                                   max_length=15, null=True, blank=True,
                                    unique=True)
     ultimoprecocompra = models.DecimalField(
         verbose_name='Último Preço de Compra',
         max_digits=19,
         decimal_places=6,
         null=True, blank=True)
-    tabela_eventos = models.BooleanField(default=False)
+    tabela_eventos = models.BooleanField(
+        verbose_name='Tabela de eventos?', default=False)
 
     def __str__(self):
         return self.descricao
@@ -94,6 +97,7 @@ class Produto(BaseModel):
     class Meta:
         verbose_name = "Produto"
         verbose_name_plural = "Produtos"
+        ordering = ['id']
 
 
 class SubProduto(BaseModel):

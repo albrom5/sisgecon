@@ -1,9 +1,13 @@
-from django.views.generic import DetailView, CreateView, UpdateView
-
 from .filters import ProdutoFilter
 from .models.produtos import Produto
+from .forms import ProdutoForm
 
 from apps.base.views import FilteredListView
+from apps.base.custom_views import (
+    CustomCreateView,
+    CustomDetailView,
+    CustomUpdateView
+)
 
 
 class ProdutosList(FilteredListView):
@@ -14,17 +18,19 @@ class ProdutosList(FilteredListView):
     permission_codename = 'produtos.view_produto'
 
 
-class ProdutoDetail(DetailView):
+class ProdutoDetail(CustomDetailView):
     model = Produto
+    permission_codename = 'produtos.view_produto'
 
 
-class ProdutoNovo(CreateView):
+class ProdutoNovo(CustomCreateView):
+    form_class = ProdutoForm
+    permission_codename = 'produtos.add_produto'
+    template_name = 'produtos/produto_form.html'
+
+
+class ProdutoEdit(CustomUpdateView):
+    form_class = ProdutoForm
+    permission_codename = 'produtos.change_produto'
+    template_name = 'produtos/produto_form.html'
     model = Produto
-    fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica',
-              'numprotheus', 'tabela_eventos']
-
-
-class ProdutoEdit(UpdateView):
-    model = Produto
-    fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica',
-              'numprotheus', 'tabela_eventos']

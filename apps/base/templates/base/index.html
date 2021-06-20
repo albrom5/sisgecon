@@ -3,7 +3,9 @@
 {% block main %}
      <div class="row">
         <div class="col">
-            Column
+            {% for message in messages %}
+            <p class="text-danger"> {{ message }} </p>
+            {% endfor %}
         </div>
         <div class="col">
             Olá {{ usuario }}

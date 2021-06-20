@@ -4,37 +4,39 @@ from apps.base.models import Status, BaseModel
 
 
 class Modalidade(BaseModel):
-    sigla = models.CharField(max_length=20)
-    fundamento = models.CharField(max_length=50)
+    sigla = models.CharField(max_length=30)
+    fundamento = models.CharField(max_length=150)
 
     def __str__(self):
         return self.sigla
 
 
 class Sistema(BaseModel):
-    descricao = models.CharField(max_length=15)
+    descricao = models.CharField(max_length=30)
 
     def __str__(self):
         return self.descricao
 
-# TODO Testar validate_unique na criação e atualização de processo
+
 class Processo(BaseModel):
     TIPO_PROCESSO = [('PC', 'Processo de Compra')]
     numero_sei = models.CharField(verbose_name='Número SEI', max_length=19,
                                   unique=True)
     tipo = models.CharField(max_length=2, choices=TIPO_PROCESSO)
-    descricao = models.CharField(max_length=250, null=True, blank=True)
+    descricao = models.CharField(verbose_name='Objeto', max_length=500,
+                                 null=True, blank=True)
     data_autuacao = models.DateField(verbose_name='Autuado em:', null=True,
                                      blank=True)
     # TODO Testar exclude self.pk no filtro
     def validate_unique(self, exclude=None):
-        qs = Processo.objects.filter(numero_sei=self.numero_sei)
+        qs = Processo.objects.filter(numero_sei=self.numero_sei).exclude(
+            id=self.id
+        )
         if qs:
             raise ValidationError('Número de processo já cadastrado.')
 
     def save(self, *args, **kwargs):
-        if not object:
-            self.validate_unique()
+        self.validate_unique()
         super(Processo, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -48,11 +50,11 @@ class ProcessoCompra(BaseModel):
     modalidade = models.ForeignKey(Modalidade, on_delete=models.PROTECT,
                                    null=True, blank=True,
                                    limit_choices_to={'ativo': True})
-    numero_edital = models.CharField(max_length=12, null=True, blank=True)
+    numero_edital = models.CharField(max_length=20, null=True, blank=True)
     sistema = models.ForeignKey(Sistema, on_delete=models.SET_NULL, null=True,
                                 blank=True, limit_choices_to={'ativo': True})
     refer_sistema = models.CharField(
-        verbose_name='Número de Referência no Sistema', max_length=15,
+        verbose_name='Número de Referência no Sistema', max_length=20,
         null=True, blank=True)
     data_gco = models.DateField(verbose_name='Recebido na GCO em:', null=True,
                                 blank=True)

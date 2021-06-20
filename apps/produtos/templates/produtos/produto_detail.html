@@ -1,32 +1,65 @@
 {% extends 'base.html' %}
 
-{% block main %}
-    <form method="post">
-        {% csrf_token %}
+{% block title %}
+{{ object }}
+{% endblock %}
 
-        {{ produto.descricao }}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Produto</th>
-                  <th scope="col">Tipo de Fator</th>
-                  <th scope="col">Fator</th>
-                </tr>
-            </thead>
-             <tbody>
-                {% for subproduto in object.subproduto_produto.all %}
-                <tr class="clickable-row" data-href="">
-                  <td>{{ subproduto }}</td>
-                  <td>{{ subproduto.descricao }}</td>
-                  <td>{{ subproduto.tipofator }}</td>
-                  <td>{{ subproduto.fator }}</td>
-                </tr>
-                {% empty %}
-                    <li>Sem subprodutos cadastrados ainda.</li>
-                {% endfor %}
-             </tbody>
-        </table>
-        <a href="{% url 'produto_edit' object.id %}" class="btn btn-info">Alterar dados</a>
-    </form>
+{% block main %}
+    <div class="container-fluid">
+    {# Início do cabeçalho da DetailView #}
+    <div id="detailheader">
+        <div class="row g-2 p-2">
+              <div class="col-md">
+                  <h4>Produto: {{ object }}</h4>
+              </div>
+         </div>
+         <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  <strong> Código:</strong> {{ object.id }}
+              </div>
+              <div class="col-md">
+                  <strong> Número no Protheus:</strong> {{ object.numprotheus }}
+              </div>
+              <div class="col-md">
+                  <strong>Sigla:</strong> {{ object.sigla }}
+              </div>
+              <div class="col-md">
+                  <strong>Unidade:</strong> {{ object.unidade }}
+              </div>
+         </div>
+         <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  <strong> Subgrupo:</strong> {{ object.subgrupo }}
+              </div>
+              <div class="col-md">
+                  <strong>Tabela de eventos?</strong>
+                  {% if object.tabela_eventos %}<i class="material-icons">check_circle_outline</i>{% else %}<span class="material-icons">highlight_off</span>{% endif %}
+              </div>
+             </div>
+             <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  <strong>Especificações adicionais:</strong> {{ object.especifica }}
+              </div>
+         </div>
+    </div>
+    {# Fim do cabeçalho da DetailView #}
+     {# Início da seção de botões #}
+        <div id="botoes">
+        <div class="row g-2 p-2 my-2 border-top">
+            <div class="col-3">
+                <a href="{% url 'produto_edit' object.id %}" class="btn btn-primary">
+                    Alterar dados
+                </a>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-3">
+                <a href="{% url 'produtos_list' %}" class="btn btn-secondary">
+                    Voltar para lista de prodtuos
+                </a>
+            </div>
+        </div>
+        </div>
+    {# Fim da seção de botões #}
+    </div>
 {% endblock %}

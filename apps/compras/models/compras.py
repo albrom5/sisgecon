@@ -17,7 +17,7 @@ class SolicitacaoCompra(BaseModel):
     processo = models.ForeignKey(ProcessoCompra, null=True, blank=True,
                                  on_delete=models.SET_NULL,
                                  limit_choices_to={'ativo': True})
-    objeto = models.CharField(max_length=250, null=True, blank=True)
+    objeto = models.CharField(max_length=500, null=True, blank=True)
     justificativa = models.TextField(max_length=1000, null=True, blank=True)
     valor_total = models.DecimalField(max_digits=19, decimal_places=6,
                                       null=True, blank=True)
@@ -59,7 +59,7 @@ class ItemSC(BaseModel):
                                 on_delete=models.PROTECT,
                                 limit_choices_to={'ativo': True},
                                 related_name="itemsc_produto")
-    descricao = models.CharField(max_length=200, null=True, blank=True)
+    descricao = models.CharField(max_length=500, null=True, blank=True)
     quantidade = models.DecimalField(max_digits=19, decimal_places=6,
                                      validators=[
                                          MinValueValidator(

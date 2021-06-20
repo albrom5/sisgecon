@@ -13,7 +13,7 @@ class CheckPermissionMixin(object):
             messages.add_message(
                 request,
                 messages.WARNING,
-                u'Usuário não tem permissão para realizar esta operação.',
+                u'Usuário não tem permissão acessar a página solicitada.',
                 'permission_warning')
             return redirect('home')
         return super(CheckPermissionMixin, self).dispatch(request, *args, **kwargs)
