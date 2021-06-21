@@ -3,7 +3,7 @@
 {% load my_tags %}
 
 {% block title %}
-Solicitações de Compra a vincular
+Solicitações de Compra a incluir
 {% endblock %}
 
 {% block main %}
@@ -11,10 +11,15 @@ Solicitações de Compra a vincular
     <div class="container-fluid">
         <div class="row g-2 p-2">
             <div class="col-lg-9">
-                <h1>Solicitações de Compra a vincular</h1>
+                <h1>Solicitações de Compra a incluir</h1>
             </div>
+        </div>
+        <div class="row g-2 p-2">
             <div class="col-lg-3 align-items-end">
                 <a href="{% url 'sc_nova_pc' processo %}" class="btn btn-primary">Cadastrar Nova SC</a>
+            </div>
+            <div class="col-lg-3 align-items-end">
+                <a href="{% url 'processo_edit' processo %}" class="btn btn-primary">Voltar</a>
             </div>
         </div>
         <form method="post">
@@ -33,7 +38,7 @@ Solicitações de Compra a vincular
                     {% for sc in object_list %}
                     <tr>
                       <td>
-                          <input type="checkbox" name="select_sc" class="selectsc" data-ajax-url="{% url 'vincula_sc' processo sc.id %}">
+                          <input type="checkbox" name="select_sc" class="selectitem" data-ajax-url="{% url 'vincula_sc' processo sc.id %}">
                       </td>
                       <td>{{ sc.numsc }}</td>
                       <td>{{ sc.descricao }}</td>
@@ -45,24 +50,12 @@ Solicitações de Compra a vincular
                     {% endfor %}
                  </tbody>
             </table>
+        <p id="mensagem" class="text-success"></p>
         </form>
     </div>
 {% endblock %}
 {% block script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'customjs/fieldmasks.js' %}"></script>
-    <script>
-        $(".selectsc").click(function () {
-          var row = $(this).closest("input");
-          console.log("Acionei");
-          $.ajax({
-            url: row.attr('data-ajax-url'),
-            dataType: 'json',
-            success: function (msg) {
-              console.log("AJAX");
-            }
-          });
-
-        });
-     </script>
+    <script src="{% static 'customjs/funcoes_ajax.js' %}"></script>
 {% endblock %}

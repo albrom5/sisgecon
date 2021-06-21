@@ -12,13 +12,25 @@ class SolicitacaoCompraForm(forms.ModelForm):
         self.fields['prazo'].widget.attrs.update(
             {'class': 'datemask'}
         )
+        self.fields['area'].widget.attrs.update({'class': 'form-select'})
+        self.fields['responsavel'].widget.attrs.update(
+            {'class': 'form-select'})
+        self.fields['centro_custo'].widget.attrs.update(
+            {'class': 'form-select'})
+        self.fields['conta_contabil'].widget.attrs.update(
+            {'class': 'form-select'})
 
     class Meta:
         model = SolicitacaoCompra
-        fields = ['numsc', 'data_emissao', 'prazo']
+        fields = ['numsc', 'objeto', 'data_emissao', 'prazo', 'area',
+                  'responsavel', 'centro_custo', 'conta_contabil']
 
 
 class ItemSCForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ItemSCForm, self).__init__(*args, **kwargs)
+        self.fields['produto'].widget.attrs.update({'class': 'form-select'})
 
     class Meta:
         model = ItemSC
@@ -28,4 +40,4 @@ class ItemSCForm(forms.ModelForm):
 
 ItemSCFormset = forms.inlineformset_factory(SolicitacaoCompra,
                                             ItemSC, form=ItemSCForm,
-                                            extra=3)
+                                            extra=1, can_delete=True)

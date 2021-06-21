@@ -4,9 +4,12 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Sum
 
-from apps.base.models import BaseModel
+from apps.base.models import BaseModel, Status
 from apps.produtos.models import Produto, SubGrupoProduto
 from apps.processos.models import ProcessoCompra
+from apps.empresa.models import (
+    Departamento, CentroCusto, ContaContabil, Funcionario
+)
 
 
 class SolicitacaoCompra(BaseModel):
@@ -21,15 +24,25 @@ class SolicitacaoCompra(BaseModel):
     justificativa = models.TextField(max_length=1000, null=True, blank=True)
     valor_total = models.DecimalField(max_digits=19, decimal_places=6,
                                       null=True, blank=True)
-
-    centro_custo = models.CharField(max_length=30, null=True, blank=True)
-    conta_contabil = models.CharField(max_length=30, null=True, blank=True)
+    area = models.ForeignKey(Departamento, null=True, blank=True,
+                             on_delete=models.SET_NULL,
+                             limit_choices_to={'ativo': True})
+    centro_custo = models.ForeignKey(CentroCusto, null=True, blank=True,
+                                     on_delete=models.SET_NULL,
+                                     limit_choices_to={'ativo': True})
+    conta_contabil = models.ForeignKey(ContaContabil, null=True, blank=True,
+                                       on_delete=models.SET_NULL,
+                                       limit_choices_to={'ativo': True})
     contr_evento = models.CharField(max_length=30, null=True, blank=True)
     evento = models.CharField(max_length=30, null=True, blank=True)
 
     cadtec = models.FileField(null=True, blank=True)
-
-# TODO Criar campos status, responsável, área (com relacionamentos)
+    responsavel = models.ForeignKey(Funcionario, null=True, blank=True,
+                                    on_delete=models.SET_NULL,
+                                    limit_choices_to={'ativo': True})
+    status = models.ForeignKey(Status, null=True, blank=True,
+                               on_delete=models.SET_NULL,
+                               limit_choices_to={'ativo': True})
 
     @property
     def valor_total_sc(self):

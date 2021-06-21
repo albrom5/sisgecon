@@ -79,7 +79,7 @@ Solicitações de Compra
                 {% for sc in object_list %}
                 <tr class="clickable-row" data-href="{% url 'sc_detail' sc.id %}">
                   <td>{{ sc.numsc }}</td>
-                  <td>{{ sc.descricao }}</td>
+                  <td>{{ sc.objeto }}</td>
                   <td>R$ {{ sc.valor_total|floatformat:2 }}</td>
                   <td>{{ sc.data_emissao|date:"SHORT_DATE_FORMAT" }}</td>
                 </tr>

@@ -3,19 +3,46 @@
 {% load static %}
 
 {% block title %}
-Nova Solicitação de Compra
+    {% if not object %}
+    Nova Solicitação de Compra
+    {% else %}
+    Editar Solicitação de Compra
+    {% endif %}
 {% endblock %}
 
 {% block main %}
     <div class="container-fluid">
+        {% if not object %}
         <h4>Cadastro de nova Solicitação de Compra</h4>
+        {% else %}
+        <h4>Solicitação de Compra nº {{ object.numsc }}</h4>
+        {% endif %}
 
-        <form method="post">
+        <form method="post" id="formSC">
             {% csrf_token %}
             <div class="row g-2 p-2">
-                <div class="col-md">
+                <div class="col-3">
                     {{ form.numsc|as_crispy_field }}
                 </div>
+                <div class="col-9">
+                    {{ form.objeto|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row g-2 p-2">
+                <div class="col-md">
+                    {{ form.area|as_crispy_field }}
+                </div>
+                <div class="col-md">
+                    {{ form.responsavel|as_crispy_field }}
+                </div>
+                <div class="col-md">
+                    {{ form.centro_custo|as_crispy_field }}
+                </div>
+                <div class="col-md">
+                    {{ form.conta_contabil|as_crispy_field }}
+                </div>
+            </div>
+             <div class="row g-2 p-2">
                 <div class="col-md">
                     {{ form.data_emissao|as_crispy_field }}
                 </div>
@@ -24,24 +51,22 @@ Nova Solicitação de Compra
                 </div>
             </div>
             <div class="row g-2 p-2">
-            {{ itens.management_form }}
-                {% for item in itens %}
-                    <div class="row g-2 p-2">
-                        <div class="col">
-                            {{ item.ord_item|as_crispy_field }}
-                        </div>
-                        <div class="col">
-                            {{ item.produto|as_crispy_field }}
-                        </div>
-                        <div class="col">
-                            {{ item.quantidade|as_crispy_field }}
-                        </div>
-                        <div class="col">
-                            {{ item.valor_unit|as_crispy_field }}
-                        </div>
-                    </div>
-                {% endfor %}
+                <table class="table table-hover">
+                    <tbody>
+                    {% for item in itens.forms %}
+                        <tr>
+                            <td>{% if item.instance.pk %}{{ item.DELETE }}{% endif %}
+                                {{ item.ord_item|as_crispy_field }}</td>
+                            <td>{{ item.produto|as_crispy_field }}</td>
+                            <td>{{ item.quantidade|as_crispy_field }}</td>
+                            <td>{{ item.valor_unit|as_crispy_field }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+               {{ itens.management_form }}
             </div>
+
             <div class="row g-2 p-2">
               <div class="col-2">
                 <button type="submit" class="btn btn-success">Salvar</button>
@@ -61,4 +86,14 @@ Nova Solicitação de Compra
 {% block script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'customjs/fieldmasks.js' %}"></script>
+    <script src="{% static 'customjs/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('#formSC tbody tr').formset({
+            prefix: '{{ itens.prefix }}',
+            addText: 'Adicionar Item',
+            deleteText: 'Remover Item'
+        });
+    })
+</script>
 {% endblock %}

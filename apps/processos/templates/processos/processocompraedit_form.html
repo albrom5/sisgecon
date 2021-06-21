@@ -33,13 +33,8 @@ Editar Processo de Compra nº {{ object }}
             </div>
             <div class="row g-2 p-2">
               <div class="col-md">
-                  <a href="{% url 'sc_nova_pc' object.processo_id.id %}" class="btn btn-primary">
-                        Cadastrar Solicitação de Compra
-                  </a>
-              </div>
-              <div class="col-md">
                   <a href="{% url 'sclist_processo' object.processo_id.id %}" class="btn btn-primary">
-                        Vincular Solicitação de Compra
+                        Incluir Solicitação de Compra
                   </a>
               </div>
             </div>

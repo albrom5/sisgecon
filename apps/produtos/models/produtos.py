@@ -97,7 +97,7 @@ class Produto(BaseModel):
     class Meta:
         verbose_name = "Produto"
         verbose_name_plural = "Produtos"
-        ordering = ['id']
+        ordering = ['descricao']
 
 
 class SubProduto(BaseModel):

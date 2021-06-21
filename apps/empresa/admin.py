@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import Diretoria, Gerencia, Coordenadoria, Departamento, Cargo, Funcionario
+from .models import (
+    Diretoria, Gerencia, Coordenadoria, Departamento, Cargo, Funcionario,
+    CentroCusto, ContaContabil
+)
 
 
 @admin.register(Diretoria)
@@ -135,3 +138,45 @@ class FuncionarioAdmin(admin.ModelAdmin):
         'ultimo_editor',
     )
 
+@admin.register(CentroCusto)
+class CentroCustoAdmin(admin.ModelAdmin):
+    list_display = (
+        'codigo',
+        'descricao',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+    list_filter = (
+        'codigo',
+        'descricao',
+        'area',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+
+@admin.register(ContaContabil)
+class ContaContabilAdmin(admin.ModelAdmin):
+    list_display = (
+        'codigo',
+        'descricao',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+    list_filter = (
+        'codigo',
+        'descricao',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )

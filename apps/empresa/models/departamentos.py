@@ -44,3 +44,6 @@ class Departamento(BaseModel):
             return f'{self.diretoria}/{self.gerencia}'
         elif self.diretoria:
             return f'{self.diretoria}'
+
+    class Meta:
+        ordering = ['diretoria', 'gerencia', 'coordenadoria']

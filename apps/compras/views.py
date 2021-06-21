@@ -1,6 +1,6 @@
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import render
+
 from django.urls import reverse_lazy
 
 from apps.base.custom_views import (
@@ -80,12 +80,18 @@ class SCListProcesso(CustomListView):
         data['processo'] = self.kwargs['processo_id']
         return data
 
-# TODO Enviar mensagem de sucesso para o template, permitir desvincular de acordo com o estado da checkbox
+
 def vinculasc(request, pk, processo_id):
     processo = ProcessoCompra.objects.get(processo_id=processo_id)
     sc = SolicitacaoCompra.objects.get(id=pk)
-    sc.processo = processo
-    sc.save()
-    data = {'msg':
-        f'SC {sc.numsc} vinculada ao processo {processo.processo_id.numero_sei}'}
+    if sc.processo == None:
+        sc.processo = processo
+        sc.save()
+        data = {'msg':
+            f'SC {sc.numsc} vinculada ao processo {processo.processo_id.numero_sei}'}
+    else:
+        sc.processo = None
+        sc.save()
+        data = {'msg':
+                    f'SC {sc.numsc} desvinculada do processo {processo.processo_id.numero_sei}'}
     return JsonResponse(data)
