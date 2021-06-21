@@ -33,9 +33,13 @@ class SolicitacaoCompra(BaseModel):
 
     @property
     def valor_total_sc(self):
-        total = self.itemsc_sc.filter(ativo=True).aggregate(
+        total = self.itens.filter(ativo=True).aggregate(
             Sum('valor_total'))['valor_total__sum']
         return total or 0
+
+    def save(self, *args, **kwargs):
+        self.valor_total = self.valor_total_sc
+        super(SolicitacaoCompra, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.numsc} - {self.objeto}'
@@ -49,7 +53,7 @@ class ItemSC(BaseModel):
     solicitacao = models.ForeignKey(SolicitacaoCompra, null=True, blank=True,
                                     on_delete=models.CASCADE,
                                     limit_choices_to={'ativo': True},
-                                    related_name="itemsc_sc")
+                                    related_name="itens")
     ord_item = models.CharField(max_length=4, null=True, blank=True)
     subgrupo = models.ForeignKey(SubGrupoProduto, null=True, blank=True,
                                  on_delete=models.SET_NULL,

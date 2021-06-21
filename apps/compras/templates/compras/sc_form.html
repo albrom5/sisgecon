@@ -47,9 +47,11 @@ Nova Solicitação de Compra
                 <button type="submit" class="btn btn-success">Salvar</button>
               </div>
                <div class="col-2">
+                {% if view.kwargs.processo_id %}
                 <a href="{% url 'processo_edit' view.kwargs.processo_id %}" class="btn btn-danger">
                         Sair sem salvar
                 </a>
+                {% endif %}
               </div>
         </div>
         </form>

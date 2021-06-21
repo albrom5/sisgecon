@@ -50,7 +50,7 @@
                 Prazo: {{ sc.prazo|date:"SHORT_DATE_FORMAT" }}
             </div>
             <div class="col-md">
-                Valor total: R$ {{ sc.valor_total_sc|floatformat:2 }}
+                Valor total: R$ {{ sc.valor_total|floatformat:2 }}
             </div>
             <div class="row g-2 p-2">
                 <div class="collapse" id="collapseItens">
@@ -64,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in sc.itemsc_sc.all %}
+                            {% for item in sc.itens.all %}
                             <tr>
                                 <td>{{ item.produto }}</td>
                                 <td>{{ item.quantidade|floatformat:2 }}</td>

@@ -3,7 +3,7 @@
 {% load my_tags %}
 
 {% block title %}
-Produtos
+Solicitações de Compra
 {% endblock %}
 
 {% block main %}
@@ -11,10 +11,10 @@ Produtos
     <div class="container-fluid">
         <div class="row g-2 p-2">
             <div class="col-lg-9">
-                <h1>Produtos</h1>
+                <h1>Solicitações de Compra</h1>
             </div>
             <div class="col-lg-3 align-items-end">
-                <a href="{% url 'produto_novo' %}" class="btn btn-primary">Cadastrar Novo Produto</a>
+                <a href="{% url 'sc_nova' %}" class="btn btn-primary">Cadastrar Nova SC</a>
             </div>
         </div>
         <div class="row g-2 p-2">
@@ -29,45 +29,25 @@ Produtos
                             <div class="row g-2 p-2">
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.id|htmlattributes:"class: form-control form-control-sm" }}
-                                  <label for="floatingInputNumSei">Código</label>
+                                  {{filter.form.numsc|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputNumSC">Número da SC</label>
                                 </div>
                               </div>
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.numprotheus|htmlattributes:"class: form-control form-control-sm" }}
-                                  <label for="floatingInputObjeto">Número Protheus</label>
+                                  {{filter.form.data_emis_ini|htmlattributes:"class: form-control form-control-sm datemask" }}
+                                  <label for="floatingInputDataEmisIni">Emitida a partir de</label>
                                 </div>
                               </div>
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.subgrupo|htmlattributes:"class: form-select form-select-sm" }}
-                                  <label for="floatingSelectModalidade">Subgrupo</label>
-                                </div>
-                              </div>
-                              <div class="col-md">
-                                <div class="form-floating">
-                                  {{filter.form.descricao|htmlattributes:"class: form-control form-control-sm" }}
-                                  <label for="floatingSelectStatus">Nome</label>
+                                  {{filter.form.data_emis_fim|htmlattributes:"class: form-control form-control-sm datemask" }}
+                                  <label for="floatingInputDataEmisFim">Até</label>
                                 </div>
                               </div>
                             </div>
                             <div class="row g-2 p-2 form-in">
-                              <div class="col-3">
-                                  <div class="form-floating">
-                                    {{filter.form.sigla|htmlattributes:"class: form-control form-control-sm" }}
-                                    <label for="floatingInputSigla">Sigla</label>
-                                  </div>
-                              </div>
-                              <div class="col-3">
-                                  <div class="form-floating">
-                                      {{filter.form.tabela_eventos|htmlattributes:"class: form-select form-select-sm"}}
-                                      <label for="floatingSelectTabela_Eventos">
-                                        Tabela de eventos?
-                                      </label>
-                                  </div>
-                              </div>
-                              <div class="col-6">
+                              <div class="col-md">
                                 <div class="form-floating">
                                   {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
                                   <label for="floatingSelectOrdem">Ordenar por:</label>
@@ -89,32 +69,28 @@ Produtos
         <table class="table table-hover table-sm">
             <thead>
                 <tr>
-                  <th scope="col">COD</th>
-                  <th scope="col">Nº Protheus</th>
-                  <th scope="col">Sigla</th>
-                  <th scope="col">Produto</th>
-                  <th scope="col">Classe - Grupo - SubGrupo</th>
-                  <th class="text-center" scope="col">Tabela de Eventos</th>
+                  <th scope="col">Número</th>
+                  <th scope="col">Objeto</th>
+                  <th scope="col">Valor Total</th>
+                  <th scope="col">Data de emissão</th>
                 </tr>
             </thead>
              <tbody>
-                {% for produto in object_list %}
-                <tr class="clickable-row" data-href="{% url 'produto_detail' produto.id %}">
-                  <td>{{ produto.id }}</td>
-                  <td>{% if produto.numprotheus %}{{ produto.numprotheus }}{% else %}----{% endif %}</td>
-                  <td>{% if produto.sigla %}{{ produto.sigla }}{% else %}----{% endif %}</td>
-                  <td>{{ produto.descricao }}</td>
-                  <td>{% if produto.subgrupo %}{{ produto.subgrupo }}{% else %}----{% endif %}</td>
-                  <td class="text-center">{% if produto.tabela_eventos %}<i class="material-icons">check_circle_outline</i>{% else %}<span class="material-icons">highlight_off</span>{% endif %}</td>
+                {% for sc in object_list %}
+                <tr class="clickable-row" data-href="{% url 'sc_detail' sc.id %}">
+                  <td>{{ sc.numsc }}</td>
+                  <td>{{ sc.descricao }}</td>
+                  <td>R$ {{ sc.valor_total|floatformat:2 }}</td>
+                  <td>{{ sc.data_emissao|date:"SHORT_DATE_FORMAT" }}</td>
                 </tr>
                 {% empty %}
-                    <li>Não há produtos que atendam aos critérios selecionados.</li>
+                    <li>Não há SC's que atendam aos critérios selecionados.</li>
                 {% endfor %}
              </tbody>
         </table>
         <div class="row">
             <div class="col-lg-12">
-                Exibindo produtos {{ page_obj.start_index }} a {{ page_obj.end_index }} de um total de {{ filter.qs.count }}
+                Exibindo SC's {{ page_obj.start_index }} a {{ page_obj.end_index }} de um total de {{ filter.qs.count }}
             </div>
         </div>
         <div class="row">
@@ -157,5 +133,7 @@ Produtos
     </div>
 {% endblock %}
 {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'customjs/clickablerow.js' %}"></script>
+    <script src="{% static 'customjs/fieldmasks.js' %}"></script>
 {% endblock %}

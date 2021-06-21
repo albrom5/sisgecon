@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.views.generic import ListView
 
 from apps.base.custom_views import CustomListView
 
@@ -29,5 +28,3 @@ class FilteredListView(CustomListView):
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         return context
-
-
