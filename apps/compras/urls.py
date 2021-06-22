@@ -2,14 +2,14 @@ from django.urls import path
 from django.views.decorators.cache import never_cache
 
 from apps.compras.views import (
-    SolitacaoCompraNova, SolicitacaoCompraList, SolicitacaoCompraDetail,
+    SolicitacaoCompraNova, SolicitacaoCompraList, SolicitacaoCompraDetail,
     SolicitacaoCompraEdit, SCListProcesso, vinculasc
 )
 
 urlpatterns = [
-    path('<int:processo_id>/nova_sc/', SolitacaoCompraNova.as_view(),
+    path('<int:processo_id>/nova_sc/', SolicitacaoCompraNova.as_view(),
          name='sc_nova_pc'),
-    path('sc_nova/', SolitacaoCompraNova.as_view(), name='sc_nova'),
+    path('sc_nova/', SolicitacaoCompraNova.as_view(), name='sc_nova'),
     path('sc/', never_cache(SolicitacaoCompraList.as_view()), name='sc_list'),
     path('sc/<int:pk>', SolicitacaoCompraDetail.as_view(), name='sc_detail'),
     path('sc/edit/<int:pk>', SolicitacaoCompraEdit.as_view(), name='sc_edit'),

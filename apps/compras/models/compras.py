@@ -14,7 +14,8 @@ from apps.empresa.models import (
 
 class SolicitacaoCompra(BaseModel):
     numsc = models.CharField(verbose_name='SC', max_length=6, unique=True)
-    data_emissao = models.DateField(null=True, blank=True)
+    data_emissao = models.DateField(verbose_name='Emitida em',
+                                    null=True, blank=True)
     prazo = models.DateField(null=True, blank=True)
     data_rec_compras = models.DateField(null=True, blank=True)
     processo = models.ForeignKey(ProcessoCompra, null=True, blank=True,
@@ -24,20 +25,26 @@ class SolicitacaoCompra(BaseModel):
     justificativa = models.TextField(max_length=1000, null=True, blank=True)
     valor_total = models.DecimalField(max_digits=19, decimal_places=6,
                                       null=True, blank=True)
-    area = models.ForeignKey(Departamento, null=True, blank=True,
+    area = models.ForeignKey(Departamento, verbose_name='Área',
+                             null=True, blank=True,
                              on_delete=models.SET_NULL,
                              limit_choices_to={'ativo': True})
-    centro_custo = models.ForeignKey(CentroCusto, null=True, blank=True,
+    centro_custo = models.ForeignKey(CentroCusto,
+                                     verbose_name='Centro de Custo',
+                                     null=True, blank=True,
                                      on_delete=models.SET_NULL,
                                      limit_choices_to={'ativo': True})
-    conta_contabil = models.ForeignKey(ContaContabil, null=True, blank=True,
+    conta_contabil = models.ForeignKey(ContaContabil,
+                                       verbose_name='Conta Contábil',
+                                       null=True, blank=True,
                                        on_delete=models.SET_NULL,
                                        limit_choices_to={'ativo': True})
     contr_evento = models.CharField(max_length=30, null=True, blank=True)
     evento = models.CharField(max_length=30, null=True, blank=True)
 
     cadtec = models.FileField(null=True, blank=True)
-    responsavel = models.ForeignKey(Funcionario, null=True, blank=True,
+    responsavel = models.ForeignKey(Funcionario, verbose_name='Responsável',
+                                    null=True, blank=True,
                                     on_delete=models.SET_NULL,
                                     limit_choices_to={'ativo': True})
     status = models.ForeignKey(Status, null=True, blank=True,
@@ -67,7 +74,8 @@ class ItemSC(BaseModel):
                                     on_delete=models.CASCADE,
                                     limit_choices_to={'ativo': True},
                                     related_name="itens")
-    ord_item = models.CharField(max_length=4, null=True, blank=True)
+    ord_item = models.CharField(verbose_name='Item', max_length=4, null=True,
+                                blank=True)
     subgrupo = models.ForeignKey(SubGrupoProduto, null=True, blank=True,
                                  on_delete=models.SET_NULL,
                                  limit_choices_to={'ativo': True},
@@ -76,14 +84,16 @@ class ItemSC(BaseModel):
                                 on_delete=models.PROTECT,
                                 limit_choices_to={'ativo': True},
                                 related_name="itemsc_produto")
-    descricao = models.CharField(max_length=500, null=True, blank=True)
+    descricao = models.CharField(verbose_name='Descrição', max_length=500,
+                                 null=True, blank=True)
     quantidade = models.DecimalField(max_digits=19, decimal_places=6,
                                      validators=[
                                          MinValueValidator(
                                              Decimal('0.000000'))], null=True,
                                      blank=True)
     diaria = models.IntegerField(null=True, blank=True)
-    valor_unit = models.DecimalField(max_digits=19, decimal_places=6,
+    valor_unit = models.DecimalField(verbose_name='Valor unitário',
+                                     max_digits=19, decimal_places=6,
                                      validators=[
                                          MinValueValidator(
                                              Decimal('0.000000'))], null=True,
@@ -99,8 +109,19 @@ class ItemSC(BaseModel):
         tot_item = self.quantidade * self.valor_unit
         return tot_item or 0
 
+    def get_ord_item(self):
+        itens = ItemSC.objects.filter(solicitacao=self.solicitacao)
+        if not itens:
+            ordem = 1
+            return str(ordem)
+        ultimo = ItemSC.objects.filter(solicitacao=self.solicitacao).last()
+        ordem = int(ultimo.ord_item) + 1
+        return str(ordem)
+
     def save(self, *args, **kwargs):
         self.valor_total = self.valor_total_item
+        if self.ord_item is None:
+            self.ord_item = self.get_ord_item()
         super(ItemSC, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -109,3 +130,4 @@ class ItemSC(BaseModel):
     class Meta:
         verbose_name = "Item da Solicitação de Compras"
         verbose_name_plural = "Itens da Solicitação de Compras"
+        ordering = ['solicitacao', 'ord_item']

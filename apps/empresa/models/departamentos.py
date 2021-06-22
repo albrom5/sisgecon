@@ -39,11 +39,11 @@ class Departamento(BaseModel):
 
     def __str__(self):
         if self.diretoria and self.gerencia and self.coordenadoria:
-            return f'{self.diretoria}/{self.gerencia}/{self.coordenadoria}'
+            return f'{self.diretoria}/{self.gerencia}/{self.coordenadoria} - {self.coordenadoria.nome}'
         elif self.diretoria and self.gerencia:
-            return f'{self.diretoria}/{self.gerencia}'
+            return f'{self.diretoria}/{self.gerencia} - {self.gerencia.nome}'
         elif self.diretoria:
-            return f'{self.diretoria}'
+            return f'{self.diretoria} - {self.diretoria.nome}'
 
     class Meta:
         ordering = ['diretoria', 'gerencia', 'coordenadoria']
