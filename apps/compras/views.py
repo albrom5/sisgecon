@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Q
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 
@@ -87,13 +88,20 @@ class SolicitacaoCompraEdit(CustomUpdateView):
 
 class SCListProcesso(CustomListView):
     permission_codename = 'compras.view_solicitacaocompra'
-    queryset = SolicitacaoCompra.objects.filter(processo=None)
     template_name = 'compras/sclist_processo.html'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['processo'] = self.kwargs['processo_id']
         return data
+
+    def get_queryset(self):
+        numpc = self.kwargs['processo_id']
+        queryset = SolicitacaoCompra.objects.filter(
+            Q(processo=None) | Q(processo__processo_id_id=numpc)).order_by(
+            'processo', 'numsc'
+        )
+        return queryset
 
 
 def vinculasc(request, pk, processo_id):
@@ -103,10 +111,13 @@ def vinculasc(request, pk, processo_id):
         sc.processo = processo
         sc.save()
         data = {
-            'msg': f'SC {sc.numsc} vinculada ao processo {processo.processo_id.numero_sei}'}
+            'addmsg': f'SC {sc.numsc} VINCULADA ao processo {processo.processo_id.numero_sei}',
+            'remmsg': ''
+        }
     else:
         sc.processo = None
         sc.save()
         data = {
-            'msg': f'SC {sc.numsc} desvinculada do processo {processo.processo_id.numero_sei}'}
+            'addmsg': '',
+            'remmsg': f'SC {sc.numsc} RETIRADA do processo {processo.processo_id.numero_sei}'}
     return JsonResponse(data)

@@ -7,14 +7,13 @@
         </a>
         <ul class="list-unstyled ps-3 pt-3">
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
               Cadastros
             </button>
             <div class="collapse" id="home-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="{% url 'produtos_list' %}" class="link-dark rounded">Produtos</a></li>
-                <li><a href="#" class="link-dark rounded">Fornecedores</a></li>
-                <li><a href="#" class="link-dark rounded">Reports</a></li>
+                <li><a href="{% url 'fornecedores_list' %}" class="link-dark rounded">Fornecedores</a></li>
               </ul>
             </div>
           </li>
@@ -36,10 +35,7 @@
             </button>
             <div class="collapse" id="orders-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" class="link-dark rounded">New</a></li>
-                <li><a href="#" class="link-dark rounded">Processed</a></li>
-                <li><a href="#" class="link-dark rounded">Shipped</a></li>
-                <li><a href="#" class="link-dark rounded">Returned</a></li>
+                <li><a href="#" class="link-dark rounded">Contratos</a></li>
               </ul>
             </div>
           </li>
@@ -51,8 +47,6 @@
             <div class="collapse" id="account-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="{% url 'password_change' %}" class="link-dark rounded">Trocar senha</a></li>
-                <li><a href="#" class="link-dark rounded">Profile</a></li>
-                <li><a href="#" class="link-dark rounded">Settings</a></li>
                 <li><a href="{% url 'logout' %}" class="link-dark rounded">Logout</a></li>
               </ul>
             </div>

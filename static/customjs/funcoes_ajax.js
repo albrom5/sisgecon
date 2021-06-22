@@ -4,7 +4,8 @@ $(".selectitem").click(function () {
             url: row.attr('data-ajax-url'),
             dataType: 'json',
             success: function (msg) {
-              $("#mensagem").text(msg.msg);
+              $("#addmensagem").text(msg.addmsg);
+              $("#remmensagem").text(msg.remmsg);
             }
           });
 

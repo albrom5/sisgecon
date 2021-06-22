@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from .models import (
     Diretoria, Gerencia, Coordenadoria, Departamento, Cargo, Funcionario,
-    CentroCusto, ContaContabil
+    CentroCusto, ContaContabil, Pessoa, PessoaJuridica, PessoaFisica
 )
 
 
@@ -174,6 +174,63 @@ class ContaContabilAdmin(admin.ModelAdmin):
     list_filter = (
         'codigo',
         'descricao',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+
+@admin.register(Pessoa)
+class PessoaAdmin(admin.ModelAdmin):
+    list_display = (
+        'nome',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+    list_filter = (
+        'nome',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+
+@admin.register(PessoaJuridica)
+class PessoaJuridicaAdmin(admin.ModelAdmin):
+    list_display = (
+        'nome',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+    list_filter = (
+        'nome',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+
+@admin.register(PessoaFisica)
+class PessoaFisicaAdmin(admin.ModelAdmin):
+    list_display = (
+        'nome',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+    list_filter = (
+        'nome',
         'ativo',
         'criado_em',
         'criador',

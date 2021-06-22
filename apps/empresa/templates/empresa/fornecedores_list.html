@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_tags %}
+
+{% block title %}
+Fornecedores
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-fluid">
+        <div class="row g-2 p-2">
+            <div class="col-lg-9">
+                <h1>Fornecedores</h1>
+            </div>
+            <div class="col-lg-3 align-items-end">
+                <a href="" class="btn btn-primary">Cadastrar Novo Fornecedor</a>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-lg-12">
+                <p>
+                  <button class="btn btn-toggle align-items-center rounded collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFiltros" aria-expanded="false" aria-controls="collapseExample">
+                    Filtros
+                  </button>
+                </p>
+                <div class="collapse" id="collapseFiltros">
+                    <form method="GET" id="filtra_fornecedores">
+                            <div class="row g-2 p-2">
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.id|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputID">Código</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.nome|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputNome">Nome</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.tipo|htmlattributes:"class: form-select form-select-sm" }}
+                                  <label for="floatingSelectModalidade">Tipo</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2 form-in">
+                              <div class="col-6">
+                                <div class="form-floating">
+                                  {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
+                                  <label for="floatingSelectOrdem">Ordenar por:</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2">
+                                <div class="col-md">
+                                    <button id="filtrabtn" class="btn btn-outline-primary btn-sm d-flex" type="submit">
+                                       <i class="material-icons">&#xE8B6;</i>
+                                       <span class=""> Filtrar/Ordenar</span>
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                  <th scope="col">COD</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">CNPJ/CPF</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for fornecedor in object_list %}
+                <tr class="clickable-row" data-href="">
+                  <td>{{ fornecedor.id }}</td>
+                  <td>{{ fornecedor.nome }}</td>
+                  <td>{{ fornecedor.tipo }}</td>
+                  <td>{% if fornecedor.tipo == 'PJ' %}{{ fornecedor.pessoajuridica.cnpj }}{% else %}{{ fornecedor.pessoafisica.cpf }}{% endif %}</td>
+                </tr>
+                {% empty %}
+                    <li>Não há fornecedores que atendam aos critérios selecionados.</li>
+                {% endfor %}
+             </tbody>
+        </table>
+        <div class="row">
+            <div class="col-lg-12">
+                Exibindo fornecedores {{ page_obj.start_index }} a {{ page_obj.end_index }} de um total de {{ filter.qs.count }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if is_paginated %}Ir para:
+                  {% if page_obj.has_previous %}
+                    <a href="?{% param_replace page=1 %}">Primeira</a>
+                    {% if page_obj.previous_page_number != 1 %}
+                      <a href="?{% param_replace page=page_obj.previous_page_number %}">Anterior</a>
+                    {% endif %}
+                  {% endif %}
+                  {% if page_obj.has_next %}
+                    {% if page_obj.next_page_number != paginator.num_pages %}
+                      <a href="?{% param_replace page=page_obj.next_page_number %}">Próxima</a>
+                    {% endif %}
+                    <a href="?{% param_replace page=paginator.num_pages %}">Última</a>
+                  {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                  Página {{ page_obj.number }} de {{ paginator.num_pages }}
+                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                    <label for="id_pg_sz">Itens por página</label>
+                    <select class="form-select-sm" name="page_size" id="id_pg_sz" form="filtra_fornecedores" onchange="this.form.submit()">
+                        <option value="">--</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'customjs/clickablerow.js' %}"></script>
+{% endblock %}

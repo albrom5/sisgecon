@@ -67,7 +67,7 @@ class SolicitacaoCompra(BaseModel):
     class Meta:
         verbose_name = "Solicitação de Compras"
         verbose_name_plural = "Solicitações de Compras"
-
+        ordering = ['numsc']
 
 class ItemSC(BaseModel):
     solicitacao = models.ForeignKey(SolicitacaoCompra, null=True, blank=True,

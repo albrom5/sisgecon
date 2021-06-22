@@ -31,7 +31,7 @@ class ItemSCForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemSCForm, self).__init__(*args, **kwargs)
         self.fields['produto'].widget.attrs.update({'class': 'form-select'})
-        self.fields['valor_unit'].widget.attrs.update({'class': 'moneymask'})
+        # self.fields['valor_unit'].widget.attrs.update({'class': 'moneymask'})
         self.fields['ord_item'].widget.attrs['readonly'] = True
 
     class Meta:
