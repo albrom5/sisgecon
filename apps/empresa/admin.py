@@ -3,7 +3,8 @@ from django.contrib import admin
 
 from .models import (
     Diretoria, Gerencia, Coordenadoria, Departamento, Cargo, Funcionario,
-    CentroCusto, ContaContabil, Pessoa, PessoaJuridica, PessoaFisica
+    CentroCusto, ContaContabil, Pessoa, PessoaJuridica, PessoaFisica,
+    Contato
 )
 
 
@@ -231,6 +232,29 @@ class PessoaFisicaAdmin(admin.ModelAdmin):
     )
     list_filter = (
         'nome',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+
+
+@admin.register(Contato)
+class ContatoAdmin(admin.ModelAdmin):
+    list_display = (
+        'contato',
+        'tipo',
+        'pessoa',
+        'ativo',
+        'criado_em',
+        'criador',
+        'modificado_em',
+        'ultimo_editor',
+    )
+    list_filter = (
+        'pessoa',
+        'tipo',
         'ativo',
         'criado_em',
         'criador',

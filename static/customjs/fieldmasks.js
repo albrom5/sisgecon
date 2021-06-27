@@ -11,5 +11,6 @@ $(document).ready(function(){
             $('.datemask').mask('00/00/0000');
             $('.procmask').mask(ProcBehavior, procOptions);
             $('.moneymask').mask("#.##0,00", {reverse: true});
-            // $('.procmask').mask('0000.0000/0000000-0');
+            $('.cnpjmask').mask('00.000.000/0000-00');
+            $('.cepmask').mask('00000-000');
         });
