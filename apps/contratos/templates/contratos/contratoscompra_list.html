@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_tags %}
+
+{% block title %}
+Contratos de Compras
+{% endblock %}
+
+{% block main %}
+
+    <div class="container-fluid">
+        <div class="row g-2 p-2">
+              <div class="col-lg-9">
+                <h1>Contratos de Compras</h1>
+              </div>
+              <div class="col-lg-3 align-items-end">
+                <a href="{% url 'contratocompra_novo' %}" class="btn btn-primary">
+                    Lançar Novo Contrato
+                </a>
+              </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-lg-12">
+                <p>
+                  <button class="btn btn-toggle align-items-center rounded collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFiltros" aria-expanded="false" aria-controls="collapseExample">
+                    Filtros
+                  </button>
+                </p>
+                <div class="collapse" id="collapseFiltros">
+                    <form method="GET" id="filtra_contratos">
+                            <div class="row g-2 p-2">
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.numero|htmlattributes:"class: form-control form-control-sm procmask" }}
+                                  <label for="floatingInputNumero">Número</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.objeto|htmlattributes:"class: form-control form-control-sm" }}
+                                  <label for="floatingInputObjeto">Objeto</label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-floating">
+                                  {{filter.form.tipo|htmlattributes:"class: form-select form-select-sm" }}
+                                  <label for="floatingSelectTipo">Tipo</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2 form-in">
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.data_ass_ini|htmlattributes:"class: form-control form-control-sm datemask" }}
+                                    <label for="data_ass_ini">Data de assinatura a partir de</label>
+                                  </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.data_ass_fim|htmlattributes:"class: form-control form-control-sm datemask" }}
+                                    <label for="data_ass_fim">Até</label>
+                                  </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.fim_vig_ini|htmlattributes:"class: form-control form-control-sm datemask" }}
+                                    <label for="fim_vig_ini">Fim da vigência a partir de</label>
+                                  </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.fim_vig_fim|htmlattributes:"class: form-control form-control-sm datemask" }}
+                                    <label for="fim_vig_fim">Até</label>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2 form-in">
+                              <div class="col-9">
+                                <div class="form-floating">
+                                  {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
+                                  <label for="floatingSelectOrdem">Ordenar por:</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2">
+                                <div class="col-md">
+                                    <button id="filtrabtn" class="btn btn-outline-primary btn-sm d-flex" type="submit">
+                                       <i class="material-icons">&#xE8B6;</i>
+                                       <span class=""> Filtrar/Ordenar</span>
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-lg-12">
+                <table id="contratos_filtrados" class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">Número</th>
+                          <th scope="col">Tipo</th>
+                          <th scope="col">Objeto</th>
+                          <th scope="col">Fornecedor</th>
+                          <th scope="col">Valor total</th>
+                          <th scope="col">Data de assinatura</th>
+                          <th scope="col">Fim da vigência</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        {% for contrato in object_list %}
+                        <tr class="clickable-row"
+                            data-href="">
+                          <td>{{ contrato.numero }}</td>
+                          <td>{{ contrato.tipo }}</td>
+                          <td>{{ contrato.objeto }}</td>
+                          <td>{{ contrato.fornecedor }}</td>
+                          <td>R$ {{ contrato.valor_total|floatformat:2 }}</td>
+                          <td>{{ contrato.data_assinatura|date:"SHORT_DATE_FORMAT" }}</td>
+                          <td>{{ contrato.data_fim|date:"SHORT_DATE_FORMAT" }}</td>
+                        </tr>
+                        {% empty %}
+                            <li>Não há contratos que atendam aos critérios de busca selecionados.</li>
+                        {% endfor %}
+                     </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                Exibindo contratos {{ page_obj.start_index }} a {{ page_obj.end_index }} de um total de {{ filter.qs.count }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if is_paginated %}Ir para:
+                  {% if page_obj.has_previous %}
+                    <a href="?{% param_replace page=1 %}">Primeira</a>
+                    {% if page_obj.previous_page_number != 1 %}
+                      <a href="?{% param_replace page=page_obj.previous_page_number %}">Anterior</a>
+                    {% endif %}
+                  {% endif %}
+                  {% if page_obj.has_next %}
+                    {% if page_obj.next_page_number != paginator.num_pages %}
+                      <a href="?{% param_replace page=page_obj.next_page_number %}">Próxima</a>
+                    {% endif %}
+                    <a href="?{% param_replace page=paginator.num_pages %}">Última</a>
+                  {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                  Página {{ page_obj.number }} de {{ paginator.num_pages }}
+                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                    <label for="id_pg_sz">Itens por página</label>
+                    <select class="form-select-sm" name="page_size" id="id_pg_sz" form="filtra_contratos" onchange="this.form.submit()">
+                        <option value="">--</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'customjs/clickablerow.js' %}"></script>
+    <script src="{% static 'customjs/fieldmasks.js' %}"></script>
+{% endblock %}

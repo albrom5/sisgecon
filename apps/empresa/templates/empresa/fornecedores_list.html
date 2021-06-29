@@ -77,7 +77,7 @@ Fornecedores
             </thead>
              <tbody>
                 {% for fornecedor in object_list %}
-                <tr class="clickable-row" data-href="">
+                <tr class="clickable-row" data-href="{% url 'fornecedor_detail' fornecedor.id %}">
                   <td>{{ fornecedor.id }}</td>
                   <td>{{ fornecedor.nome }}</td>
                   <td>{{ fornecedor.tipo }}</td>

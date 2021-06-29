@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ object }}
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+    {# Início do cabeçalho da DetailView #}
+    <div id="detailheader">
+        <div class="row g-2 p-2">
+              <div class="col-md">
+                  <h4>{{ object }}</h4>
+              </div>
+         </div>
+         <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  {% if object.tipo == 'PJ' %}
+                      <strong> CNPJ: </strong> {{ object.pessoajuridica.cnpj }}
+                  {% else %}
+                      <strong> CPF: </strong> {{ object.pessoafisica.cpf }}
+                  {% endif %}
+              </div>
+              {% if object.tipo == 'PJ' %}
+              <div class="col-md">
+                  <strong> Nome Fantasia: </strong> {{ object.pessoajuridica.nome_fantasia }}
+              </div>
+              <div class="col-md">
+                  <strong>Inscrição Estadual: </strong> {{ object.pessoajuridica.insc_est }}
+              </div>
+              {% else %}
+              <div class="col-md">
+                  <strong>RG: </strong> {{ object.pessoafisica.rg }}
+              </div>
+              {% endif %}
+         </div>
+         <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  <strong> Endereço: </strong> {{ object.logradouro }}, {{ object.ender_num }} - {{ object.ender_compl }}
+              </div>
+              <div class="col-md">
+                  <strong>Bairro: </strong>{{ object.bairro }}
+              </div>
+              <div class="col-md">
+                  <strong>Cidade: </strong>{{ object.cidade }}
+              </div>
+             <div class="col-md">
+                  <strong>Estado: </strong>{{ object.estado }}
+             </div>
+             <div class="col-md">
+                  <strong>CEP: </strong>{{ object.cep }}
+             </div>
+         </div>
+         <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  <strong>Contatos</strong>
+              </div>
+         </div>
+        <div class="row">
+            <div class="col-md">
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col"></th>
+                        <th scope="col">Responsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contato in object.contatos.all %}
+                    <tr>
+                        <td>{{ contato.tipo }}</td>
+                        <td>{{ contato.contato }}</td>
+                        <td>{{ contato.responsavel }}</td>
+                    </tr>
+                        {% empty %}
+                         Fornecedor sem contatos cadastrados.
+                        {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    {# Fim do cabeçalho da DetailView #}
+     {# Início da seção de botões #}
+        <div id="botoes">
+        <div class="row g-2 p-2 my-2 border-top">
+            <div class="col-3">
+                <a href="{% url 'fornecedor_edit' object.id %}" class="btn btn-primary">
+                    Alterar dados
+                </a>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-3">
+                <a href="{% url 'fornecedores_list' %}" class="btn btn-secondary">
+                    Voltar para lista de fornecedores
+                </a>
+            </div>
+        </div>
+        </div>
+    {# Fim da seção de botões #}
+    </div>
+{% endblock %}

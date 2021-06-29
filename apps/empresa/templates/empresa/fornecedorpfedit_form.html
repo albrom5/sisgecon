@@ -21,8 +21,8 @@
                 {% endif %}
               </div>
               <div class="col-md-3">
-                  <a href="{% url 'fornecedor_novo_pf' %}" class="btn btn-outline-primary">
-                        Cadastrar Pessoa Física
+                  <a href="{% url 'fornecedor_novo_pj' %}" class="btn btn-outline-primary">
+                        Cadastrar Pessoa Jurídica
                   </a>
               </div>
         </div>
@@ -30,18 +30,15 @@
         {% csrf_token %}
         <div class="row g-2 p-2">
               <div class="col-md">
-                {{ form.cnpj|as_crispy_field }}
+                {{ form.cpf|as_crispy_field }}
               </div>
               <div class="col-md">
                 {{ form.nome|as_crispy_field }}
               </div>
-              <div class="col-md">
-                {{ form.nome_fantasia|as_crispy_field }}
-              </div>
             </div>
             <div class="row g-2 p-2">
                 <div class="col-md">
-                    {{ form.insc_est|as_crispy_field }}
+                    {{ form.rg|as_crispy_field }}
                 </div>
                 <div class="col-md">
                     {{ form.insc_mun|as_crispy_field }}

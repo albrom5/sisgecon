@@ -9,6 +9,7 @@ urlpatterns = [
     path('processos/', include('apps.processos.urls')),
     path('compras/', include('apps.compras.urls')),
     path('empresas/', include('apps.empresa.urls')),
+    path('contratos/', include('apps.contratos.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('chaining/', include('smart_selects.urls')),
