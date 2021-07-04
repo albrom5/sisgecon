@@ -1,7 +1,8 @@
 from django.db import transaction
+from django.urls import reverse_lazy
 
 from apps.base.views import FilteredListView
-from apps.base.custom_views import CustomCreateView
+from apps.base.custom_views import CustomCreateView, CustomDetailView
 from .models import ContratoCompra
 from .filters import ContratoCompraFilter
 from .forms import ContratoCompraForm, ItemContratoCompraFormset
@@ -40,8 +41,11 @@ class ContratoCompraNovo(CustomCreateView):
             itens.save()
         return super(ContratoCompraNovo, self).form_valid(form)
 
-    # def get_success_url(self):
-    #     if self.kwargs:
-    #         return reverse_lazy('processo_detail',
-    #                             args=[self.object.processo_id])
-    #     return reverse_lazy('sc_detail', args=[self.object.id])
+    def get_success_url(self):
+        return reverse_lazy('compra_detail', args=[self.object.id])
+
+
+class ContratoCompraDetail(CustomDetailView):
+    model = ContratoCompra
+    permission_codename = 'contratos.view_contratocompra'
+    template_name = 'contratos/compra_detail.html'

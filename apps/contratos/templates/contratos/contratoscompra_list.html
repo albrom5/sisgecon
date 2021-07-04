@@ -111,7 +111,7 @@ Contratos de Compras
                      <tbody>
                         {% for contrato in object_list %}
                         <tr class="clickable-row"
-                            data-href="">
+                            data-href="{% url 'compra_detail' contrato.id %}">
                           <td>{{ contrato.numero }}</td>
                           <td>{{ contrato.tipo }}</td>
                           <td>{{ contrato.objeto }}</td>

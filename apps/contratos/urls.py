@@ -2,7 +2,7 @@ from django.urls import path
 from django.views.decorators.cache import never_cache
 
 from apps.contratos.views import (
-    ContratosCompraList, ContratoCompraNovo
+    ContratosCompraList, ContratoCompraNovo, ContratoCompraDetail
 )
 
 urlpatterns = [
@@ -12,7 +12,8 @@ urlpatterns = [
          name='contratocompra_novo'),
     path('compras/', never_cache(ContratosCompraList.as_view()),
          name='contratoscompras_list'),
-    # path('sc/<int:pk>', SolicitacaoCompraDetail.as_view(), name='sc_detail'),
+    path('compras/<int:pk>', ContratoCompraDetail.as_view(),
+         name='compra_detail'),
     # path('sc/edit/<int:pk>', SolicitacaoCompraEdit.as_view(), name='sc_edit'),
     # path('<int:processo_id>/lista_sc/', never_cache(
     #     SCListProcesso.as_view()), name='sclist_processo'),
