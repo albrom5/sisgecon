@@ -19,8 +19,9 @@ class ContratoCompraForm(forms.ModelForm):
             {'class': 'form-select'}
         )
         self.fields['fornecedor'].widget.attrs.update(
-            {'class': 'form-select'}
+            {'class': 'form-control'}
         )
+        self.fields['fornecedor'].widget.attrs['readonly'] = True
 
     class Meta:
         model = ContratoCompra

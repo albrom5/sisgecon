@@ -1,8 +1,10 @@
 from django.db import transaction
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 
 from apps.base.views import FilteredListView
 from apps.base.custom_views import CustomCreateView, CustomDetailView
+from apps.empresa.models import PessoaJuridica, PessoaFisica
 from .models import ContratoCompra
 from .filters import ContratoCompraFilter
 from .forms import ContratoCompraForm, ItemContratoCompraFormset
@@ -49,3 +51,32 @@ class ContratoCompraDetail(CustomDetailView):
     model = ContratoCompra
     permission_codename = 'contratos.view_contratocompra'
     template_name = 'contratos/compra_detail.html'
+
+
+def buscafornecedor(request):
+    cnpj_cpf = request.GET.get('cnpj_cpf')
+    fornecedor = ''
+    if len(cnpj_cpf) == 18:
+        try:
+            fornecedor = PessoaJuridica.objects.get(cnpj=cnpj_cpf)
+        except:
+            fornecedor = ''
+    elif len(cnpj_cpf) == 14:
+        try:
+            fornecedor = PessoaFisica.objects.get(cpf=cnpj_cpf)
+        except:
+            fornecedor = ''
+    else:
+        data = {'msg': 'Digite um CNPJ ou CPF válido.',
+                'isvalid': False}
+        return JsonResponse(data)
+    if fornecedor == '':
+        data = {'msg': 'Fornecedor não cadastrado.',
+                'isvalid': False}
+        return JsonResponse(data)
+    nome = fornecedor.nome
+    codigo = fornecedor.id
+    data = {'fornecedor': nome,
+            'cod': codigo,
+            'isvalid': True}
+    return JsonResponse(data)

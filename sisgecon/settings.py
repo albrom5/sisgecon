@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_extensions',
     'localflavor',
+    'dal',
+    'dal_select2',
     # Apps padrão do Django
     'django.contrib.admin',
     'django.contrib.auth',

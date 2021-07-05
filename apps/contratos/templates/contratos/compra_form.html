@@ -33,6 +33,8 @@
                     {{ form.tipo|as_crispy_field }}
                 </div>
                 <div class="col-md">
+                    <label for="cnpjcpf">CNPJ/CPF*</label>
+                    <input type="text" class="fornmask form-control" id="cnpjcpf" name="cnpj_cpf" data-ajax-url="{% url 'busca_fornecedor' %}">
                     {{ form.fornecedor|as_crispy_field }}
                 </div>
                 <div class="col-md">
@@ -91,6 +93,7 @@
 {% block script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'customjs/fieldmasks.js' %}"></script>
+    <script src="{% static 'customjs/funcoes_ajax/busca_fornecedor.js' %}"></script>
     <script src="{% static 'customjs/jquery.formset.js' %}"></script>
     <script type="text/javascript">
     $(function() {
