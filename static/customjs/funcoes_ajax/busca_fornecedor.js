@@ -9,9 +9,11 @@ $("#cnpjcpf").change(function () {
             success: function (data) {
               if (data['isvalid']){
                 $("#id_fornecedor").val(data['cod']);
+                $("#id_nome").text(data['fornecedor']);
               } else {
                 window.alert(data['msg']);
                 $("#id_fornecedor").val('');
+                $("#id_nome").text('');
               }
 
             }

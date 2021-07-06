@@ -35,16 +35,20 @@
                 <div class="col-md">
                     <label for="cnpjcpf">CNPJ/CPF*</label>
                     <input type="text" class="fornmask form-control" id="cnpjcpf" name="cnpj_cpf" data-ajax-url="{% url 'busca_fornecedor' %}">
-                    {{ form.fornecedor|as_crispy_field }}
+                    {{ form.fornecedor.as_hidden}}
                 </div>
+                <div class="col-md">
+                    <label for="nome">Nome/Razão Social:</label><br>
+                    <p class="fw-bold" id="id_nome"></p>
+                </div>
+            </div>
+            <div class="row g-2 p-2">
                 <div class="col-md">
                     {{ form.data_ini|as_crispy_field }}
                 </div>
                 <div class="col-md">
                     {{ form.data_fim|as_crispy_field }}
                 </div>
-            </div>
-             <div class="row g-2 p-2">
                 <div class="col-md">
                     {{ form.data_assinatura|as_crispy_field }}
                 </div>
