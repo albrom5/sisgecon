@@ -1,1 +1,3 @@
-from .contrcompras import ContratoCompra, ItemContratoCompra
+from .contrcompras import (
+    ContratoCompra, ItemContratoCompra, RevisaoContratoCompra
+)
