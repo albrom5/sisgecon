@@ -1,20 +1,20 @@
-$("#cnpjcpf").change(function () {
+$("#processo").change(function () {
           var field = $(this).closest("input");
           $.ajax({
             url: field.attr('data-ajax-url'),
             data: {
-            'cnpj_cpf': field.val()
+            'processo': field.val()
             },
             dataType: 'json',
             success: function (data) {
               if (data['isvalid']){
-                $("#id_fornecedor").val(data['cod']);
-                $("#id_nome").text(data['fornecedor']);
+                $("#id_processo").val(data['cod']);
+                $("#id_pc").text(data['processo']);
               } else {
                 window.alert(data['msg']);
-                $("#id_fornecedor").val('');
-                $("#id_nome").text('');
-                $("#cnpjcpf").val('');
+                $("#id_processo").val('');
+                $("#id_pc").text('');
+                $("#processo").val('');
               }
 
             }

@@ -31,7 +31,7 @@ Contratos de Compras
                             <div class="row g-2 p-2">
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.numero|htmlattributes:"class: form-control form-control-sm procmask" }}
+                                  {{filter.form.contrato__numero|htmlattributes:"class: form-control form-control-sm procmask" }}
                                   <label for="floatingInputNumero">Número</label>
                                 </div>
                               </div>
@@ -43,7 +43,7 @@ Contratos de Compras
                               </div>
                               <div class="col-md">
                                 <div class="form-floating">
-                                  {{filter.form.tipo|htmlattributes:"class: form-select form-select-sm" }}
+                                  {{filter.form.contrato__tipo|htmlattributes:"class: form-select form-select-sm" }}
                                   <label for="floatingSelectTipo">Tipo</label>
                                 </div>
                               </div>
@@ -112,10 +112,10 @@ Contratos de Compras
                         {% for contrato in object_list %}
                         <tr class="clickable-row"
                             data-href="{% url 'compra_detail' contrato.id %}">
-                          <td>{{ contrato.numero }}</td>
-                          <td>{{ contrato.tipo }}</td>
+                          <td>{{ contrato.contrato.numero_formatado }}</td>
+                          <td>{{ contrato.contrato.tipo }}</td>
                           <td>{{ contrato.objeto }}</td>
-                          <td>{{ contrato.fornecedor }}</td>
+                          <td>{{ contrato.contrato.fornecedor }}</td>
                           <td>R$ {{ contrato.valor_total|floatformat:2 }}</td>
                           <td>{{ contrato.data_assinatura|date:"SHORT_DATE_FORMAT" }}</td>
                           <td>{{ contrato.data_fim|date:"SHORT_DATE_FORMAT" }}</td>

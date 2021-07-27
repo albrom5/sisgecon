@@ -10,7 +10,7 @@
     <div id="detailheader">
         <div class="row g-2 p-2">
               <div class="col-md">
-                  <h4>Contrato nº: {{ object }}</h4>
+                  <h4>Contrato nº: {{ object.contrato.numero_formatado }}</h4>
               </div>
          </div>
          <div class="row g-2 p-2 my-2 border-top">
@@ -18,7 +18,7 @@
                   <strong> Objeto:</strong> {{ object.objeto }}
               </div>
               <div class="col-md">
-                  <strong> Contratada:</strong> {{ object.fornecedor }}
+                  <strong> Contratada:</strong> {{ object.contrato.fornecedor }}
               </div>
              <div class="col-md">
                   <strong> Valor Total:</strong> R$ {{ object.valor_total|floatformat:2 }}

@@ -1,22 +1,30 @@
 from django import forms
-from .models import ContratoCompra, ItemContratoCompra
+from .models import ItemContratoCompra, RevisaoContratoCompra
+from apps.empresa.models import Pessoa
+from apps.processos.models import ProcessoCompra
 
 
-class ContratoCompraForm(forms.ModelForm):
+class ContratoCompraNovoForm(forms.ModelForm):
+    numero_contrato = forms.CharField(max_length=19,
+                                      label='Número do Contrato',
+                                      required=False)
+    fornecedor = forms.ModelChoiceField(
+        queryset=Pessoa.objects.filter(ativo=True, fornecedor=True)
+    )
+    processo = forms.ModelChoiceField(
+        queryset=ProcessoCompra.objects.filter(ativo=True)
+    )
 
     def __init__(self, *args, **kwargs):
-        super(ContratoCompraForm, self).__init__(*args, **kwargs)
-        # self.fields['data_ini'].widget.attrs.update(
-        #     {'class': 'datemask'}
-        # )
-        # self.fields['data_fim'].widget.attrs.update(
-        #     {'class': 'datemask'}
-        # )
-        self.fields['data_assinatura'].widget.attrs.update(
+        super(ContratoCompraNovoForm, self).__init__(*args, **kwargs)
+        self.fields['data_ini'].widget.attrs.update(
             {'class': 'datemask'}
         )
-        self.fields['tipo'].widget.attrs.update(
-            {'class': 'form-select'}
+        self.fields['data_fim'].widget.attrs.update(
+            {'class': 'datemask'}
+        )
+        self.fields['data_assinatura'].widget.attrs.update(
+            {'class': 'datemask'}
         )
         self.fields['fornecedor'].widget.attrs.update(
             {'class': 'form-control'}
@@ -24,27 +32,27 @@ class ContratoCompraForm(forms.ModelForm):
         self.fields['fornecedor'].widget.attrs['readonly'] = True
 
     class Meta:
-        model = ContratoCompra
-        fields = ['numero', 'objeto',
-                  'data_assinatura', 'area', 'fornecedor', 'tipo']
+        model = RevisaoContratoCompra
+        fields = ['data_ini', 'data_fim', 'gestor', 'fiscal',
+                  'data_assinatura', 'objeto']
 
 
-# class ItemContratoCompraForm(forms.ModelForm):
-#
-#     def __init__(self, *args, **kwargs):
-#         super(ItemContratoCompraForm, self).__init__(*args, **kwargs)
-#         self.fields['produto'].widget.attrs.update({'class': 'form-select'})
-#         self.fields['ord_item'].widget.attrs['readonly'] = True
-#
-#     class Meta:
-#         model = ItemContratoCompra
-#         fields = ['ord_item', 'produto', 'descricao', 'quantidade',
-#                   'valor_unit']
-#
-#
-# ItemContratoCompraFormset = forms.inlineformset_factory(
-#     ContratoCompra,
-#     ItemContratoCompra,
-#     form=ItemContratoCompraForm,
-#     extra=1, can_delete=True
-# )
+class ItemContratoCompraForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ItemContratoCompraForm, self).__init__(*args, **kwargs)
+        self.fields['produto'].widget.attrs.update({'class': 'form-select'})
+        self.fields['ord_item'].widget.attrs['readonly'] = True
+
+    class Meta:
+        model = ItemContratoCompra
+        fields = ['ord_item', 'produto', 'descricao', 'quantidade',
+                  'valor_unit']
+
+
+ItemContratoCompraFormset = forms.inlineformset_factory(
+    RevisaoContratoCompra,
+    ItemContratoCompra,
+    form=ItemContratoCompraForm,
+    extra=1, can_delete=True
+)

@@ -28,14 +28,11 @@ class ContratoCompra(BaseModel):
     numero = models.PositiveSmallIntegerField(null=True, blank=True)
     fornecedor = models.ForeignKey(Pessoa, on_delete=models.PROTECT,
                                    limit_choices_to={'fornecedor': True})
-    objeto = models.CharField(max_length=500)
-    area = models.ForeignKey(Departamento, on_delete=models.SET_NULL,
-                             null=True, blank=True,
-                             limit_choices_to={'ativo': True})
     status = models.ForeignKey(Status, on_delete=models.SET_NULL,
                                null=True, blank=True,
                                limit_choices_to={'tipo': 'CC', 'ativo': True})
-    data_assinatura = models.DateField(verbose_name='Data de Assinatura')
+    data_assinatura = models.DateField(verbose_name='Data de Assinatura',
+                                       null=True, blank=True)
 
     @property
     def numero_formatado(self):
@@ -59,12 +56,12 @@ class ContratoCompra(BaseModel):
             return 1
 
     def save(self, *args, **kwargs):
-        if self.numero is None:
+        if self.numero is None or self.numero == '':
             self.numero = self.get_sequencial()
         super(ContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.numero_formatado_com_tipo} - {self.objeto}'
+        return f'{self.numero_formatado_com_tipo}'
 
     class Meta:
         verbose_name = 'Contrato de Compras'
@@ -76,6 +73,7 @@ class RevisaoContratoCompra(BaseModel):
     contrato = models.ForeignKey(ContratoCompra, on_delete=models.CASCADE,
                                  related_name='revisoes')
     numero_aditamento = models.PositiveSmallIntegerField(null=True, blank=True)
+    objeto = models.CharField(max_length=500)
     ordem = models.PositiveSmallIntegerField(null=True, blank=True)
     motivo = models.CharField(max_length=1000, null=True, blank=True)
     data_assinatura = models.DateField(verbose_name='Data de Assinatura')
@@ -85,6 +83,9 @@ class RevisaoContratoCompra(BaseModel):
                                 blank=True)
     valor_total = models.DecimalField(max_digits=19, decimal_places=6,
                                       null=True, blank=True)
+    area = models.ForeignKey(Departamento, on_delete=models.SET_NULL,
+                             null=True, blank=True,
+                             limit_choices_to={'ativo': True})
     gestor = models.ForeignKey(Funcionario, on_delete=models.SET_NULL,
                                null=True, blank=True,
                                limit_choices_to={'ativo': True},
@@ -141,6 +142,7 @@ class RevisaoContratoCompra(BaseModel):
         if self.numero_aditamento is None and self.ordem != 0:
             self.numero_aditamento = self.get_sequencial()
         self.tornar_atual_vigente()
+        self.valor_total = self.valor_total_contrato
         super(RevisaoContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):

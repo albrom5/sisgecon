@@ -22,7 +22,7 @@
             {% csrf_token %}
             <div class="row g-2 p-2">
                 <div class="col-3">
-                    {{ form.numero|as_crispy_field }}
+                    {{ form.numero_contrato|as_crispy_field }}
                 </div>
                 <div class="col-9">
                     {{ form.objeto|as_crispy_field }}
@@ -30,16 +30,22 @@
             </div>
             <div class="row g-2 p-2">
                 <div class="col-md">
-                    {{ form.tipo|as_crispy_field }}
-                </div>
-                <div class="col-md">
                     <label for="cnpjcpf">CNPJ/CPF*</label>
                     <input type="text" class="fornmask form-control" id="cnpjcpf" name="cnpj_cpf" data-ajax-url="{% url 'busca_fornecedor' %}">
-                    {{ form.fornecedor.as_hidden}}
                 </div>
                 <div class="col-md">
+                    {{ form.fornecedor}}
                     <label for="nome">Nome/Razão Social:</label><br>
                     <p class="fw-bold" id="id_nome"></p>
+                </div>
+                <div class="col-md">
+                    <label for="processo">Processo</label>
+                    <input type="text" class="procmask form-control" id="processo" name="processo" data-ajax-url="{% url 'busca_processo' %}">
+                </div>
+                <div class="col-md">
+                    {{ form.processo}}
+                    <label for="nome">Descrição do Processo</label><br>
+                    <p class="fw-bold" id="id_pc"></p>
                 </div>
             </div>
             <div class="row g-2 p-2">
@@ -98,6 +104,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'customjs/fieldmasks.js' %}"></script>
     <script src="{% static 'customjs/funcoes_ajax/busca_fornecedor.js' %}"></script>
+    <script src="{% static 'customjs/funcoes_ajax/busca_processo.js' %}"></script>
     <script src="{% static 'customjs/jquery.formset.js' %}"></script>
     <script type="text/javascript">
     $(function() {
