@@ -26,6 +26,7 @@ class ContratoCompra(BaseModel):
     subtipo = models.CharField(max_length=2, choices=SUBTIPO, null=True,
                                blank=True)
     numero = models.PositiveSmallIntegerField(null=True, blank=True)
+    numero_format_ano = models.CharField(max_length=9, null=True, blank=True)
     fornecedor = models.ForeignKey(Pessoa, on_delete=models.PROTECT,
                                    limit_choices_to={'fornecedor': True})
     status = models.ForeignKey(Status, on_delete=models.SET_NULL,
@@ -58,6 +59,8 @@ class ContratoCompra(BaseModel):
     def save(self, *args, **kwargs):
         if self.numero is None or self.numero == '':
             self.numero = self.get_sequencial()
+        if self.numero_format_ano is None:
+            self.numero_format_ano = self.numero_formatado
         super(ContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -204,6 +207,11 @@ class ItemContratoCompra(BaseModel):
         tot_item = self.quantidade * self.valor_unit
         return tot_item or 0
 
+    @property
+    def saldo_financeiro(self):
+        saldo_fin = self.saldo_fis * self.valor_unit
+        return saldo_fin or 0
+
     def get_ord_item(self):
         itens = ItemContratoCompra.objects.filter(revisao=self.revisao)
         if not itens:
@@ -218,6 +226,8 @@ class ItemContratoCompra(BaseModel):
         self.valor_total = self.valor_total_item
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
+        if self.saldo_fis is None:
+            self.saldo_fis = self.quantidade
         super(ItemContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):

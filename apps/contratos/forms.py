@@ -17,6 +17,9 @@ class ContratoCompraNovoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ContratoCompraNovoForm, self).__init__(*args, **kwargs)
+        self.fields['numero_contrato'].widget.attrs.update(
+            {'class': 'contrmask'}
+        )
         self.fields['data_ini'].widget.attrs.update(
             {'class': 'datemask'}
         )

@@ -24,4 +24,5 @@ $(document).ready(function(){
             $('.cnpjmask').mask('00.000.000/0000-00');
             $('.cpfmask').mask('000.000.000-00');
             $('.cepmask').mask('00000-000');
+            $('.contrmask').mask('0000/0000');
         });

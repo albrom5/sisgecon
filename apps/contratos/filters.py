@@ -4,7 +4,7 @@ from apps.contratos.models import RevisaoContratoCompra, ContratoCompra
 
 
 class RevisaoContratoCompraFilter(django_filters.FilterSet):
-    contrato__numero = django_filters.CharFilter(lookup_expr='iexact')
+    contrato__numero_format_ano = django_filters.CharFilter(lookup_expr='iexact')
     contrato__tipo = django_filters.ChoiceFilter(choices=
                                                  ContratoCompra.TIPO_CONTRATO)
     objeto = django_filters.CharFilter(lookup_expr='icontains')
