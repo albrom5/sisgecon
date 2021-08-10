@@ -6,7 +6,7 @@ from apps.processos.models import ProcessoCompra
 
 class ContratoCompraNovoForm(forms.ModelForm):
     numero_contrato = forms.CharField(max_length=19,
-                                      label='Número do Contrato',
+                                      label='Número',
                                       required=False)
     fornecedor = forms.ModelChoiceField(
         queryset=Pessoa.objects.filter(ativo=True, fornecedor=True)

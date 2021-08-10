@@ -1,5 +1,5 @@
 var ProcBehavior = function (val) {
-  return val.replace(/\D/g, '').length === 16 ? '0000.0000/0000000-0' : '0000/009999999999';
+  return val.replace(/\D/g, '').length === 16 ? '0000.0000/0000000-0' : '0000/00000000000000';
 },
 procOptions = {
   onKeyPress: function(val, e, field, options) {
@@ -8,7 +8,7 @@ procOptions = {
 };
 
 var FornBehavior = function (val) {
-  return val.replace(/\D/g, '').length === 14 ? '00.000.000/0000-00' : '000.000.000-00999';
+  return val.replace(/\D/g, '').length === 14 ? '00.000.000/0000-00' : '000.000.000-009999';
 },
 fornOptions = {
   onKeyPress: function(val, e, field, options) {

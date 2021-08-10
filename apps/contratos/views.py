@@ -61,6 +61,49 @@ class ContratoCompraNovo(CustomCreateView):
         return reverse_lazy('compra_detail', args=[self.object.id])
 
 
+class SubstitutivoCompraNovo(CustomCreateView):
+    form_class = ContratoCompraNovoForm
+    template_name = 'contratos/compra_form.html'
+    permission_codename = 'contratos.add_contratocompra'
+
+    def get_context_data(self, **kwargs):
+        data = super(SubstitutivoCompraNovo, self).get_context_data(**kwargs)
+        data['substitutivo'] = True
+        if self.request.POST:
+            data['itens'] = ItemContratoCompraFormset(self.request.POST)
+        else:
+            data['itens'] = ItemContratoCompraFormset()
+        return data
+
+    def form_valid(self, form):
+        contrato = form.save(commit=False)
+        num_contrato = form.cleaned_data.get('numero_contrato')
+        if num_contrato != '':
+            num_contrato = int(num_contrato.split('/')[0])
+        if self.kwargs:
+            processo = self.kwargs['processo_id']
+        else:
+            processo = form.cleaned_data.get('processo')
+        fornecedor = form.cleaned_data.get('fornecedor')
+        data_assinatura = form.cleaned_data.get('data_assinatura')
+        contrato.contrato = ContratoCompra.objects.create(
+            processo=processo, numero=num_contrato,
+            fornecedor=fornecedor, tipo='CCO', data_assinatura=data_assinatura,
+        )
+        contrato.save()
+        context = self.get_context_data()
+        itens = context['itens']
+        with transaction.atomic():
+            self.object = form.save()
+        if itens.is_valid():
+            itens.instance = self.object
+            itens.save()
+        return super(SubstitutivoCompraNovo, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('compra_detail', args=[self.object.id])
+
+
 class ContratoCompraDetail(CustomDetailView):
     model = RevisaoContratoCompra
     permission_codename = 'contratos.view_contratocompra'

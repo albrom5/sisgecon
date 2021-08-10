@@ -3,19 +3,19 @@
 {% load static %}
 
 {% block title %}
-    {% if not object %}
-    Novo Contrato de Compra
+    {% if substitutivo %}
+    Novo Substitutivo Contratual
     {% else %}
-    Editar Contrato de Compra
+    Novo Contrato de Compra
     {% endif %}
 {% endblock %}
 
 {% block main %}
     <div class="container-fluid">
-        {% if not object %}
-        <h4>Cadastro de novo Contrato de Compra</h4>
+        {% if substitutivo %}
+        <h4>Cadastro de novo Substitutivo Contratual (AS/OC)</h4>
         {% else %}
-        <h4>Contrato de Compra {{ object.tipo }}nº {{ object.numero }}</h4>
+        <h4>Cadastro de novo Contrato de Compra</h4>
         {% endif %}
 
         <form method="post" id="formContrato">
@@ -34,7 +34,7 @@
                     <input type="text" class="fornmask form-control" id="cnpjcpf" name="cnpj_cpf" data-ajax-url="{% url 'busca_fornecedor' %}">
                 </div>
                 <div class="col-md">
-                    {{ form.fornecedor}}
+                    {{ form.fornecedor.as_hidden}}
                     <label for="nome">Nome/Razão Social:</label><br>
                     <p class="fw-bold" id="id_nome"></p>
                 </div>
@@ -43,7 +43,7 @@
                     <input type="text" class="procmask form-control" id="processo" name="processo" data-ajax-url="{% url 'busca_processo' %}">
                 </div>
                 <div class="col-md">
-                    {{ form.processo}}
+                    {{ form.processo.as_hidden}}
                     <label for="nome">Descrição do Processo</label><br>
                     <p class="fw-bold" id="id_pc"></p>
                 </div>
