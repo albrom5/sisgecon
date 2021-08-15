@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.processos',
     'apps.empresa',
     'apps.contratos',
+    'apps.sof',
 ]
 
 MIDDLEWARE = [

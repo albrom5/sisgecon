@@ -1,3 +1,4 @@
+import datetime
 from decimal import Decimal
 
 from django.core.validators import MinValueValidator
@@ -98,6 +99,8 @@ class RevisaoContratoCompra(BaseModel):
                                limit_choices_to={'ativo': True},
                                related_name='fiscais')
     is_vigente = models.BooleanField(default=True)
+    cod_protheus = models.CharField(max_length=15, null=True, blank=True)
+    data_protheus = models.DateField(null=True, blank=True)
 
     @property
     def valor_total_contrato(self):
