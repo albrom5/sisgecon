@@ -132,7 +132,8 @@ class RevisaoContratoCompra(BaseModel):
 
     def get_ordem(self):
         aditamentos = RevisaoContratoCompra.objects.filter(
-            contrato=self.contrato)
+            contrato=self.contrato
+        )
         if not aditamentos:
             ordem = 0
             return ordem
@@ -140,6 +141,15 @@ class RevisaoContratoCompra(BaseModel):
             contrato=self.contrato).last()
         ordem = int(ultimo.ordem) + 1
         return ordem
+
+    def copia_itens(self):
+        itens = ItemContratoCompra.objects.filter(revisao__contrato=self.contrato.id, revisao__ordem=self.ordem - 1)
+        itens_atuais = ItemContratoCompra.objects.filter(revisao=self.id)
+        if len(itens_atuais) == 0:
+            for item in itens:
+                item.pk = None
+                item.revisao = self
+                item.save()
 
     def save(self, *args, **kwargs):
         if self.ordem is None:
@@ -149,14 +159,20 @@ class RevisaoContratoCompra(BaseModel):
         self.tornar_atual_vigente()
         self.valor_total = self.valor_total_contrato
         super(RevisaoContratoCompra, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return f'{self.contrato.numero_formatado_com_tipo} - {self.ordem}'
+        if self.ordem > 0:
+            self.copia_itens()
 
     def tornar_atual_vigente(self):
         RevisaoContratoCompra.objects.filter(
             contrato=self.contrato).order_by('ordem').update(is_vigente=False)
         return
+
+    def __str__(self):
+        if self.numero_aditamento is None:
+            return f'{self.contrato.numero_formatado_com_tipo} - {self.objeto}'
+        else:
+            return f'Aditamento {self.numero_formatado_com_tipo} - {self.ordem}º da Contratação ' \
+                   f'{self.contrato.numero_formatado_com_tipo}'
 
     class Meta:
         ordering = ['contrato', 'ordem']
@@ -192,7 +208,8 @@ class ItemContratoCompra(BaseModel):
                                           MinValueValidator(
                                               Decimal('0.000000'))], null=True,
                                       blank=True)
-    saldo_fis = models.DecimalField(max_digits=19, decimal_places=6,
+    saldo_fis = models.DecimalField(verbose_name='Saldo Físico',
+                                    max_digits=19, decimal_places=6,
                                     validators=[
                                          MinValueValidator(
                                              Decimal('0.000000'))], null=True,

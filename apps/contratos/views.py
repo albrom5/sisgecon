@@ -15,6 +15,7 @@ from .forms import (
     RevisaContratoCompraForm
 )
 
+
 class ContratosCompraList(FilteredListView):
     filterset_class = RevisaoContratoCompraFilter
     template_name = 'contratos/contratoscompra_list.html'
@@ -162,41 +163,39 @@ class RevisaContratoCompra(CustomCreateView):
     template_name = 'contratos/revisacompra_form.html'
     permission_codename = 'contratos.add_revisaocontratocompra'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if hasattr(self, 'object'):
+            kwargs.update({'instance': self.object})
+        kwargs['contrato_id'] = self.kwargs['contrato_id']
+        return kwargs
+
     def get_context_data(self, **kwargs):
         data = super(RevisaContratoCompra, self).get_context_data(**kwargs)
-        if self.request.POST:
-            data['itens'] = ItemContratoCompraFormset(self.request.POST)
-        else:
-            data['itens'] = ItemContratoCompraFormset()
+        contrato_id = self.kwargs['contrato_id']
+        revisao_anterior = RevisaoContratoCompra.objects.get(contrato=contrato_id, is_vigente=True)
+        data['numero_contrato'] = revisao_anterior.contrato.numero_formatado
+        data['numero_contrato_com_tipo'] = revisao_anterior.contrato.numero_formatado_com_tipo
+        data['processo'] = revisao_anterior.contrato.processo
+        data['fornecedor'] = revisao_anterior.contrato.fornecedor
+        data['ordem_aditamento'] = revisao_anterior.ordem + 1
         return data
 
     def form_valid(self, form):
-        contrato = form.save(commit=False)
-        num_contrato = form.cleaned_data.get('numero_contrato')
-        if num_contrato != '':
-            num_contrato = int(num_contrato.split('/')[0])
-        if self.kwargs:
-            processo = self.kwargs['processo_id']
+        aditamento = form.save(commit=False)
+        num_aditamento = form.cleaned_data.get('numero_aditamento')
+        if num_aditamento != '':
+            num_aditamento = int(num_aditamento.split('/')[0])
         else:
-            processo = form.cleaned_data.get('processo')
-        fornecedor = form.cleaned_data.get('fornecedor')
-        data_assinatura = form.cleaned_data.get('data_assinatura')
-        contrato.contrato = ContratoCompra.objects.create(
-            processo=processo, numero=num_contrato,
-            fornecedor=fornecedor, tipo='CCN', data_assinatura=data_assinatura,
-        )
-        contrato.save()
-        context = self.get_context_data()
-        itens = context['itens']
-        with transaction.atomic():
-            self.object = form.save()
-        if itens.is_valid():
-            itens.instance = self.object
-            itens.save()
+            num_aditamento = None
+        aditamento.numero_aditamento = num_aditamento
+        contrato = self.kwargs['contrato_id']
+        aditamento.contrato = ContratoCompra.objects.get(id=contrato)
+
         return super(RevisaContratoCompra, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('compra_detail', args=[self.object.id])
+        return reverse_lazy('contratocompra_edit', args=[self.object.id])
 
 
 def buscafornecedor(request):

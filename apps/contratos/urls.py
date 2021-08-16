@@ -18,7 +18,7 @@ urlpatterns = [
          name='compra_detail'),
     path('compras/edit/<int:pk>', ContratoCompraEdit.as_view(),
          name='contratocompra_edit'),
-    path('compras/<int:pk>/novo_aditamento/', RevisaContratoCompra.as_view(),
+    path('compras/<int:contrato_id>/novo_aditamento/', RevisaContratoCompra.as_view(),
          name='novo_aditamento_compra'),
     path('ajax/busca_fornecedor/', buscafornecedor,
          name='busca_fornecedor'),
