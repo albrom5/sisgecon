@@ -1,4 +1,3 @@
-import datetime
 from decimal import Decimal
 
 from django.core.validators import MinValueValidator
@@ -6,9 +5,9 @@ from django.db import models
 from django.db.models import Sum
 
 from apps.base.models import BaseModel, Status
-from apps.produtos.models import Produto
 from apps.empresa.models import Departamento, Funcionario, Pessoa
 from apps.processos.models import ProcessoCompra
+from apps.produtos.models import Produto
 
 
 class ContratoCompra(BaseModel):

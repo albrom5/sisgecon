@@ -1,0 +1,181 @@
+[
+{
+    "model": "sof.orgaosof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:29:14.476Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:29:14.476Z",
+        "ultimo_editor": 1,
+        "cod": "06",
+        "descricao": "São Paulo Turismo"
+    }
+},
+{
+    "model": "sof.unidadesof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:29:51.407Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:29:51.408Z",
+        "ultimo_editor": 1,
+        "cod": "10",
+        "descricao": "São Paulo Turismo"
+    }
+},
+{
+    "model": "sof.funcaosof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:30:31.509Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:30:31.509Z",
+        "ultimo_editor": 1,
+        "cod": "23",
+        "descricao": "Comércio e Serviços"
+    }
+},
+{
+    "model": "sof.subfuncaosof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:31:07.114Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:31:07.114Z",
+        "ultimo_editor": 1,
+        "cod": "695",
+        "descricao": "Turismo"
+    }
+},
+{
+    "model": "sof.programasof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:31:57.179Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:31:57.179Z",
+        "ultimo_editor": 1,
+        "cod": "3015",
+        "descricao": "Promoção da cidade como centro de eventos e destino turístico"
+    }
+},
+{
+    "model": "sof.projetoatividadesof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:32:54.656Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:32:54.656Z",
+        "ultimo_editor": 1,
+        "cod": "2640",
+        "descricao": "Apoio às Ações Municipais de Turismo"
+    }
+},
+{
+    "model": "sof.categoriasof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:33:24.920Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:33:24.920Z",
+        "ultimo_editor": 1,
+        "cod": "3",
+        "descricao": "Despesas Correntes"
+    }
+},
+{
+    "model": "sof.gruposof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:33:55.592Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:33:55.593Z",
+        "ultimo_editor": 1,
+        "cod": "3",
+        "descricao": "Outras despesas correntes"
+    }
+},
+{
+    "model": "sof.modalidadesof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:34:31.244Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:34:31.244Z",
+        "ultimo_editor": 1,
+        "cod": "90",
+        "descricao": "Aplicações Diretas"
+    }
+},
+{
+    "model": "sof.elementosof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:35:16.718Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:35:16.719Z",
+        "ultimo_editor": 1,
+        "cod": "39",
+        "descricao": "Serviço de Apoio Administrativo, Técnico e Operacional"
+    }
+},
+{
+    "model": "sof.subelementosof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:35:50.943Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:35:50.943Z",
+        "ultimo_editor": 1,
+        "cod": "00",
+        "descricao": "Outros Serviços de Terceiros - Pessoa Jurídica"
+    }
+},
+{
+    "model": "sof.fonterecursosof",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:36:22.439Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:36:22.439Z",
+        "ultimo_editor": 1,
+        "cod": "09",
+        "descricao": "Recursos Próprios da Empresa Dependente"
+    }
+},
+{
+    "model": "sof.dotacao",
+    "pk": 1,
+    "fields": {
+        "ativo": true,
+        "criado_em": "2021-08-15T20:42:21.701Z",
+        "criador": 1,
+        "modificado_em": "2021-08-15T20:42:21.701Z",
+        "ultimo_editor": 1,
+        "orgao": 1,
+        "unidade": 1,
+        "funcao": 1,
+        "subfuncao": 1,
+        "programa": 1,
+        "projeto_atividade": 1,
+        "categoria": 1,
+        "grupo": 1,
+        "modalidade": 1,
+        "elemento": 1,
+        "subelemento": 1,
+        "fonte_recurso": 1
+    }
+}
+]

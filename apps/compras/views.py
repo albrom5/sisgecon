@@ -68,7 +68,9 @@ class SolicitacaoCompraEdit(CustomUpdateView):
     def get_context_data(self, **kwargs):
         data = super(SolicitacaoCompraEdit, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['itens'] = ItemSCFormset(self.request.POST, instance=self.object)
+            data['itens'] = ItemSCFormset(
+                self.request.POST, instance=self.object
+            )
         else:
             data['itens'] = ItemSCFormset(instance=self.object)
         return data

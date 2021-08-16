@@ -1,7 +1,8 @@
 from django.db import models
 
 from apps.base.models import BaseModel
-
+from apps.contratos.models import ContratoCompra
+from apps.processos.models import Processo
 
 class OrgaoSOF(BaseModel):
     cod = models.CharField(max_length=2)
@@ -122,6 +123,11 @@ class Dotacao(BaseModel):
                f'{self.grupo.cod}.{self.modalidade.cod}.{self.elemento.cod}.' \
                f'{self.subelemento.cod}.{self.fonte_recurso.cod}'
 
+    class Meta:
+        verbose_name = 'Dotação Orçamentária'
+        verbose_name_plural = "Dotações Orçamentárias"
+        ordering = ['funcao', 'subfuncao']
+
 
 class Reserva(BaseModel):
     numero = models.CharField(max_length=9)
@@ -129,6 +135,21 @@ class Reserva(BaseModel):
     valor = models.DecimalField(max_digits=19, decimal_places=6,
                                 null=True, blank=True)
     dotacao = models.ForeignKey(Dotacao, on_delete=models.PROTECT)
+    processo = models.ManyToManyField(Processo, blank=True)
+    contrato_real = models.ManyToManyField(ContratoCompra, blank=True)
+
+    def __str__(self):
+        return f'SOF{self.numero}'
+
+
+class ContratoSof(BaseModel):
+    numero = models.CharField(max_length=9)
+    data_lancamento = models.DateField(null=True, blank=True)
+    valor = models.DecimalField(max_digits=19, decimal_places=6,
+                                null=True, blank=True)
+    contrato_real = models.ForeignKey(ContratoCompra,
+                                      on_delete=models.SET_NULL,
+                                      null=True, blank=True)
 
     def __str__(self):
         return f'SOF{self.numero}'
@@ -140,17 +161,12 @@ class Empenho(BaseModel):
     valor = models.DecimalField(max_digits=19, decimal_places=6,
                                 null=True, blank=True)
     dotacao = models.ForeignKey(Dotacao, on_delete=models.PROTECT)
+    contrato_sof = models.ForeignKey(ContratoSof, on_delete=models.SET_NULL,
+                                     null=True, blank=True)
+    contrato_real = models.ForeignKey(ContratoCompra,
+                                      on_delete=models.SET_NULL,
+                                      null=True, blank=True)
 
     def __str__(self):
         return f'SOF{self.numero}'
 
-
-class ContratoSof(BaseModel):
-    numero = models.CharField(max_length=9)
-    data_lancamento = models.DateField(null=True, blank=True)
-    valor = models.DecimalField(max_digits=19, decimal_places=6,
-                                null=True, blank=True)
-    reserva = models.ManyToManyField(Reserva)
-
-    def __str__(self):
-        return f'SOF{self.numero}'

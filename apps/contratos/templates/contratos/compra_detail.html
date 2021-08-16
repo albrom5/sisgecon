@@ -10,7 +10,13 @@
     <div id="detailheader">
         <div class="row g-2 p-2">
               <div class="col-md">
-                  <h4>Contrato nº: {{ object.contrato.numero_formatado }}</h4>
+                <h4>
+                  {% if object.contrato.tipo == 'CCN' %}
+                  Contrato
+                  {% else %}
+                  {{ object.contrato.get_subtipo_display }}
+                  {% endif %} nº: {{ object.contrato.numero_formatado }}</h4>
+
               </div>
          </div>
          <div class="row g-2 p-2 my-2 border-top">
@@ -62,7 +68,7 @@
         <div id="botoes">
             <div class="row g-2 p-2 my-2 border-top">
                 <div class="col-3">
-                    <a href="" class="btn btn-primary">
+                    <a href="{% url 'novo_aditamento_compra' object.contrato.id %}" class="btn btn-primary">
                         Lançar aditamento
                     </a>
                 </div>
@@ -71,6 +77,11 @@
                 <div class="col-3">
                     <a href="{% url 'contratoscompras_list' %}" class="btn btn-secondary">
                         Ir para lista de Contratos
+                    </a>
+                </div>
+                <div class="col-3">
+                    <a href="{% url 'contratocompra_edit' object.id %}" class="btn btn-secondary">
+                        Editar dados
                     </a>
                 </div>
                 <div class="col-3">
