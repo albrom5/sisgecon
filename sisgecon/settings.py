@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'apps.empresa',
     'apps.contratos',
     'apps.sof',
+    'apps.producao_eventos',
+    'apps.controle_eventos',
 ]
 
 MIDDLEWARE = [
@@ -214,3 +216,5 @@ if DEBUG:
 
 # Activate Django-Heroku.git
 django_heroku.settings(locals())
+
+DJANGO_EASY_AUDIT_WATCH_REQUEST_EVENTS = False
