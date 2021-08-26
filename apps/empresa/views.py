@@ -8,6 +8,8 @@ from apps.base.views import FilteredListView
 from apps.base.custom_views import (
     CustomCreateView, CustomDetailView, CustomUpdateView
 )
+from apps.contratos.models import RevisaoContratoCompra
+
 from .forms import (
     FornecedorPJForm, FornecedorPFForm, ContatoFornFormset,
     ContatoFornPFFormset
@@ -86,6 +88,16 @@ class FornecedorDetail(CustomDetailView):
     model = Pessoa
     permission_codename = 'empresa.view_pessoa'
     template_name = 'empresa/fornecedor_detail.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(FornecedorDetail, self).get_context_data(**kwargs)
+        fornecedor = self.kwargs['pk']
+        contratos = RevisaoContratoCompra.objects.filter(
+            contrato__fornecedor_id=fornecedor,
+            is_vigente=True
+        )
+        data['contratos'] = contratos
+        return data
 
 
 class FornecedorEdit(CustomUpdateView):

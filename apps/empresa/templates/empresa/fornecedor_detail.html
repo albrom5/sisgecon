@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 {{ object }}
@@ -81,6 +82,59 @@
             </div>
         </div>
     </div>
+    <div class="row g-2 p-2 my-2">
+         <h5>Contratos</h5>
+        {% for contrato in contratos %}
+        <div class="row g-2 p-2 border-top">
+            <div class="col-md">
+                <button class="btn btn-toggle align-items-center rounded collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItens{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseExample">
+                      </button>
+                <a href="{% url 'compra_detail' contrato.id %}">
+                <strong>Contrato: {{ contrato.contrato.numero_formatado_com_tipo }}</strong>
+                </a>
+            </div>
+             <div class="col-md">
+                Objeto: {{ contrato.objeto }}
+            </div>
+            <div class="col-md">
+                Data de assinatura: {{ contrato.contrato.data_assinatura|date:"SHORT_DATE_FORMAT" }}
+            </div>
+            <div class="col-md">
+                Valor total: R$ {{ contrato.valor_total|floatformat:2 }}
+            </div>
+            <div class="row g-2 p-2">
+                <div class="collapse" id="collapseItens{{ forloop.counter }}">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Produto</th>
+                                <th scope="col">Quantidade</th>
+                                <th scope="col">Valor unitário</th>
+                                <th scope="col">Valor total do item</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in contrato.itens.all %}
+                            <tr>
+                                <td>{{ item.produto }}</td>
+                                <td>{{ item.quantidade|floatformat:2 }}</td>
+                                <td>R$ {{ item.valor_unit|floatformat:2 }}</td>
+                                <td>R$ {{ item.valor_total|floatformat:2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+            {% empty %}
+            <div class="row g-2 p-2">
+                <div class="col-md">
+                Processo sem SC's cadastradas.
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     {# Fim do cabeçalho da DetailView #}
      {# Início da seção de botões #}
         <div id="botoes">
@@ -101,4 +155,7 @@
         </div>
     {# Fim da seção de botões #}
     </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'customjs/clickablerow.js' %}"></script>
 {% endblock %}

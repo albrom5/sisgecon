@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ object }}
+{{ object.numero_formatado_com_tipo }}
 {% endblock %}
 
 {% block main %}
@@ -28,13 +28,23 @@
                   <strong> Objeto:</strong> {{ object.objeto }}
               </div>
               <div class="col-md">
-                  <strong> Contratada:</strong> {{ object.contrato.fornecedor }}
+                  <strong> Contratada:</strong> <a href="{% url 'fornecedor_detail' object.contrato.fornecedor.id %}"> {{ object.contrato.fornecedor }}</a>
               </div>
              <div class="col-md">
                   <strong> Valor Total:</strong> R$ {{ object.valor_total_contrato|floatformat:2 }}
              </div>
          </div>
-
+         <div class="row g-2 p-2 my-2 border-top">
+              <div class="col-md">
+                  <strong> Vigência atual:</strong> {{ object.data_ini|date:"SHORT_DATE_FORMAT" }} a {{ object.data_fim|date:"SHORT_DATE_FORMAT" }}
+              </div>
+              <div class="col-md">
+                  <strong> Data de assinatura:</strong> {{ object.data_assinatura|date:"SHORT_DATE_FORMAT" }}
+              </div>
+             <div class="col-md">
+                  <strong> Processo:</strong><a href="{% url 'processo_detail' object.contrato.processo.processo_id.id %}"> {{ object.contrato.processo.processo_id.numero_sei }}</a>
+             </div>
+         </div>
     </div>
     <div class="row g-2 p-2 my-2">
          <h5>Itens</h5>
