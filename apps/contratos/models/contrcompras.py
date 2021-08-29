@@ -76,7 +76,8 @@ class RevisaoContratoCompra(BaseModel):
     contrato = models.ForeignKey(ContratoCompra, on_delete=models.CASCADE,
                                  related_name='revisoes')
     numero_aditamento = models.PositiveSmallIntegerField(null=True, blank=True)
-    objeto = models.CharField(max_length=500)
+    nome_simplificado = models.CharField(max_length=100, null=True, blank=True)
+    objeto = models.CharField(max_length=500, null=True, blank=True)
     ordem = models.PositiveSmallIntegerField(null=True, blank=True)
     motivo = models.CharField(max_length=1000, null=True, blank=True)
     data_assinatura = models.DateField(verbose_name='Data de Assinatura')
@@ -169,10 +170,11 @@ class RevisaoContratoCompra(BaseModel):
 
     def __str__(self):
         if self.numero_aditamento is None:
-            return f'{self.contrato.numero_formatado_com_tipo} - {self.objeto}'
+            return f'{self.contrato.numero_formatado_com_tipo} - ' \
+                   f'{self.nome_simplificado}'
         else:
-            return f'Aditamento {self.numero_formatado_com_tipo} - {self.ordem}º da Contratação ' \
-                   f'{self.contrato.numero_formatado_com_tipo}'
+            return f'{self.contrato.numero_formatado_com_tipo} - ' \
+                   f'{self.nome_simplificado} - Revisão nº {self.ordem}'
 
     class Meta:
         ordering = ['contrato', 'ordem']
