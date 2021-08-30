@@ -37,7 +37,7 @@ class ContratoCompraNovoForm(forms.ModelForm):
     class Meta:
         model = RevisaoContratoCompra
         fields = ['data_ini', 'data_fim', 'gestor', 'fiscal',
-                  'data_assinatura', 'objeto']
+                  'data_assinatura', 'objeto', 'nome_simplificado']
 
 
 class ContratoCompraEditForm(forms.ModelForm):
@@ -79,7 +79,7 @@ class ContratoCompraEditForm(forms.ModelForm):
     class Meta:
         model = RevisaoContratoCompra
         fields = ['data_ini', 'data_fim', 'gestor', 'fiscal',
-                  'data_assinatura', 'objeto']
+                  'data_assinatura', 'objeto', 'nome_simplificado']
 
 
 class RevisaContratoCompraForm(forms.ModelForm):

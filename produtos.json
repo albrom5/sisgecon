@@ -1,0 +1,649 @@
+[
+{
+  "model": "produtos.classeproduto",
+  "pk": 1,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:19:57.827Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:19:57.827Z",
+    "ultimo_editor": 1,
+    "descricao": "Aquisição"
+  }
+},
+{
+  "model": "produtos.classeproduto",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:47:32.084Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:47:32.084Z",
+    "ultimo_editor": 1,
+    "descricao": "Locação"
+  }
+},
+{
+  "model": "produtos.grupoproduto",
+  "pk": 1,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:20:09.745Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:20:09.745Z",
+    "ultimo_editor": 1,
+    "classe": 1,
+    "descricao": "Água Mineral"
+  }
+},
+{
+  "model": "produtos.grupoproduto",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:47:40.779Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:47:40.779Z",
+    "ultimo_editor": 1,
+    "classe": 2,
+    "descricao": "Mobiliário"
+  }
+},
+{
+  "model": "produtos.grupoproduto",
+  "pk": 3,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T14:57:57.263Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T14:57:57.263Z",
+    "ultimo_editor": 1,
+    "classe": 2,
+    "descricao": "Veículos"
+  }
+},
+{
+  "model": "produtos.subgrupoproduto",
+  "pk": 1,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:20:16.162Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:20:16.162Z",
+    "ultimo_editor": 1,
+    "classe": 1,
+    "grupo": 1,
+    "descricao": "Água Mineral"
+  }
+},
+{
+  "model": "produtos.subgrupoproduto",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:47:48.199Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:47:48.199Z",
+    "ultimo_editor": 1,
+    "classe": 2,
+    "grupo": 2,
+    "descricao": "Mobiliário Plástico"
+  }
+},
+{
+  "model": "produtos.subgrupoproduto",
+  "pk": 3,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T21:17:56.904Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T21:17:56.904Z",
+    "ultimo_editor": 1,
+    "classe": 2,
+    "grupo": 2,
+    "descricao": "Mobiliário Decorativo"
+  }
+},
+{
+  "model": "produtos.subgrupoproduto",
+  "pk": 4,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T14:58:27.588Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T14:58:34.977Z",
+    "ultimo_editor": 1,
+    "classe": 2,
+    "grupo": 3,
+    "descricao": "Veículo sem motorista"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 1,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:18:28.691Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:18:28.691Z",
+    "ultimo_editor": 1,
+    "sigla": "CX",
+    "descricao": "Caixa"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:18:35.713Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:18:35.713Z",
+    "ultimo_editor": 1,
+    "sigla": "DI",
+    "descricao": "Diária"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 3,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T18:18:42.485Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T18:18:42.485Z",
+    "ultimo_editor": 1,
+    "sigla": "UN",
+    "descricao": "Unidade"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 4,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T19:44:16.723Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T19:44:16.723Z",
+    "ultimo_editor": 1,
+    "sigla": "FD",
+    "descricao": "Fardo"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 5,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-15T21:53:41.610Z",
+    "criador": 1,
+    "modificado_em": "2021-06-15T21:53:41.610Z",
+    "ultimo_editor": 1,
+    "sigla": "SV",
+    "descricao": "Serviço"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 6,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:42:40.274Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:42:40.274Z",
+    "ultimo_editor": 1,
+    "sigla": "PO",
+    "descricao": "Posto"
+  }
+},
+{
+  "model": "produtos.unidademedida",
+  "pk": 7,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T20:16:09.046Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T20:16:09.046Z",
+    "ultimo_editor": 1,
+    "sigla": "PC",
+    "descricao": "Peça"
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 9,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:45:37.073Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:45:37.073Z",
+    "ultimo_editor": 1,
+    "descricao": "Agente de Limpeza",
+    "subgrupo": null,
+    "unidade": 6,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 10,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:47:16.837Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:47:16.837Z",
+    "ultimo_editor": 1,
+    "descricao": "Água e Café tipo A",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 11,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:49:55.973Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:49:55.973Z",
+    "ultimo_editor": 1,
+    "descricao": "Água e Café tipo B",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 12,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:50:19.368Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:50:19.368Z",
+    "ultimo_editor": 1,
+    "descricao": "Água e Café tipo C",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 13,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:51:30.630Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:51:30.630Z",
+    "ultimo_editor": 1,
+    "descricao": "Água Mineral (caixa com 48 copos)",
+    "subgrupo": null,
+    "unidade": 1,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 14,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:52:51.959Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:52:51.959Z",
+    "ultimo_editor": 1,
+    "descricao": "Almoço/Jantar",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 15,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:54:02.762Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:54:02.762Z",
+    "ultimo_editor": 1,
+    "descricao": "Ambulância Remoção",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 16,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:54:37.272Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:54:37.272Z",
+    "ultimo_editor": 1,
+    "descricao": "Ambulância UTI",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 17,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:55:39.134Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:55:39.134Z",
+    "ultimo_editor": 1,
+    "descricao": "Apoio Operacional",
+    "subgrupo": null,
+    "unidade": 6,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 18,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:56:20.525Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:56:20.525Z",
+    "ultimo_editor": 1,
+    "descricao": "Arquibancada tipo A - 16m x 10and",
+    "subgrupo": null,
+    "unidade": 3,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 19,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:56:54.405Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:56:54.405Z",
+    "ultimo_editor": 1,
+    "descricao": "Arquibancada tipo B - 10m x 7and",
+    "subgrupo": null,
+    "unidade": 3,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 20,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:57:29.174Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:57:29.174Z",
+    "ultimo_editor": 1,
+    "descricao": "Arquibancada tipo C - 12,5m x 3and",
+    "subgrupo": null,
+    "unidade": 3,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 21,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:57:58.403Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:57:58.403Z",
+    "ultimo_editor": 1,
+    "descricao": "Assistente de Palco",
+    "subgrupo": null,
+    "unidade": 6,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 22,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:59:04.142Z",
+    "criador": 1,
+    "modificado_em": "2021-06-21T20:59:04.142Z",
+    "ultimo_editor": 1,
+    "descricao": "Automóvel - Carro de Passeio",
+    "subgrupo": null,
+    "unidade": 2,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 23,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-21T20:59:44.791Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T14:59:04.537Z",
+    "ultimo_editor": 1,
+    "descricao": "Automóvel - Carro Executivo",
+    "subgrupo": 4,
+    "unidade": 2,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "1963",
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 24,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T17:00:48.089Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T17:00:48.089Z",
+    "ultimo_editor": 1,
+    "descricao": "Guia de Turismo Bilíngue (Português/Idioma a definir)",
+    "subgrupo": null,
+    "unidade": 2,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 25,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T17:04:17.978Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T17:04:17.978Z",
+    "ultimo_editor": 1,
+    "descricao": "Rádio HT",
+    "subgrupo": null,
+    "unidade": 3,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": null,
+    "ultimoprecocompra": null,
+    "tabela_eventos": true
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 26,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-17T20:11:00.360Z",
+    "criador": 1,
+    "modificado_em": "2021-08-17T20:11:00.360Z",
+    "ultimo_editor": 1,
+    "descricao": "Armazenamento, Transporte, Montagem e Desmontagem de Estruturas",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "5256",
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 27,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-17T20:23:38.986Z",
+    "criador": 1,
+    "modificado_em": "2021-08-17T20:23:38.986Z",
+    "ultimo_editor": 1,
+    "descricao": "Envio de Mailing de Imprensa",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "2300",
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 28,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T20:16:56.215Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T20:16:56.215Z",
+    "ultimo_editor": 1,
+    "descricao": "Compressor rotativo para ar condicionado",
+    "subgrupo": null,
+    "unidade": 7,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "376",
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 29,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T20:39:37.699Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T20:39:37.699Z",
+    "ultimo_editor": 1,
+    "descricao": "Lâmpada multivapor metálico tubular 2000W",
+    "subgrupo": null,
+    "unidade": 7,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "627",
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 30,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T20:40:11.444Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T20:40:11.444Z",
+    "ultimo_editor": 1,
+    "descricao": "Reator para Lâmpada a vapor metálico a alta pressão 2000W",
+    "subgrupo": null,
+    "unidade": 7,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "643",
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+},
+{
+  "model": "produtos.produto",
+  "pk": 31,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T22:41:30.287Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T22:41:30.287Z",
+    "ultimo_editor": 1,
+    "descricao": "Cursos e Treinamentos",
+    "subgrupo": null,
+    "unidade": 5,
+    "sigla": null,
+    "especifica": "",
+    "numprotheus": "2016",
+    "ultimoprecocompra": null,
+    "tabela_eventos": false
+  }
+}
+]

@@ -1,0 +1,41 @@
+[
+  {
+  "model": "base.status",
+  "pk": 1,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-08T22:24:48.813Z",
+    "criador": 1,
+    "modificado_em": "2021-06-08T22:24:48.813Z",
+    "ultimo_editor": 1,
+    "tipo": "PC",
+    "descricao": "Inicial"
+  }
+},
+{
+  "model": "base.status",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-08T22:27:43.333Z",
+    "criador": 1,
+    "modificado_em": "2021-06-08T22:27:43.333Z",
+    "ultimo_editor": 1,
+    "tipo": "PC",
+    "descricao": "Pesquisa de mercado"
+  }
+},
+{
+  "model": "base.status",
+  "pk": 3,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-08T22:28:18.601Z",
+    "criador": 1,
+    "modificado_em": "2021-06-08T22:28:18.602Z",
+    "ultimo_editor": 1,
+    "tipo": "PC",
+    "descricao": "Contratação realizada"
+  }
+}
+]

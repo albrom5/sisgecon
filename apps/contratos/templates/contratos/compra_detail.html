@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ object.numero_formatado_com_tipo }}
+{{ object.contrato.numero_formatado_com_tipo }}
 {% endblock %}
 
 {% block main %}
@@ -55,9 +55,10 @@
                         <th scope="col">Item</th>
                         <th scope="col">Produto</th>
                         <th scope="col">Quantidade</th>
-                        <th scope="col">Saldo Físico</th>
                         <th scope="col">Valor unitário</th>
                         <th scope="col">Valor total do item</th>
+                        <th scope="col">Saldo Físico</th>
+                        <th scope="col">Saldo Financeiro</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,9 +67,10 @@
                         <td>{{ item.ord_item }}</td>
                         <td>{{ item.produto }}</td>
                         <td>{{ item.quantidade|floatformat:2 }}</td>
-                        <td>{{ item.saldo_fis|floatformat:2 }}</td>
                         <td>R$ {{ item.valor_unit|floatformat:2 }}</td>
                         <td>R$ {{ item.valor_total|floatformat:2 }}</td>
+                        <td>{{ item.saldo_fisico|floatformat:2 }}</td>
+                        <td>R$ {{ item.saldo_fin|floatformat:2 }}</td>
                     </tr>
                         {% empty %}
                          Contrato sem itens cadastrados.

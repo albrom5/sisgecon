@@ -229,9 +229,9 @@ class ItemContratoCompra(BaseModel):
         return tot_item or 0
 
     @property
-    def saldo_financeiro(self):
-        saldo_fin = self.saldo_fis * self.valor_unit
-        return saldo_fin or 0
+    def saldo_fisico(self):
+        saldo_fis = self.saldo_fin / self.valor_unit
+        return saldo_fis or 0
 
     def get_ord_item(self):
         itens = ItemContratoCompra.objects.filter(revisao=self.revisao)
@@ -247,12 +247,36 @@ class ItemContratoCompra(BaseModel):
         self.valor_total = self.valor_total_item
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
-        if self.saldo_fis is None:
-            self.saldo_fis = self.quantidade
+        if self.saldo_fin is None:
+            self.saldo_fin = self.valor_total
         super(ItemContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.ord_item} - {self.produto}'
+        return f'{self.revisao.contrato.numero_formatado_com_tipo} Revisão {self.revisao.ordem} - Item {self.ord_item} - {self.produto}'
 
     class Meta:
         ordering = ['ord_item']
+
+
+class SubItemContratoCompra(BaseModel):
+    ACRS = 'Acréscimo'
+    DESC = 'Desconto'
+    TIPO_DE_FATOR_CHOICES = [
+        (ACRS, 'Acréscimo'),
+        (DESC, 'Desconto'),
+    ]
+    item = models.ForeignKey(ItemContratoCompra, on_delete=models.CASCADE)
+    descricao = models.CharField('Descrição', max_length=200)
+    fator = models.DecimalField(max_digits=9, decimal_places=6, null=True,
+                                blank=True)
+    tipofator = models.CharField(
+        max_length=9,
+        null=True,
+        blank=True,
+        choices=TIPO_DE_FATOR_CHOICES,
+    )
+    diaria_inicial = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.descricao
+

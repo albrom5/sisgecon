@@ -5,8 +5,7 @@ from django.db import models
 from django.db.models import Sum
 
 from apps.base.models import BaseModel, Status
-from apps.contratos.models import RevisaoContratoCompra, ItemContratoCompra
-from apps.produtos.models import Produto
+from apps.contratos.models import RevisaoContratoCompra, ItemContratoCompra, SubItemContratoCompra
 
 
 class OrdemFornecimento(BaseModel):
@@ -91,6 +90,13 @@ class ItemOF(BaseModel):
                                           MinValueValidator(
                                               Decimal('0.000000'))], null=True,
                                       blank=True)
+    is_contabilizado = models.BooleanField(default=False)
+
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        instance = super().from_db(db, field_names, values)
+        instance._loaded_values = dict(zip(field_names, values))
+        return instance
 
     def get_ord_item(self):
         itens = ItemOF.objects.filter(
@@ -105,13 +111,46 @@ class ItemOF(BaseModel):
 
     @property
     def valor_total_item(self):
-        tot_item = self.quantidade * self.valor_unit
+        subitens = SubItemContratoCompra.objects.filter(item_id=self.produto.id).order_by('diaria_inicial')
+        tot_item = 0
+        if subitens is None:
+            tot_item = self.quantidade * self.diaria * self.produto.valor_unit
+        else:
+            lista_subitens = list()
+            quantidade_corrigida = self.quantidade
+            lista_diarias = list(range(self.diaria + 1))
+            for subitem in subitens:
+                if subitem.tipofator == 'Desconto':
+                    lista_subitens.append([subitem.diaria_inicial, subitem.fator])
+            maximo_subitem = max(lista_subitens)[0]
+            for diaria in lista_diarias:
+                for indice, subitem in enumerate(lista_subitens):
+                    if diaria == lista_subitens[indice][0]:
+                        quantidade_corrigida *= lista_subitens[indice][1]
+                    elif diaria > lista_subitens[indice][0]:
+                        quantidade_corrigida *= lista_subitens[maximo_subitem][1]
+                tot_item += quantidade_corrigida * self.produto.valor_unit
         return tot_item or 0
+
+    def atualiza_saldo(self):
+        contrato = ItemContratoCompra.objects.get(id=self.produto.id)
+        saldo_anterior_contrato = contrato.saldo_fin
+        saldo_atualizado_contrato = saldo_anterior_contrato
+        if not self._state.adding:
+            valor_anterior_of = self._loaded_values['valor_total']
+            if valor_anterior_of != self.valor_total:
+                saldo_anterior_contrato += valor_anterior_of
+                saldo_atualizado_contrato = saldo_anterior_contrato - self.valor_total
+        else:
+            saldo_atualizado_contrato = saldo_anterior_contrato - self.valor_total
+        contrato.saldo_fin = saldo_atualizado_contrato
+        contrato.save()
 
     def save(self, *args, **kwargs):
         self.valor_total = self.valor_total_item
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
+        self.atualiza_saldo()
         super(ItemOF, self).save(*args, **kwargs)
 
     def __str__(self):

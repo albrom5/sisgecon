@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ContratoCompra, ItemContratoCompra, RevisaoContratoCompra
+from .models import ContratoCompra, ItemContratoCompra, RevisaoContratoCompra, SubItemContratoCompra
 
 
 @admin.register(ContratoCompra)
@@ -75,4 +75,16 @@ class RevisaoContratoCompraAdmin(admin.ModelAdmin):
         'criador',
         'modificado_em',
         'ultimo_editor',
+    )
+
+
+@admin.register(SubItemContratoCompra)
+class SubItemContratoCompraAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'item',
+        'descricao',
+        'tipofator',
+        'fator',
+        'diaria_inicial',
     )

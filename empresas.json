@@ -1,0 +1,456 @@
+[
+  {
+  "model": "empresa.pessoa",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-28T03:22:40.933Z",
+    "criador": 1,
+    "modificado_em": "2021-06-28T03:22:40.959Z",
+    "ultimo_editor": 1,
+    "tipo": "PJ",
+    "nome": "Segmax Comércio e Equipamentos de Segurança e Serviços de Tecnologia Eireli",
+    "insc_mun": null,
+    "cliente": false,
+    "fornecedor": true,
+    "logradouro": "Avenida Doutor Timóteo Penteado",
+    "ender_num": "2832",
+    "ender_compl": null,
+    "bairro": "Vila São Judas Tadeu",
+    "cidade": "Guarulhos",
+    "estado": "SP",
+    "pais": "Brasil",
+    "cep": "07061-000"
+  }
+},
+{
+  "model": "empresa.pessoa",
+  "pk": 3,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T16:21:41.807Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T16:21:41.842Z",
+    "ultimo_editor": 1,
+    "tipo": "PJ",
+    "nome": "Brasitur Eventos e Turismo LTDA",
+    "insc_mun": "0773879100168",
+    "cliente": false,
+    "fornecedor": true,
+    "logradouro": "Quadra QS 3",
+    "ender_num": "03",
+    "ender_compl": null,
+    "bairro": "Areal (Águas Claras)",
+    "cidade": "Brasília",
+    "estado": "DF",
+    "pais": "Brasil",
+    "cep": "71953-000"
+  }
+},
+{
+  "model": "empresa.pessoa",
+  "pk": 4,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T17:03:22.492Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T17:03:22.523Z",
+    "ultimo_editor": 1,
+    "tipo": "PJ",
+    "nome": "Alpharadius Comunicação Ltda - EPP",
+    "insc_mun": "4.257.394-7",
+    "cliente": false,
+    "fornecedor": true,
+    "logradouro": "Rua Vicente Soares da Costa",
+    "ender_num": "261",
+    "ender_compl": null,
+    "bairro": "Jardim Primavera (Zona Norte)",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "pais": "Brasil",
+    "cep": "02755-000"
+  }
+},
+{
+  "model": "empresa.pessoa",
+  "pk": 5,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-17T20:17:32.194Z",
+    "criador": 1,
+    "modificado_em": "2021-08-17T20:17:32.224Z",
+    "ultimo_editor": 1,
+    "tipo": "PJ",
+    "nome": "Cenius Eventos e Serviços Ltda",
+    "insc_mun": "155920",
+    "cliente": false,
+    "fornecedor": true,
+    "logradouro": "Avenida Portugal",
+    "ender_num": "141",
+    "ender_compl": "cj. 52/53",
+    "bairro": "Centro",
+    "cidade": "Santo André",
+    "estado": "SP",
+    "pais": "Brasil",
+    "cep": "09040-010"
+  }
+},
+{
+  "model": "empresa.pessoa",
+  "pk": 6,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T22:50:19.417Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T22:50:19.464Z",
+    "ultimo_editor": 1,
+    "tipo": "PJ",
+    "nome": "Agência Race de Comunicação e Marketing Ltda",
+    "insc_mun": "3.405.791-9",
+    "cliente": false,
+    "fornecedor": true,
+    "logradouro": "Rua Vergueiro",
+    "ender_num": "1353",
+    "ender_compl": "cj. 1208 a 1211",
+    "bairro": "Vila Mariana",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "pais": "Brasil",
+    "cep": "04101-000"
+  }
+},
+{
+  "model": "empresa.pessoa",
+  "pk": 7,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T23:12:11.854Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T23:12:11.886Z",
+    "ultimo_editor": 1,
+    "tipo": "PJ",
+    "nome": "Zenite Informação e Consultoria S/A",
+    "insc_mun": "287652-2",
+    "cliente": false,
+    "fornecedor": true,
+    "logradouro": "Avenida Sete de Setembro",
+    "ender_num": "4698",
+    "ender_compl": "3º andar",
+    "bairro": "Batel",
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "pais": "Brasil",
+    "cep": "80240-000"
+  }
+},
+{
+  "model": "empresa.pessoajuridica",
+  "pk": 6,
+  "fields": {
+    "cnpj": "03.160.832/0001-63",
+    "insc_est": "Isento",
+    "nome_fantasia": "Race Comunicação"
+  }
+},
+{
+  "model": "empresa.pessoajuridica",
+  "pk": 4,
+  "fields": {
+    "cnpj": "06.235.606/0001-92",
+    "insc_est": "147.907.226.119",
+    "nome_fantasia": "Alpharadius"
+  }
+},
+{
+  "model": "empresa.pessoajuridica",
+  "pk": 3,
+  "fields": {
+    "cnpj": "23.361.387/0001-07",
+    "insc_est": null,
+    "nome_fantasia": "Brasitur"
+  }
+},
+{
+  "model": "empresa.pessoajuridica",
+  "pk": 5,
+  "fields": {
+    "cnpj": "01.998.124/0001-70",
+    "insc_est": "626.744.642.110",
+    "nome_fantasia": "Cenius"
+  }
+},
+{
+  "model": "empresa.pessoajuridica",
+  "pk": 2,
+  "fields": {
+    "cnpj": "16.917.372/0001-17",
+    "insc_est": null,
+    "nome_fantasia": "Segmax"
+  }
+},
+{
+  "model": "empresa.pessoajuridica",
+  "pk": 7,
+  "fields": {
+    "cnpj": "86.781.069/0001-15",
+    "insc_est": "10198056-18",
+    "nome_fantasia": "Zenite"
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 1,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-28T03:22:40.942Z",
+    "criador": 1,
+    "modificado_em": "2021-06-28T03:22:40.942Z",
+    "ultimo_editor": 1,
+    "pessoa": 2,
+    "tipo": "Email",
+    "contato": "luciana@segmaxepi.com.br",
+    "responsavel": "Luciana",
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 2,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-06-28T03:22:40.948Z",
+    "criador": 1,
+    "modificado_em": "2021-06-28T03:22:40.948Z",
+    "ultimo_editor": 1,
+    "pessoa": 2,
+    "tipo": "Telefone",
+    "contato": "(11) 2086-4440",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 3,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T16:21:41.817Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T16:21:41.817Z",
+    "ultimo_editor": 1,
+    "pessoa": 3,
+    "tipo": "Telefone",
+    "contato": "(61) 3877-1790",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 4,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T16:21:41.822Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T16:21:41.822Z",
+    "ultimo_editor": 1,
+    "pessoa": 3,
+    "tipo": "Email",
+    "contato": "comercial@brasitur.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 5,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T16:21:41.827Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T16:21:41.827Z",
+    "ultimo_editor": 1,
+    "pessoa": 3,
+    "tipo": "Email",
+    "contato": "eventos@brasitur.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 6,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T16:21:41.832Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T16:21:41.832Z",
+    "ultimo_editor": 1,
+    "pessoa": 3,
+    "tipo": "Telefone",
+    "contato": "(61) 99926-8081",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 7,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T17:03:22.501Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T17:03:22.501Z",
+    "ultimo_editor": 1,
+    "pessoa": 4,
+    "tipo": "Telefone",
+    "contato": "(11) 3857-7327",
+    "responsavel": "Rodrigo",
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 8,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T17:03:22.507Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T17:03:22.507Z",
+    "ultimo_editor": 1,
+    "pessoa": 4,
+    "tipo": "Email",
+    "contato": "rodrigo@alpharadius.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 9,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-07-06T17:03:22.511Z",
+    "criador": 1,
+    "modificado_em": "2021-07-06T17:03:22.512Z",
+    "ultimo_editor": 1,
+    "pessoa": 4,
+    "tipo": "Email",
+    "contato": "alpharadius@alpharadius.com.b",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 10,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-17T20:17:32.204Z",
+    "criador": 1,
+    "modificado_em": "2021-08-17T20:17:32.204Z",
+    "ultimo_editor": 1,
+    "pessoa": 5,
+    "tipo": "Email",
+    "contato": "cenius@cenius.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 11,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-17T20:17:32.211Z",
+    "criador": 1,
+    "modificado_em": "2021-08-17T20:17:32.212Z",
+    "ultimo_editor": 1,
+    "pessoa": 5,
+    "tipo": "Telefone",
+    "contato": "(11)2325-0993",
+    "responsavel": "Ricardo Mendes Campos",
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 12,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T22:50:19.431Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T22:50:19.431Z",
+    "ultimo_editor": 1,
+    "pessoa": 6,
+    "tipo": "Telefone",
+    "contato": "(11)2894-5607",
+    "responsavel": "Rogério Artoni",
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 13,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T22:50:19.440Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T22:50:19.440Z",
+    "ultimo_editor": 1,
+    "pessoa": 6,
+    "tipo": "Email",
+    "contato": "rogerioartoni@agenciarace.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 14,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T22:50:19.448Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T22:50:19.448Z",
+    "ultimo_editor": 1,
+    "pessoa": 6,
+    "tipo": "Email",
+    "contato": "rosangelaartoni@agenciarace.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 15,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T23:12:11.863Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T23:12:11.864Z",
+    "ultimo_editor": 1,
+    "pessoa": 7,
+    "tipo": "Telefone",
+    "contato": "(41)2109-8646",
+    "responsavel": "Marcio Ferreira'",
+    "padrao": false
+  }
+},
+{
+  "model": "empresa.contato",
+  "pk": 16,
+  "fields": {
+    "ativo": true,
+    "criado_em": "2021-08-19T23:12:11.871Z",
+    "criador": 1,
+    "modificado_em": "2021-08-19T23:12:11.871Z",
+    "ultimo_editor": 1,
+    "pessoa": 7,
+    "tipo": "Email",
+    "contato": "marcio.ferreira@zenite.com.br",
+    "responsavel": null,
+    "padrao": false
+  }
+}
+]
