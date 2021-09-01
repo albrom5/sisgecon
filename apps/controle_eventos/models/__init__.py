@@ -1,3 +1,3 @@
 from .ordem_fornecimento import (
-    OrdemFornecimento, ItemOF
+    OrdemFornecimento, ItemOF, DecomposicaoValor
 )

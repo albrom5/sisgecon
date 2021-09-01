@@ -5,7 +5,9 @@ from django.db import models
 from django.db.models import Sum
 
 from apps.base.models import BaseModel, Status
-from apps.contratos.models import RevisaoContratoCompra, ItemContratoCompra, SubItemContratoCompra
+from apps.contratos.models import (
+    RevisaoContratoCompra, ItemContratoCompra, SubItemContratoCompra
+)
 
 
 class OrdemFornecimento(BaseModel):
@@ -79,18 +81,13 @@ class ItemOF(BaseModel):
                                              Decimal('0.000000'))], null=True,
                                      blank=True)
     diaria = models.IntegerField(null=True, blank=True)
-    valor_unit = models.DecimalField(verbose_name='Valor unitário',
-                                     max_digits=19, decimal_places=6,
-                                     validators=[
-                                         MinValueValidator(
-                                             Decimal('0.000000'))], null=True,
-                                     blank=True)
     valor_total = models.DecimalField(max_digits=19, decimal_places=6,
                                       validators=[
                                           MinValueValidator(
                                               Decimal('0.000000'))], null=True,
                                       blank=True)
-    is_contabilizado = models.BooleanField(default=False)
+    inicio_montagem = models.DateTimeField(null=True, blank=True)
+    fim_desmontagem = models.DateTimeField(null=True, blank=True)
 
     @classmethod
     def from_db(cls, db, field_names, values):
@@ -109,27 +106,46 @@ class ItemOF(BaseModel):
         ordem = ultimo.ord_item + 1
         return ordem
 
-    @property
-    def valor_total_item(self):
-        subitens = SubItemContratoCompra.objects.filter(item_id=self.produto.id).order_by('diaria_inicial')
-        tot_item = 0
-        if subitens is None:
-            tot_item = self.quantidade * self.diaria * self.produto.valor_unit
+    def decompoe_valor(self):
+        valor_unit = self.produto.valor_unit
+        subitens = SubItemContratoCompra.objects.filter(
+            item_id=self.produto.id).order_by('diaria_inicial')
+        periodo = (self.fim_desmontagem - self.inicio_montagem).days + 1
+        itens_decompostos = DecomposicaoValor.objects.filter(item=self)
+        if itens_decompostos:
+            itens_decompostos.delete()
+        if not subitens:
+            DecomposicaoValor.objects.create(
+                item=self, valor_corrigido=valor_unit,
+                dias=periodo
+            )
         else:
             lista_subitens = list()
-            quantidade_corrigida = self.quantidade
-            lista_diarias = list(range(self.diaria + 1))
             for subitem in subitens:
                 if subitem.tipofator == 'Desconto':
-                    lista_subitens.append([subitem.diaria_inicial, subitem.fator])
-            maximo_subitem = max(lista_subitens)[0]
-            for diaria in lista_diarias:
-                for indice, subitem in enumerate(lista_subitens):
-                    if diaria == lista_subitens[indice][0]:
-                        quantidade_corrigida *= lista_subitens[indice][1]
-                    elif diaria > lista_subitens[indice][0]:
-                        quantidade_corrigida *= lista_subitens[maximo_subitem][1]
-                tot_item += quantidade_corrigida * self.produto.valor_unit
+                    lista_subitens.append(
+                        [subitem.diaria_inicial, subitem.fator]
+                    )
+            DecomposicaoValor.objects.create(
+                item=self, valor_corrigido=valor_unit,
+                dias=1
+            )
+            ultimo_desconto = max(lista_subitens)[0]
+            for subitem in lista_subitens:
+                valor_com_desconto = valor_unit * (subitem[1] / 100)
+                if ultimo_desconto == subitem[0]:
+                    diarias = periodo - subitem[0]
+                else:
+                    diarias = 1
+                DecomposicaoValor.objects.create(
+                    item=self, valor_corrigido=valor_com_desconto,
+                    dias=diarias
+                )
+
+    @property
+    def total_item(self):
+        tot_item = self.decomposicaovalor_set.filter(ativo=True).aggregate(
+            Sum('subtotal'))['subtotal__sum']
         return tot_item or 0
 
     def atualiza_saldo(self):
@@ -138,23 +154,51 @@ class ItemOF(BaseModel):
         saldo_atualizado_contrato = saldo_anterior_contrato
         if not self._state.adding:
             valor_anterior_of = self._loaded_values['valor_total']
-            if valor_anterior_of != self.valor_total:
+            if valor_anterior_of != self.total_item:
                 saldo_anterior_contrato += valor_anterior_of
-                saldo_atualizado_contrato = saldo_anterior_contrato - self.valor_total
+                saldo_atualizado_contrato = \
+                    saldo_anterior_contrato - self.total_item
         else:
-            saldo_atualizado_contrato = saldo_anterior_contrato - self.valor_total
+            saldo_atualizado_contrato = \
+                saldo_anterior_contrato - self.total_item
         contrato.saldo_fin = saldo_atualizado_contrato
         contrato.save()
 
     def save(self, *args, **kwargs):
-        self.valor_total = self.valor_total_item
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
         self.atualiza_saldo()
         super(ItemOF, self).save(*args, **kwargs)
+        self.decompoe_valor()
 
     def __str__(self):
         return f'{self.ord_item} - {self.produto}'
 
     class Meta:
         ordering = ['ord_item']
+
+
+class DecomposicaoValor(BaseModel):
+    item = models.ForeignKey(ItemOF, on_delete=models.CASCADE)
+    valor_corrigido = models.DecimalField(
+        verbose_name='Valor corrigido',
+        max_digits=19, decimal_places=6,
+        validators=[MinValueValidator(Decimal('0.000000'))], null=True,
+        blank=True)
+    dias = models.PositiveIntegerField(null=True, blank=True)
+    subtotal = models.DecimalField(
+        verbose_name='Subtotal',
+        max_digits=19, decimal_places=6,
+        validators=[MinValueValidator(Decimal('0.000000'))], null=True,
+        blank=True)
+
+    def subtotal_periodo(self):
+        valor_diaria = self.item.quantidade * self.valor_corrigido * self.dias
+        return valor_diaria or 0
+
+    def save(self, *args, **kwargs):
+        self.subtotal = self.subtotal_periodo()
+        super(DecomposicaoValor, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.item} - {self.dias}'
