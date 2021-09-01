@@ -112,6 +112,7 @@ class ItemOF(BaseModel):
             item_id=self.produto.id).order_by('diaria_inicial')
         periodo = (self.fim_desmontagem - self.inicio_montagem).days + 1
         itens_decompostos = DecomposicaoValor.objects.filter(item=self)
+        print(f'Período = {periodo} diárias')
         if itens_decompostos:
             itens_decompostos.delete()
         if not subitens:
@@ -130,17 +131,21 @@ class ItemOF(BaseModel):
                 item=self, valor_corrigido=valor_unit,
                 dias=1
             )
+
             ultimo_desconto = max(lista_subitens)[0]
-            for subitem in lista_subitens:
-                valor_com_desconto = valor_unit * (subitem[1] / 100)
-                if ultimo_desconto == subitem[0]:
-                    diarias = periodo - subitem[0]
-                else:
-                    diarias = 1
-                DecomposicaoValor.objects.create(
-                    item=self, valor_corrigido=valor_com_desconto,
-                    dias=diarias
-                )
+            if periodo > 1:
+                for subitem in lista_subitens:
+                    valor_com_desconto = valor_unit * (subitem[1] / 100)
+                    if ultimo_desconto == subitem[0]:
+                        diarias = periodo - subitem[0]
+                        if diarias <= 0:
+                            break
+                    else:
+                        diarias = 1
+                    DecomposicaoValor.objects.create(
+                        item=self, valor_corrigido=valor_com_desconto,
+                        dias=diarias
+                    )
 
     @property
     def total_item(self):
@@ -154,19 +159,20 @@ class ItemOF(BaseModel):
         saldo_atualizado_contrato = saldo_anterior_contrato
         if not self._state.adding:
             valor_anterior_of = self._loaded_values['valor_total']
-            if valor_anterior_of != self.total_item:
+            if valor_anterior_of != self.valor_total:
                 saldo_anterior_contrato += valor_anterior_of
                 saldo_atualizado_contrato = \
-                    saldo_anterior_contrato - self.total_item
+                    saldo_anterior_contrato - self.valor_total
         else:
             saldo_atualizado_contrato = \
-                saldo_anterior_contrato - self.total_item
+                saldo_anterior_contrato - self.valor_total
         contrato.saldo_fin = saldo_atualizado_contrato
         contrato.save()
 
     def save(self, *args, **kwargs):
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
+        self.valor_total = self.total_item
         self.atualiza_saldo()
         super(ItemOF, self).save(*args, **kwargs)
         self.decompoe_valor()
