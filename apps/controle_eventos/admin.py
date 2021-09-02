@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import OrdemFornecimento, ItemOF, DecomposicaoValor
+from .models import OrdemFornecimento, ItemOF, DecomposicaoValor, SubItemOF
 
 
 @admin.register(OrdemFornecimento)
@@ -31,6 +31,7 @@ class ItemOFAdmin(admin.ModelAdmin):
         'total_item',
     )
 
+
 @admin.register(DecomposicaoValor)
 class DecomposicaoValorAdmin(admin.ModelAdmin):
     list_display = (
@@ -39,4 +40,13 @@ class DecomposicaoValorAdmin(admin.ModelAdmin):
         'valor_corrigido',
         'dias',
         'subtotal',
+    )
+
+
+@admin.register(SubItemOF)
+class SubItemOFAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'item_of',
+        'item_contrato',
     )

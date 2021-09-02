@@ -252,18 +252,20 @@ class ItemContratoCompra(BaseModel):
         super(ItemContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.revisao.contrato.numero_formatado_com_tipo} Revisão {self.revisao.ordem} - Item {self.ord_item} - {self.produto}'
+        return f'{self.revisao.contrato.numero_formatado_com_tipo} ' \
+               f'Revisão {self.revisao.ordem} - Item {self.ord_item} - ' \
+               f'{self.produto}'
 
     class Meta:
         ordering = ['ord_item']
 
 
 class SubItemContratoCompra(BaseModel):
-    ACRS = 'Acréscimo'
-    DESC = 'Desconto'
     TIPO_DE_FATOR_CHOICES = [
-        (ACRS, 'Acréscimo'),
-        (DESC, 'Desconto'),
+        ('ACRS', 'Acréscimo'),
+        ('DESC', 'Desconto sobre diária'),
+        ('SUPR', 'Desconto sobre equipamento'),
+
     ]
     item = models.ForeignKey(ItemContratoCompra, on_delete=models.CASCADE)
     descricao = models.CharField('Descrição', max_length=200)

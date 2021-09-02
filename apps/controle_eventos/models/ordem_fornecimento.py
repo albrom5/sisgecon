@@ -1,3 +1,4 @@
+import datetime
 from decimal import Decimal
 
 from django.core.validators import MinValueValidator
@@ -108,28 +109,38 @@ class ItemOF(BaseModel):
 
     def decompoe_valor(self):
         valor_unit = self.produto.valor_unit
-        subitens = SubItemContratoCompra.objects.filter(
+        subitens_contrato = SubItemContratoCompra.objects.filter(
             item_id=self.produto.id).order_by('diaria_inicial')
-        periodo = (self.fim_desmontagem - self.inicio_montagem).days + 1
+        data_final_corrigida = \
+            self.fim_desmontagem - datetime.timedelta(seconds=1)
+        periodo = (data_final_corrigida - self.inicio_montagem).days + 1
         itens_decompostos = DecomposicaoValor.objects.filter(item=self)
         print(f'Período = {periodo} diárias')
         if itens_decompostos:
             itens_decompostos.delete()
-        if not subitens:
+        if not subitens_contrato:
             DecomposicaoValor.objects.create(
                 item=self, valor_corrigido=valor_unit,
-                dias=periodo
+                dias=periodo, desconto=100
             )
         else:
             lista_subitens = list()
-            for subitem in subitens:
-                if subitem.tipofator == 'Desconto':
+            subitens_of = SubItemOF.objects.filter(item_of=self)
+            diferenca = 0
+            if subitens_of:
+                for sub in subitens_of:
+                    if sub.item_contrato.tipofator == 'SUPR':
+                        sub.item_contrato.fator *= -1
+                    diferenca += valor_unit * (sub.item_contrato.fator / 100)
+            valor_unit += diferenca
+            for subitem in subitens_contrato:
+                if subitem.tipofator == 'DESC':
                     lista_subitens.append(
                         [subitem.diaria_inicial, subitem.fator]
                     )
             DecomposicaoValor.objects.create(
                 item=self, valor_corrigido=valor_unit,
-                dias=1
+                dias=1, desconto=100
             )
 
             ultimo_desconto = max(lista_subitens)[0]
@@ -138,13 +149,15 @@ class ItemOF(BaseModel):
                     valor_com_desconto = valor_unit * (subitem[1] / 100)
                     if ultimo_desconto == subitem[0]:
                         diarias = periodo - subitem[0]
-                        if diarias <= 0:
+                        if diarias < 0:
                             break
+                        else:
+                            diarias += 1
                     else:
                         diarias = 1
                     DecomposicaoValor.objects.create(
                         item=self, valor_corrigido=valor_com_desconto,
-                        dias=diarias
+                        dias=diarias, desconto=subitem[1]
                     )
 
     @property
@@ -152,6 +165,12 @@ class ItemOF(BaseModel):
         tot_item = self.decomposicaovalor_set.filter(ativo=True).aggregate(
             Sum('subtotal'))['subtotal__sum']
         return tot_item or 0
+
+    @property
+    def total_diaria(self):
+        tot_diaria = self.decomposicaovalor_set.filter(ativo=True).aggregate(
+            Sum('dias'))['dias__sum']
+        return tot_diaria or 0
 
     def atualiza_saldo(self):
         contrato = ItemContratoCompra.objects.get(id=self.produto.id)
@@ -173,6 +192,7 @@ class ItemOF(BaseModel):
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
         self.valor_total = self.total_item
+        self.diaria = self.total_diaria
         self.atualiza_saldo()
         super(ItemOF, self).save(*args, **kwargs)
         self.decompoe_valor()
@@ -184,8 +204,19 @@ class ItemOF(BaseModel):
         ordering = ['ord_item']
 
 
+class SubItemOF(BaseModel):
+    item_of = models.ForeignKey(ItemOF, on_delete=models.CASCADE)
+    item_contrato = models.ForeignKey(SubItemContratoCompra,
+                                      on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id} - {self.item_contrato}'
+
+
 class DecomposicaoValor(BaseModel):
     item = models.ForeignKey(ItemOF, on_delete=models.CASCADE)
+    desconto = models.DecimalField(max_digits=9, decimal_places=6, null=True,
+                                   blank=True)
     valor_corrigido = models.DecimalField(
         verbose_name='Valor corrigido',
         max_digits=19, decimal_places=6,
@@ -207,4 +238,4 @@ class DecomposicaoValor(BaseModel):
         super(DecomposicaoValor, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.item} - {self.dias}'
+        return f'{self.item} - {self.dias} - {self.desconto}%'
