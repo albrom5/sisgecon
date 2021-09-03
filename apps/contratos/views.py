@@ -120,7 +120,7 @@ class ContratoCompraDetail(CustomDetailView):
         num_revisao = self.kwargs['pk']
         revisao = RevisaoContratoCompra.objects.get(id=num_revisao)
         ofs = OrdemFornecimento.objects.filter(
-            contrato__contrato_id=revisao.id
+            contrato__contrato_id=revisao.contrato.id
         )
         data['ordens_fornecimento'] = ofs
         return data
