@@ -19,6 +19,10 @@ class ContratoCompra(BaseModel):
         ('AS', 'Autorização de Serviço'),
         ('OC', 'Ordem de Compra')
     ]
+    CONTROLE_DE_SALDO = [
+        ('FIN', 'Financeiro'),
+        ('FIS', 'Físico')
+    ]
     processo = models.ForeignKey(ProcessoCompra, on_delete=models.PROTECT,
                                  null=True, blank=True,
                                  limit_choices_to={'ativo': True})
@@ -34,6 +38,9 @@ class ContratoCompra(BaseModel):
                                limit_choices_to={'tipo': 'CC', 'ativo': True})
     data_assinatura = models.DateField(verbose_name='Data de Assinatura',
                                        null=True, blank=True)
+    controle_de_saldo = models.CharField(max_length=3,
+                                         choices=CONTROLE_DE_SALDO,
+                                         default='FIN')
 
     @property
     def numero_formatado(self):
@@ -144,7 +151,8 @@ class RevisaoContratoCompra(BaseModel):
         return ordem
 
     def copia_itens(self):
-        itens = ItemContratoCompra.objects.filter(revisao__contrato=self.contrato.id, revisao__ordem=self.ordem - 1)
+        itens = ItemContratoCompra.objects.filter(
+            revisao__contrato=self.contrato.id, revisao__ordem=self.ordem - 1)
         itens_atuais = ItemContratoCompra.objects.filter(revisao=self.id)
         if len(itens_atuais) == 0:
             for item in itens:
@@ -229,9 +237,14 @@ class ItemContratoCompra(BaseModel):
         return tot_item or 0
 
     @property
-    def saldo_fisico(self):
+    def get_saldo_fisico(self):
         saldo_fis = self.saldo_fin / self.valor_unit
         return saldo_fis or 0
+
+    @property
+    def get_saldo_financeiro(self):
+        saldo_fin = self.saldo_fis / self.valor_unit
+        return saldo_fin or 0
 
     def get_ord_item(self):
         itens = ItemContratoCompra.objects.filter(revisao=self.revisao)
@@ -247,8 +260,14 @@ class ItemContratoCompra(BaseModel):
         self.valor_total = self.valor_total_item
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
-        if self.saldo_fin is None:
-            self.saldo_fin = self.valor_total
+        if self.revisao.contrato.controle_de_saldo == 'FIN':
+            if self.saldo_fin is None:
+                self.saldo_fin = self.valor_total
+            self.saldo_fis = self.get_saldo_fisico
+        else:
+            if self.saldo_fis is None:
+                self.saldo_fis = self.quantidade
+            self.saldo_fin = self.get_saldo_financeiro
         super(ItemContratoCompra, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -281,4 +300,3 @@ class SubItemContratoCompra(BaseModel):
 
     def __str__(self):
         return self.descricao
-

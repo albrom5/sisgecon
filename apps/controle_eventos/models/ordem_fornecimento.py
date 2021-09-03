@@ -81,12 +81,22 @@ class ItemOF(BaseModel):
                                          MinValueValidator(
                                              Decimal('0.000000'))], null=True,
                                      blank=True)
+    quantidade_anterior = models.DecimalField(max_digits=19, decimal_places=6,
+                                              validators=[MinValueValidator(
+                                                 Decimal('0.000000'))],
+                                              null=True, blank=True)
+    # Campo diária deste model não é usado para cálculo de valor, apenas para
+    # mostrar o total de diárias o item.
     diaria = models.IntegerField(null=True, blank=True)
     valor_total = models.DecimalField(max_digits=19, decimal_places=6,
                                       validators=[
                                           MinValueValidator(
                                               Decimal('0.000000'))], null=True,
                                       blank=True)
+    valor_total_anterior = models.DecimalField(max_digits=19, decimal_places=6,
+                                               validators=[MinValueValidator(
+                                                   Decimal('0.000000'))],
+                                               null=True, blank=True)
     inicio_montagem = models.DateTimeField(null=True, blank=True)
     fim_desmontagem = models.DateTimeField(null=True, blank=True)
 
@@ -142,7 +152,6 @@ class ItemOF(BaseModel):
                 item=self, valor_corrigido=valor_unit,
                 dias=1, desconto=100
             )
-
             ultimo_desconto = max(lista_subitens)[0]
             if periodo > 1:
                 for subitem in lista_subitens:
@@ -172,30 +181,67 @@ class ItemOF(BaseModel):
             Sum('dias'))['dias__sum']
         return tot_diaria or 0
 
+    def armazena_valores_anteriores(self):
+        self.quantidade_anterior = self.quantidade
+        self.valor_total_anterior = self.total_item
+
     def atualiza_saldo(self):
-        contrato = ItemContratoCompra.objects.get(id=self.produto.id)
-        saldo_anterior_contrato = contrato.saldo_fin
-        saldo_atualizado_contrato = saldo_anterior_contrato
-        if not self._state.adding:
-            valor_anterior_of = self._loaded_values['valor_total']
-            if valor_anterior_of != self.valor_total:
-                saldo_anterior_contrato += valor_anterior_of
+        item_contrato = ItemContratoCompra.objects.get(id=self.produto.id)
+        if item_contrato.revisao.contrato.controle_de_saldo == 'FIN':
+            saldo_anterior_contrato = item_contrato.saldo_fin
+            saldo_atualizado_contrato = saldo_anterior_contrato
+            if self._state.adding:
                 saldo_atualizado_contrato = \
-                    saldo_anterior_contrato - self.valor_total
+                    saldo_anterior_contrato - self.total_item
+            else:
+                valor_anterior_of = self.valor_total_anterior
+                if valor_anterior_of != self.total_item:
+                    saldo_anterior_contrato += valor_anterior_of
+                    saldo_atualizado_contrato = \
+                        saldo_anterior_contrato - self.total_item
+            item_contrato.saldo_fin = saldo_atualizado_contrato
         else:
+            saldo_anterior_contrato = item_contrato.saldo_fis
+            saldo_atualizado_contrato = saldo_anterior_contrato
+            if self._state.adding:
+                saldo_atualizado_contrato = \
+                    saldo_anterior_contrato - self.total_diaria
+            else:
+                quantidade_anterior_of = self.quantidade_anterior
+                if quantidade_anterior_of != self.total_diaria:
+                    saldo_anterior_contrato += quantidade_anterior_of
+                    saldo_atualizado_contrato = \
+                        saldo_anterior_contrato - self.total_diaria
+            item_contrato.saldo_fis = saldo_atualizado_contrato
+        item_contrato.save()
+
+    def atualiza_valor_total(self):
+        total = self.total_item
+        ItemOF.objects.filter(id=self.id).update(valor_total=total)
+
+    def delete(self, *args, **kwargs):
+        item_contrato = ItemContratoCompra.objects.get(id=self.produto.id)
+        if item_contrato.revisao.contrato.controle_de_saldo == 'FIN':
+            saldo_anterior_contrato = item_contrato.saldo_fin
             saldo_atualizado_contrato = \
-                saldo_anterior_contrato - self.valor_total
-        contrato.saldo_fin = saldo_atualizado_contrato
-        contrato.save()
+                saldo_anterior_contrato + self.total_item
+            item_contrato.saldo_fin = saldo_atualizado_contrato
+        else:
+            saldo_anterior_contrato = item_contrato.saldo_fis
+            saldo_atualizado_contrato = \
+                saldo_anterior_contrato + self.quantidade
+            item_contrato.saldo_fis = saldo_atualizado_contrato
+        item_contrato.save()
+        super(ItemOF, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
-        self.valor_total = self.total_item
-        self.diaria = self.total_diaria
-        self.atualiza_saldo()
+        self.armazena_valores_anteriores()
         super(ItemOF, self).save(*args, **kwargs)
         self.decompoe_valor()
+        self.atualiza_saldo()
+        self.atualiza_valor_total()
 
     def __str__(self):
         return f'{self.ord_item} - {self.produto}'

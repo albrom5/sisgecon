@@ -8,6 +8,7 @@ from apps.base.custom_views import (
 )
 from apps.empresa.models import PessoaJuridica, PessoaFisica
 from apps.processos.models import ProcessoCompra
+from apps.controle_eventos.models import OrdemFornecimento
 from .models import ContratoCompra, RevisaoContratoCompra
 from .filters import RevisaoContratoCompraFilter
 from .forms import (
@@ -114,6 +115,16 @@ class ContratoCompraDetail(CustomDetailView):
     permission_codename = 'contratos.view_contratocompra'
     template_name = 'contratos/compra_detail.html'
 
+    def get_context_data(self, **kwargs):
+        data = super(ContratoCompraDetail, self).get_context_data(**kwargs)
+        num_revisao = self.kwargs['pk']
+        revisao = RevisaoContratoCompra.objects.get(id=num_revisao)
+        ofs = OrdemFornecimento.objects.filter(
+            contrato__contrato_id=revisao.id
+        )
+        data['ordens_fornecimento'] = ofs
+        return data
+
 
 class ContratoCompraEdit(CustomUpdateView):
     model = RevisaoContratoCompra
@@ -173,7 +184,8 @@ class RevisaContratoCompra(CustomCreateView):
     def get_context_data(self, **kwargs):
         data = super(RevisaContratoCompra, self).get_context_data(**kwargs)
         contrato_id = self.kwargs['contrato_id']
-        revisao_anterior = RevisaoContratoCompra.objects.get(contrato=contrato_id, is_vigente=True)
+        revisao_anterior = RevisaoContratoCompra.objects.get(
+            contrato=contrato_id, is_vigente=True)
         data['numero_contrato'] = revisao_anterior.contrato.numero_formatado
         data['numero_contrato_com_tipo'] = revisao_anterior.contrato.numero_formatado_com_tipo
         data['processo'] = revisao_anterior.contrato.processo

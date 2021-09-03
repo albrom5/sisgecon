@@ -69,7 +69,7 @@
                         <td>{{ item.quantidade|floatformat:2 }}</td>
                         <td>R$ {{ item.valor_unit|floatformat:2 }}</td>
                         <td>R$ {{ item.valor_total|floatformat:2 }}</td>
-                        <td>{{ item.saldo_fisico|floatformat:2 }}</td>
+                        <td>{{ item.saldo_fis|floatformat:2 }}</td>
                         <td>R$ {{ item.saldo_fin|floatformat:2 }}</td>
                     </tr>
                         {% empty %}
@@ -79,7 +79,34 @@
             </table>
         </div>
 
+    </div>
+
+     <div class="row g-2 p-2 my-2">
+         <h5>Ordens de Fornecimento</h5>
+        <div class="row g-2 p-2 border-top">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">OF</th>
+                        <th scope="col">Data de Emissão</th>
+                        <th scope="col">Valor total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for of in ordens_fornecimento %}
+                    <tr>
+                        <td>{{ of.numero_formatado }}</td>
+                        <td>{{ of.data_emissao }}</td>
+                        <td>R$ {{ of.valor_total_of|floatformat:2 }}</td>
+                    </tr>
+                        {% empty %}
+                         Não há ordens de fornecimento para este contrato.
+                        {% endfor %}
+                </tbody>
+            </table>
         </div>
+
+     </div>
 
     {# Fim do cabeçalho da DetailView #}
      {# Início da seção de botões #}
