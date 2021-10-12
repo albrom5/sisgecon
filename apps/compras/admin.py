@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import SolicitacaoCompra, ItemSC
+from .models import (
+    SolicitacaoCompra, ItemSC, Pregao, Lote, ItemLote
+)
 
 
 @admin.register(SolicitacaoCompra)
@@ -67,4 +69,28 @@ class ItemSCAdmin(admin.ModelAdmin):
         'criador',
         'modificado_em',
         'ultimo_editor',
+    )
+
+
+@admin.register(Pregao)
+class PregaoAdmin(admin.ModelAdmin):
+    list_display = (
+        'numero_edital',
+        'processo'
+    )
+
+
+@admin.register(Lote)
+class LoteAdmin(admin.ModelAdmin):
+    list_display = (
+        'pregao',
+        'numero'
+    )
+
+
+@admin.register(ItemLote)
+class ItemLoteAdmin(admin.ModelAdmin):
+    list_display = (
+        'lote',
+        'produto'
     )

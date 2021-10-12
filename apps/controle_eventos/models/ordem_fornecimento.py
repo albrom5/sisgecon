@@ -9,9 +9,14 @@ from apps.base.models import BaseModel, Status
 from apps.contratos.models import (
     RevisaoContratoCompra, ItemContratoCompra, SubItemContratoCompra
 )
+from .eventos import Evento, SubEvento
 
 
 class OrdemFornecimento(BaseModel):
+    evento = models.ForeignKey(Evento, on_delete=models.SET_NULL,
+                               null=True, blank=True)
+    subevento = models.ForeignKey(SubEvento, on_delete=models.SET_NULL,
+                                  null=True, blank=True)
     contrato = models.ForeignKey(RevisaoContratoCompra,
                                  on_delete=models.PROTECT,
                                  limit_choices_to={'is_vigente': True})

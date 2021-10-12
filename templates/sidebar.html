@@ -7,10 +7,10 @@
         </a>
         <ul class="list-unstyled ps-3 pt-3">
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#cadastros-collapse" aria-expanded="false">
               Cadastros
             </button>
-            <div class="collapse" id="home-collapse">
+            <div class="collapse" id="cadastros-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="{% url 'produtos_list' %}" class="link-dark rounded">Produtos</a></li>
                 <li><a href="{% url 'fornecedores_list' %}" class="link-dark rounded">Fornecedores</a></li>
@@ -18,10 +18,10 @@
             </div>
           </li>
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#compras-collapse" aria-expanded="false">
               Compras
             </button>
-            <div class="collapse" id="dashboard-collapse">
+            <div class="collapse" id="compras-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="{% url 'processos_list' %}" class="link-dark rounded">Processos de Compras</a></li>
                 <li><a href="#" class="link-dark rounded">Licitações</a></li>
@@ -30,12 +30,22 @@
             </div>
           </li>
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#contratos-collapse" aria-expanded="false">
               Contratos
             </button>
-            <div class="collapse" id="orders-collapse">
+            <div class="collapse" id="contratos-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="{% url 'contratoscompras_list' %}" class="link-dark rounded">Contratos</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#eventos-collapse" aria-expanded="false">
+              Eventos
+            </button>
+            <div class="collapse" id="eventos-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="" class="link-dark rounded">Ordens de Fornecimento</a></li>
               </ul>
             </div>
           </li>

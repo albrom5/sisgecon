@@ -5,42 +5,23 @@ from django.db import models
 from django.db.models import Sum
 
 from apps.base.models import BaseModel, Status
-from apps.empresa.models import Departamento, Funcionario, Pessoa
 from apps.processos.models import ProcessoCompra
+from apps.empresa.models import Pessoa, Departamento, Funcionario
 from apps.produtos.models import Produto, SubGrupoProduto
 
 
-class ContratoCompra(BaseModel):
-    TIPO_CONTRATO = [
-        ('CCO', 'Substitutivo Contratual'),
-        ('CCN', 'Termo Contratual')
-    ]
-    SUBTIPO = [
-        ('AS', 'Autorização de Serviço'),
-        ('OC', 'Ordem de Compra')
-    ]
-    CONTROLE_DE_SALDO = [
-        ('FIN', 'Financeiro'),
-        ('FIS', 'Físico')
-    ]
-    processo = models.ForeignKey(ProcessoCompra, on_delete=models.PROTECT,
-                                 null=True, blank=True,
-                                 limit_choices_to={'ativo': True})
-    tipo = models.CharField(max_length=3, choices=TIPO_CONTRATO)
-    subtipo = models.CharField(max_length=2, choices=SUBTIPO, null=True,
-                               blank=True)
+class AtaRP(BaseModel):
+    processo = models.ForeignKey(ProcessoCompra, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
     numero = models.PositiveSmallIntegerField(null=True, blank=True)
     numero_format_ano = models.CharField(max_length=9, null=True, blank=True)
     fornecedor = models.ForeignKey(Pessoa, on_delete=models.PROTECT,
                                    limit_choices_to={'fornecedor': True})
     status = models.ForeignKey(Status, on_delete=models.SET_NULL,
                                null=True, blank=True,
-                               limit_choices_to={'tipo': 'CC', 'ativo': True})
+                               limit_choices_to={'tipo': 'AP', 'ativo': True})
     data_assinatura = models.DateField(verbose_name='Data de Assinatura',
                                        null=True, blank=True)
-    controle_de_saldo = models.CharField(max_length=3,
-                                         choices=CONTROLE_DE_SALDO,
-                                         default='FIN')
 
     @property
     def numero_formatado(self):
@@ -48,18 +29,13 @@ class ContratoCompra(BaseModel):
         ano = data.year
         return f'{str(self.numero).zfill(4)}/{str(ano)}'
 
-    @property
-    def numero_formatado_com_tipo(self):
-        return f'{self.tipo} {self.numero_formatado}'
-
     def get_sequencial(self):
-        tipo = self.tipo
         data = self.data_assinatura
         ano = data.year
-        contrato = ContratoCompra.objects.filter(
-            ativo=True, tipo=tipo, data_assinatura__year=ano).last()
-        if contrato:
-            return contrato.numero + 1
+        ata = AtaRP.objects.filter(
+            ativo=True, data_assinatura__year=ano).last()
+        if ata:
+            return ata.numero + 1
         else:
             return 1
 
@@ -68,20 +44,20 @@ class ContratoCompra(BaseModel):
             self.numero = self.get_sequencial()
         if self.numero_format_ano is None:
             self.numero_format_ano = self.numero_formatado
-        super(ContratoCompra, self).save(*args, **kwargs)
+        super(AtaRP, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.numero_formatado_com_tipo}'
+        return f'ARP n° {self.numero_formatado}'
 
     class Meta:
-        verbose_name = 'Contrato de Compras'
-        verbose_name_plural = 'Contratos de Compras'
-        ordering = ['tipo', 'data_assinatura', 'numero']
+        verbose_name = 'Ata de Registro de Preços'
+        verbose_name_plural = 'Atas de Registro de Preços'
+        ordering = ['data_assinatura', 'numero']
 
 
-class RevisaoContratoCompra(BaseModel):
-    contrato = models.ForeignKey(ContratoCompra, on_delete=models.CASCADE,
-                                 related_name='revisoes')
+class RevisaoAta(BaseModel):
+    ata = models.ForeignKey(AtaRP, on_delete=models.CASCADE,
+                            related_name='revisoes')
     numero_aditamento = models.PositiveSmallIntegerField(null=True, blank=True)
     nome_simplificado = models.CharField(max_length=100, null=True, blank=True)
     objeto = models.CharField(max_length=500, null=True, blank=True)
@@ -100,11 +76,11 @@ class RevisaoContratoCompra(BaseModel):
     gestor = models.ForeignKey(Funcionario, on_delete=models.SET_NULL,
                                null=True, blank=True,
                                limit_choices_to={'ativo': True},
-                               related_name='gestores')
+                               related_name='gestores_da_ata')
     fiscal = models.ForeignKey(Funcionario, on_delete=models.SET_NULL,
                                null=True, blank=True,
                                limit_choices_to={'ativo': True},
-                               related_name='fiscais')
+                               related_name='fiscais_da_ata')
     is_vigente = models.BooleanField(default=True)
     cod_protheus = models.CharField(max_length=15, null=True, blank=True)
     data_protheus = models.DateField(null=True, blank=True)
@@ -112,8 +88,8 @@ class RevisaoContratoCompra(BaseModel):
                                  null=True, blank=True)
 
     @property
-    def valor_total_contrato(self):
-        total = self.itens.filter(ativo=True).aggregate(
+    def valor_total_ata(self):
+        total = self.itemata_set.filter(ativo=True).aggregate(
             Sum('valor_total'))['valor_total__sum']
         return total or 0
 
@@ -124,38 +100,28 @@ class RevisaoContratoCompra(BaseModel):
             ano = data.year
             return f'{str(self.numero_aditamento).zfill(4)}/{str(ano)}'
 
-    @property
-    def numero_formatado_com_tipo(self):
-        if self.numero_aditamento is not None:
-            return f'{self.contrato.tipo} {self.numero_formatado}'
-
     def get_sequencial(self):
-        tipo = self.contrato.tipo
         data = self.data_assinatura
         ano = data.year
-        aditamento = RevisaoContratoCompra.objects.filter(
-            ativo=True, contrato__tipo=tipo, data_assinatura__year=ano).last()
+        aditamento = RevisaoAta.objects.filter(
+            ativo=True, data_assinatura__year=ano).last()
         if aditamento and aditamento.numero_aditamento is not None:
             return aditamento.numero_aditamento + 1
         else:
             return 1
 
     def get_ordem(self):
-        aditamentos = RevisaoContratoCompra.objects.filter(
-            contrato=self.contrato
-        )
-        if not aditamentos:
+        ultima_revisao = RevisaoAta.objects.filter(ata=self.ata).last()
+        if not ultima_revisao:
             ordem = 0
             return ordem
-        ultimo = RevisaoContratoCompra.objects.filter(
-            contrato=self.contrato).last()
-        ordem = int(ultimo.ordem) + 1
+        ordem = int(ultima_revisao.ordem) + 1
         return ordem
 
     def copia_itens(self):
-        itens = ItemContratoCompra.objects.filter(
-            revisao__contrato=self.contrato.id, revisao__ordem=self.ordem - 1)
-        itens_atuais = ItemContratoCompra.objects.filter(revisao=self.id)
+        itens = ItemAta.objects.filter(
+            revisao__ata=self.ata.id, revisao__ordem=self.ordem - 1)
+        itens_atuais = ItemAta.objects.filter(revisao=self.id)
         if len(itens_atuais) == 0:
             for item in itens:
                 item.pk = None
@@ -168,39 +134,37 @@ class RevisaoContratoCompra(BaseModel):
         if self.numero_aditamento is None and self.ordem != 0:
             self.numero_aditamento = self.get_sequencial()
         self.tornar_atual_vigente()
-        self.valor_total = self.valor_total_contrato
-        super(RevisaoContratoCompra, self).save(*args, **kwargs)
+        self.valor_total = self.valor_total_ata
+        super(RevisaoAta, self).save(*args, **kwargs)
         if self.ordem > 0:
             self.copia_itens()
 
     def tornar_atual_vigente(self):
-        RevisaoContratoCompra.objects.filter(
-            contrato=self.contrato).order_by('ordem').update(is_vigente=False)
+        RevisaoAta.objects.filter(
+            ata=self.ata).order_by('ordem').update(is_vigente=False)
         return
 
     def __str__(self):
         if self.numero_aditamento is None:
-            return f'{self.contrato.numero_formatado_com_tipo} - ' \
+            return f'{self.ata.numero_formatado} - ' \
                    f'{self.nome_simplificado}'
         else:
-            return f'{self.contrato.numero_formatado_com_tipo} - ' \
+            return f'{self.ata.numero_formatado} - ' \
                    f'{self.nome_simplificado} - Revisão nº {self.ordem}'
 
     class Meta:
-        ordering = ['contrato', 'ordem']
+        ordering = ['ata', 'ordem']
 
 
-class ItemContratoCompra(BaseModel):
-    revisao = models.ForeignKey(RevisaoContratoCompra, null=True, blank=True,
+class ItemAta(BaseModel):
+    revisao = models.ForeignKey(RevisaoAta, null=True, blank=True,
                                 on_delete=models.CASCADE,
-                                limit_choices_to={'ativo': True},
-                                related_name="itens")
+                                limit_choices_to={'ativo': True})
     ord_item = models.PositiveSmallIntegerField(verbose_name='Item',
                                                 null=True, blank=True)
     produto = models.ForeignKey(Produto, null=True, blank=True,
                                 on_delete=models.PROTECT,
-                                limit_choices_to={'ativo': True},
-                                related_name="produtos")
+                                limit_choices_to={'ativo': True})
     descricao = models.CharField(verbose_name='Descrição', max_length=500,
                                  null=True, blank=True)
     quantidade = models.DecimalField(max_digits=19, decimal_places=6,
@@ -249,31 +213,22 @@ class ItemContratoCompra(BaseModel):
         return saldo_fin or 0
 
     def get_ord_item(self):
-        itens = ItemContratoCompra.objects.filter(revisao=self.revisao)
-        if not itens:
+        ultimo_item = ItemAta.objects.filter(
+            revisao=self.revisao).last()
+        if not ultimo_item:
             ordem = 1
             return ordem
-        ultimo = ItemContratoCompra.objects.filter(
-            revisao=self.revisao).last()
-        ordem = ultimo.ord_item + 1
+        ordem = ultimo_item.ord_item + 1
         return ordem
 
     def save(self, *args, **kwargs):
         self.valor_total = self.valor_total_item
         if self.ord_item is None:
             self.ord_item = self.get_ord_item()
-        if self.revisao.contrato.controle_de_saldo == 'FIN':
-            if self.saldo_fin is None:
-                self.saldo_fin = self.valor_total
-            self.saldo_fis = self.get_saldo_fisico
-        else:
-            if self.saldo_fis is None:
-                self.saldo_fis = self.quantidade
-            self.saldo_fin = self.get_saldo_financeiro
-        super(ItemContratoCompra, self).save(*args, **kwargs)
+        super(ItemAta, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.revisao.contrato.numero_formatado_com_tipo} ' \
+        return f'{self.revisao.ata.numero_formatado} ' \
                f'Revisão {self.revisao.ordem} - Item {self.ord_item} - ' \
                f'{self.produto}'
 
@@ -281,14 +236,14 @@ class ItemContratoCompra(BaseModel):
         ordering = ['ord_item']
 
 
-class SubItemContratoCompra(BaseModel):
+class SubItemAta(BaseModel):
     TIPO_DE_FATOR_CHOICES = [
         ('ACRS', 'Acréscimo'),
         ('DESC', 'Desconto sobre diária'),
         ('SUPR', 'Desconto sobre equipamento'),
 
     ]
-    item = models.ForeignKey(ItemContratoCompra, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemAta, on_delete=models.CASCADE)
     descricao = models.CharField('Descrição', max_length=200)
     fator = models.DecimalField(max_digits=9, decimal_places=6, null=True,
                                 blank=True)

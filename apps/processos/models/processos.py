@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from apps.base.models import Status, BaseModel
+from apps.produtos.models import SubGrupoProduto
+from apps.empresa.models import Departamento, Funcionario
 
 
 class Modalidade(BaseModel):
@@ -28,6 +30,7 @@ class Processo(BaseModel):
     data_autuacao = models.DateField(verbose_name='Autuado em:', null=True,
                                      blank=True)
     # TODO Testar exclude self.pk no filtro
+
     def validate_unique(self, exclude=None):
         qs = Processo.objects.filter(numero_sei=self.numero_sei).exclude(
             id=self.id
@@ -50,19 +53,18 @@ class ProcessoCompra(BaseModel):
     modalidade = models.ForeignKey(Modalidade, on_delete=models.PROTECT,
                                    null=True, blank=True,
                                    limit_choices_to={'ativo': True})
-    numero_edital = models.CharField(max_length=20, null=True, blank=True)
     sistema = models.ForeignKey(Sistema, on_delete=models.SET_NULL, null=True,
                                 blank=True, limit_choices_to={'ativo': True})
-    refer_sistema = models.CharField(
-        verbose_name='Número de Referência no Sistema', max_length=20,
-        null=True, blank=True)
     data_gco = models.DateField(verbose_name='Recebido na GCO em:', null=True,
                                 blank=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True,
                                blank=True, limit_choices_to={'tipo': 'PC',
                                                              'ativo': True})
-
-# TODO Criar campos responsável, área (com relacionamentos)
+    subgrupo = models.ForeignKey(SubGrupoProduto, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    area = models.ManyToManyField(Departamento)
+    comprador = models.ForeignKey(Funcionario, on_delete=models.SET_NULL,
+                                  null=True, blank=True)
 
     def __str__(self):
         return f'{self.processo_id.numero_sei} - {self.processo_id.descricao}'

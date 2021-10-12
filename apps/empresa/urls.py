@@ -10,7 +10,7 @@ from .views import (
 urlpatterns = [
     path('fornecedores/', never_cache(FornecedoresList.as_view()),
          name='fornecedores_list'),
-    path('fornecedores/<int:pk>', FornecedorDetail.as_view(),
+    path('fornecedores/<int:pk>', never_cache(FornecedorDetail.as_view()),
          name='fornecedor_detail'),
     path('fornecedores/editar/<int:pk>', FornecedorEdit.as_view(),
          name='fornecedor_edit'),

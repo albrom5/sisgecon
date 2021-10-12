@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import ProcessoCompra, Processo
+from apps.empresa.models import Funcionario
 
 
 class ProcessoCompraForm(forms.ModelForm):
@@ -34,6 +35,7 @@ class ProcessoCompraForm(forms.ModelForm):
         model = ProcessoCompra
         fields = ['modalidade', 'data_gco', 'status']
 
+
 class ProcessoCompraEditForm(forms.ModelForm):
     numero_sei = forms.CharField(max_length=19, required=True,
                                  label='Número SEI')
@@ -51,6 +53,11 @@ class ProcessoCompraEditForm(forms.ModelForm):
         self.fields['status'].widget.attrs.update({'class': 'form-select'})
         self.fields['data_gco'].widget.attrs.update(
             {'class': 'datemask'}
+        )
+        self.fields['subgrupo'].widget.attrs.update({'class': 'form-select'})
+        self.fields['comprador'].widget.attrs.update({'class': 'form-select'})
+        self.fields['comprador'].queryset = Funcionario.objects.filter(
+            pregoeiro=True
         )
 
     def clean(self):
@@ -71,4 +78,4 @@ class ProcessoCompraEditForm(forms.ModelForm):
 
     class Meta:
         model = ProcessoCompra
-        fields = ['modalidade', 'data_gco', 'status']
+        fields = ['modalidade', 'data_gco', 'status', 'subgrupo', 'comprador']

@@ -14,7 +14,7 @@ urlpatterns = [
          name='substitutivo_novo'),
     path('compras/', never_cache(ContratosCompraList.as_view()),
          name='contratoscompras_list'),
-    path('compras/<int:pk>', ContratoCompraDetail.as_view(),
+    path('compras/<int:pk>', never_cache(ContratoCompraDetail.as_view()),
          name='compra_detail'),
     path('compras/edit/<int:pk>', ContratoCompraEdit.as_view(),
          name='contratocompra_edit'),

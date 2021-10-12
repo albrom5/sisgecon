@@ -11,7 +11,8 @@ urlpatterns = [
          name='sc_nova_pc'),
     path('sc_nova/', SolicitacaoCompraNova.as_view(), name='sc_nova'),
     path('sc/', never_cache(SolicitacaoCompraList.as_view()), name='sc_list'),
-    path('sc/<int:pk>', SolicitacaoCompraDetail.as_view(), name='sc_detail'),
+    path('sc/<int:pk>', never_cache(SolicitacaoCompraDetail.as_view()),
+         name='sc_detail'),
     path('sc/edit/<int:pk>', SolicitacaoCompraEdit.as_view(), name='sc_edit'),
     path('<int:processo_id>/lista_sc/', never_cache(
         SCListProcesso.as_view()), name='sclist_processo'),

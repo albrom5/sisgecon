@@ -20,6 +20,7 @@ class Funcionario(BaseModel):
     cargo = models.ForeignKey(Cargo, on_delete=models.SET_NULL,
                               blank=True, null=True,
                               limit_choices_to={'ativo': True})
+    pregoeiro = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'

@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import OrdemFornecimento, ItemOF, DecomposicaoValor, SubItemOF
+from .models import (
+    OrdemFornecimento, ItemOF, DecomposicaoValor, SubItemOF, Evento, SubEvento,
+)
 
 
 @admin.register(OrdemFornecimento)
@@ -49,4 +51,22 @@ class SubItemOFAdmin(admin.ModelAdmin):
         'id',
         'item_of',
         'item_contrato',
+    )
+
+
+@admin.register(Evento)
+class EventoAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'contrato',
+        'descricao',
+    )
+
+
+@admin.register(SubEvento)
+class SubEvento(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'evento',
+        'descricao',
     )

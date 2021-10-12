@@ -10,7 +10,7 @@ from .views import (ProcessoCompraNovo,
 urlpatterns = [
     path('', never_cache(ProcessosCompraList.as_view()),
          name='processos_list'),
-    path('<int:pk>', ProcessoCompraDetail.as_view(),
+    path('<int:pk>', never_cache(ProcessoCompraDetail.as_view()),
          name='processo_detail'),
     path('novo/', ProcessoCompraNovo.as_view(),
          name='processo_novo'),

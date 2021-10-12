@@ -1,6 +1,9 @@
 from django.contrib import admin
 
-from .models import ContratoCompra, ItemContratoCompra, RevisaoContratoCompra, SubItemContratoCompra
+from .models import (
+    ContratoCompra, ItemContratoCompra, RevisaoContratoCompra,
+    SubItemContratoCompra, AtaRP, RevisaoAta, ItemAta, SubItemAta
+)
 
 
 @admin.register(ContratoCompra)
@@ -87,4 +90,36 @@ class SubItemContratoCompraAdmin(admin.ModelAdmin):
         'tipofator',
         'fator',
         'diaria_inicial',
+    )
+
+
+@admin.register(AtaRP)
+class AtaRPAdmin(admin.ModelAdmin):
+    list_display = (
+        'numero_format_ano',
+        'fornecedor'
+    )
+
+
+@admin.register(RevisaoAta)
+class RevisaoAtaAdmin(admin.ModelAdmin):
+    list_display = (
+        'ata',
+        'ordem'
+    )
+
+
+@admin.register(ItemAta)
+class ItemAtaAdmin(admin.ModelAdmin):
+    list_display = (
+        'revisao',
+        'ord_item',
+    )
+
+
+@admin.register(SubItemAta)
+class SubItemAtaAdmin(admin.ModelAdmin):
+    list_display = (
+        'item',
+        'descricao'
     )
