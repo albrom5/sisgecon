@@ -5,6 +5,10 @@ from apps.compras.views import (
     SolicitacaoCompraNova, SolicitacaoCompraList, SolicitacaoCompraDetail,
     SolicitacaoCompraEdit, SCListProcesso, vinculasc
 )
+from apps.compras.autocomplete_views import (
+    AreaAutocomplete, ResponsavelAutocomplete, CentroCustoAutocomplete,
+    ContaContabilAutocomplete, ProdutoAutocomplete
+)
 
 urlpatterns = [
     path('<int:processo_id>/nova_sc/', SolicitacaoCompraNova.as_view(),
@@ -17,5 +21,16 @@ urlpatterns = [
     path('<int:processo_id>/lista_sc/', never_cache(
         SCListProcesso.as_view()), name='sclist_processo'),
     path('ajax/<int:processo_id>/vincula_sc/<int:pk>', vinculasc,
-         name='vincula_sc')
+         name='vincula_sc'),
+    # Autocomplete
+    path('area_autocomplete/', AreaAutocomplete.as_view(),
+         name='area_autocomplete'),
+    path('responsavel_autocomplete/', ResponsavelAutocomplete.as_view(),
+         name='resp_autocomplete'),
+    path('centrocusto_autocomplete/', CentroCustoAutocomplete.as_view(),
+         name='ccusto_autocomplete'),
+    path('contacontabil_autocomplete/', ContaContabilAutocomplete.as_view(),
+         name='ccontabil_autocomplete'),
+    path('produto_autocomplete/', ProdutoAutocomplete.as_view(),
+         name='produto_autocomplete'),
 ]

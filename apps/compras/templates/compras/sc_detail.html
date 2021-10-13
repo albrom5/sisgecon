@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ object }}
+SC nº {{ object }}
 {% endblock %}
 
 {% block main %}
@@ -60,6 +60,7 @@
     {# Fim do cabeçalho da DetailView #}
      {# Início da seção de botões #}
         <div id="botoes">
+        {% if user.funcionario.departamento == object.area or user.is_superuser %}
             <div class="row g-2 p-2 my-2 border-top">
                 <div class="col-3">
                     <a href="{% url 'sc_edit' object.id %}" class="btn btn-primary">
@@ -67,6 +68,7 @@
                     </a>
                 </div>
             </div>
+        {% endif %}
             <div class="row g-2 p-2">
                 <div class="col-3">
                     <a href="{% url 'sc_list' %}" class="btn btn-secondary">

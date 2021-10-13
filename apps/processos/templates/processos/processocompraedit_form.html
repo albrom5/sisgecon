@@ -37,6 +37,57 @@ Editar Processo de Compra nº {{ object }}
                   {{ form.comprador|as_crispy_field }}
               </div>
             </div>
+            <div class="row g-2 p-2 my-2">
+             <h5>Solicitações de Compra vinculadas</h5>
+                {% for sc in object.solicitacaocompra_set.all %}
+                <div class="row g-2 p-2 border-top">
+                    <div class="col-md">
+                        <button class="btn btn-toggle align-items-center rounded collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItens{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseExample">
+                              </button>
+                        <strong>SC: {{ sc.numsc }}</strong>
+                    </div>
+                    <div class="col-md">
+                        Data de emissão: {{ sc.data_emissao|date:"SHORT_DATE_FORMAT" }}
+                    </div>
+                    <div class="col-md">
+                        Prazo: {{ sc.prazo|date:"SHORT_DATE_FORMAT" }}
+                    </div>
+                    <div class="col-md">
+                        Valor total: R$ {{ sc.valor_total|floatformat:2 }}
+                    </div>
+                    <div class="row g-2 p-2">
+                        <div class="collapse" id="collapseItens{{ forloop.counter }}">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Produto</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Valor unitário</th>
+                                        <th scope="col">Valor total do item</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in sc.itens.all %}
+                                    <tr>
+                                        <td>{{ item.produto }}</td>
+                                        <td>{{ item.quantidade|floatformat:2 }}</td>
+                                        <td>R$ {{ item.valor_unit|floatformat:2 }}</td>
+                                        <td>R$ {{ item.valor_total|floatformat:2 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                    {% empty %}
+                    <div class="row g-2 p-2">
+                        <div class="col-md">
+                        Processo sem SC's cadastradas.
+                        </div>
+                    </div>
+            </div>
+            {% endfor %}
             <div class="row g-2 p-2">
               <div class="col-md">
                   <a href="{% url 'sclist_processo' object.processo_id.id %}" class="btn btn-primary">
@@ -60,6 +111,7 @@ Editar Processo de Compra nº {{ object }}
 {% endblock %}
 
 {% block script %}
+    {{ form.media }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'customjs/fieldmasks.js' %}"></script>
 {% endblock %}

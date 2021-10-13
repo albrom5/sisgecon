@@ -2,6 +2,8 @@ asgiref==3.3.4
 beautifulsoup4==4.9.3
 dj-database-url==0.5.0
 Django==3.1.13
+django-ajax-datatable==4.2.0
+django-autocomplete-light==3.8.2
 django-crispy-forms==1.11.2
 django-cuser==2017.3.16
 django-debug-toolbar==3.2.1
@@ -12,6 +14,7 @@ django-heroku==0.3.1
 django-localflavor==3.1
 django-login-required-middleware==0.6.1
 django-smart-selects==1.5.9
+django-tables2==2.4.0
 gunicorn==20.1.0
 psycopg2==2.8.6
 python-decouple==3.4

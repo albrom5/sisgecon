@@ -1,5 +1,7 @@
 from django import forms
 
+from dal import autocomplete
+
 from .models import ProcessoCompra, Processo
 from apps.empresa.models import Funcionario
 
@@ -54,7 +56,6 @@ class ProcessoCompraEditForm(forms.ModelForm):
         self.fields['data_gco'].widget.attrs.update(
             {'class': 'datemask'}
         )
-        self.fields['subgrupo'].widget.attrs.update({'class': 'form-select'})
         self.fields['comprador'].widget.attrs.update({'class': 'form-select'})
         self.fields['comprador'].queryset = Funcionario.objects.filter(
             pregoeiro=True
@@ -79,3 +80,12 @@ class ProcessoCompraEditForm(forms.ModelForm):
     class Meta:
         model = ProcessoCompra
         fields = ['modalidade', 'data_gco', 'status', 'subgrupo', 'comprador']
+        widgets = {
+            'subgrupo': autocomplete.ModelSelect2(
+                url='subgrupo_autocomplete',
+                attrs={
+                    'class': 'form-control',
+                    'data-minimum-input-length': 3,
+                }
+            )
+        }

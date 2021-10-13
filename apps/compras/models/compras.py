@@ -84,8 +84,8 @@ class ItemSC(BaseModel):
                                 on_delete=models.PROTECT,
                                 limit_choices_to={'ativo': True},
                                 related_name="itemsc_produto")
-    descricao = models.CharField(verbose_name='Descrição', max_length=500,
-                                 null=True, blank=True)
+    descricao = models.CharField(verbose_name='Descrição adicional',
+                                 max_length=500, null=True, blank=True)
     quantidade = models.DecimalField(max_digits=19, decimal_places=6,
                                      validators=[
                                          MinValueValidator(

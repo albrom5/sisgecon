@@ -1,14 +1,14 @@
 from django import forms
 
+from dal import autocomplete
+
 from .models import Produto
 
 class ProdutoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProdutoForm, self).__init__(*args, **kwargs)
-
         self.fields['unidade'].widget.attrs.update({'class': 'form-select'})
-        self.fields['subgrupo'].widget.attrs.update({'class': 'form-select'})
 
     def clean(self):
         cleaned_data = super().clean()
@@ -29,3 +29,11 @@ class ProdutoForm(forms.ModelForm):
         model = Produto
         fields = ['descricao', 'unidade', 'sigla', 'subgrupo', 'especifica',
                   'numprotheus', 'tabela_eventos']
+        widgets = {
+            'subgrupo': autocomplete.ModelSelect2(
+                url='subgrupo_autocomplete',
+                attrs={'class': 'form-control',
+                       'data-minimum-input-length': 3,
+                       }
+            )
+        }

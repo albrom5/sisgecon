@@ -89,7 +89,15 @@ class Produto(BaseModel):
         verbose_name='Tabela de eventos?', default=False)
 
     def __str__(self):
-        return self.descricao
+        if self.numprotheus and self.subgrupo:
+            return f'{self.numprotheus} - {self.descricao} ' \
+                   f'({self.subgrupo.classe.descricao})'
+        elif self.numprotheus:
+            return f'{self.numprotheus} - {self.descricao}'
+        elif self.subgrupo:
+            return f'{self.descricao} ({self.subgrupo.classe.descricao})'
+        else:
+            return self.descricao
 
     def get_absolute_url(self):
         return reverse('produto_detail', kwargs={'pk': self.pk})
