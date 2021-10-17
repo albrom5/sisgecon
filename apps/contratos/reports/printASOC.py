@@ -40,8 +40,6 @@ def export_asoc_to_excel(request, pk):
 
         if contato.responsavel:
             responsaveis.append(contato.responsavel)
-    if len(responsaveis) == 0:
-        responsaveis[0] = 'Não preenchido'
 
     if contrato.contrato.fornecedor.tipo == 'PJ':
         fornecedor = PessoaJuridica.objects.get(
@@ -107,7 +105,7 @@ def export_asoc_to_excel(request, pk):
         sheet['Q' + linha] = item['valor_unit']
         sheet['R' + linha] = item['unidade']
 
-    wb.save(filepath)
+    # wb.save(filepath)
 
     response = HttpResponse(content=save_virtual_workbook(wb),
                             content_type='application/ms-excel')
