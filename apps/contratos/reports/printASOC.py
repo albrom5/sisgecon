@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.templatetags.static import static
 
 from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
@@ -9,7 +10,7 @@ from apps.contratos.models import RevisaoContratoCompra
 def export_asoc_to_excel(request, pk):
     contrato = RevisaoContratoCompra.objects.get(id=pk)
 
-    filepath = 'static\excel\ASEXCEL2021.xlsx'
+    filepath = '/home/alberto/projetos/django/sisgecon/sisgecon/static/excel/ASEXCEL2021.xlsx'
     wb = load_workbook(filepath)
     sheet = wb.get_sheet_by_name('CNS_PrintAS')
     sheet['A2'] = contrato.contrato.numero_formatado
