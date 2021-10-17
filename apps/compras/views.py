@@ -1,6 +1,7 @@
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from apps.base.custom_views import (
@@ -8,7 +9,10 @@ from apps.base.custom_views import (
 )
 from apps.base.views import FilteredListView
 from apps.compras.filters import SCFilter
-from apps.compras.forms import SolicitacaoCompraForm, ItemSCFormset
+from apps.compras.forms import (
+    SolicitacaoCompraForm, ItemSCFormset, ConsultaSaldoForm
+)
+from apps.contratos.models import RevisaoContratoCompra
 from apps.compras.models import SolicitacaoCompra
 from apps.processos.models import ProcessoCompra
 
@@ -17,6 +21,14 @@ class SolicitacaoCompraNova(CustomCreateView):
     form_class = SolicitacaoCompraForm
     template_name = 'compras/sc_form.html'
     permission_codename = 'compras.add_solicitacaocompra'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if hasattr(self, 'object'):
+            kwargs.update({'instance': self.object})
+        if 'processo_id' in self.kwargs:
+            kwargs['processo_id'] = self.kwargs['processo_id']
+        return kwargs
 
     def get_context_data(self, **kwargs):
         data = super(SolicitacaoCompraNova, self).get_context_data(**kwargs)
@@ -113,7 +125,8 @@ def vinculasc(request, pk, processo_id):
         sc.processo = processo
         sc.save()
         data = {
-            'addmsg': f'SC {sc.numsc} VINCULADA ao processo {processo.processo_id.numero_sei}',
+            'addmsg': f'SC {sc.numsc} VINCULADA ao processo '
+                      f'{processo.processo_id.numero_sei}',
             'remmsg': ''
         }
     else:
@@ -121,5 +134,39 @@ def vinculasc(request, pk, processo_id):
         sc.save()
         data = {
             'addmsg': '',
-            'remmsg': f'SC {sc.numsc} RETIRADA do processo {processo.processo_id.numero_sei}'}
+            'remmsg': f'SC {sc.numsc} RETIRADA do processo '
+                      f'{processo.processo_id.numero_sei}'}
     return JsonResponse(data)
+
+def consulta_saldo_dl(request):
+    template_name = 'compras/consulta_saldo.html'
+    form = ConsultaSaldoForm
+    context = {}
+    subgrupo = request.GET.get('subgrupo')
+    context['form'] = form(request.GET)
+    processos = ProcessoCompra.objects.filter(
+        ativo=True,
+        subgrupo=subgrupo,
+        modalidade__sigla='DL - Art. 29 II'
+    ).annotate(
+        total=Sum('solicitacaocompra__valor_total'))
+    valores_pcs = []
+    for pc in processos:
+        valores_pcs.append(pc.total)
+    context['total_andamento'] = sum(valores_pcs)
+
+    context['processos'] = processos
+
+    contratos = RevisaoContratoCompra.objects.filter(
+        ativo=True,
+        subgrupo=subgrupo,
+        contrato__modalidade__sigla='DL - Art. 29 II'
+    )
+
+    context['contratos'] = contratos
+
+    valores_contratos = []
+    for contrato in contratos:
+        valores_contratos.append(contrato.valor_total)
+    context['total_contratado'] = sum(valores_contratos)
+    return render(request, template_name, context)

@@ -4,10 +4,19 @@ from dal import autocomplete
 
 from .models import SolicitacaoCompra, ItemSC
 
+from apps.processos.models import Processo
+from apps.produtos.models import SubGrupoProduto
+
 
 class SolicitacaoCompraForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
+        objeto = ''
+        if 'processo_id' in kwargs:
+            processo_id = kwargs.pop('processo_id')
+            processo = Processo.objects.get(id=processo_id)
+            objeto = processo.descricao
+
         super(SolicitacaoCompraForm, self).__init__(*args, **kwargs)
         self.fields['data_emissao'].widget.attrs.update(
             {'class': 'datemask'}
@@ -15,6 +24,8 @@ class SolicitacaoCompraForm(forms.ModelForm):
         self.fields['prazo'].widget.attrs.update(
             {'class': 'datemask'}
         )
+        if objeto != "":
+            self.fields['objeto'].initial = objeto
 
     class Meta:
         model = SolicitacaoCompra
@@ -61,6 +72,16 @@ class ItemSCForm(forms.ModelForm):
                        'data-minimum-input-length': 1,
                        }),
         }
+
+
+class ConsultaSaldoForm(forms.Form):
+    subgrupo = forms.ModelChoiceField(
+        queryset=SubGrupoProduto.objects.filter(ativo=True))
+    def __init__(self, *args, **kwargs):
+        super(ConsultaSaldoForm, self).__init__(*args, **kwargs)
+        self.fields['subgrupo'].widget.attrs.update(
+            {'class': 'form-select'}
+        )
 
 
 ItemSCFormset = forms.inlineformset_factory(SolicitacaoCompra,

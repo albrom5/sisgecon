@@ -21,9 +21,14 @@
         <form method="post" id="formContrato">
             {% csrf_token %}
             <div class="row g-2 p-2">
-                <div class="col-3">
+                <div class="col-2">
                     {{ form.numero_contrato|as_crispy_field }}
                 </div>
+                {% if substitutivo %}
+                <div class="col-1">
+                    {{ form.subtipo|as_crispy_field }}
+                </div>
+                {% endif %}
                 <div class="col-6">
                     {{ form.objeto|as_crispy_field }}
                 </div>
@@ -43,12 +48,16 @@
                 </div>
                 <div class="col-md">
                     <label for="processo">Processo</label>
+                    {{ form.processo.as_hidden }}
+                    {% if not view.kwargs.processo_id %}{{ view.kwargs.processo_id }}
                     <input type="text" class="procmask form-control" id="processo" name="processo" data-ajax-url="{% url 'busca_processo' %}">
+                    {% else %}
+                        <p class="fw-bold" id="num_pc">{{ num_pc }}</p>
+                    {% endif %}
                 </div>
                 <div class="col-md">
-                    {{ form.processo.as_hidden}}
                     <label for="nome">Descrição do Processo</label><br>
-                    <p class="fw-bold" id="id_pc"></p>
+                    <p class="fw-bold" id="id_pc">{{ descricao_pc }}</p>
                 </div>
             </div>
             <div class="row g-2 p-2">

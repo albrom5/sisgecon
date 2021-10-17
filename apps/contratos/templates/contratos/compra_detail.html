@@ -44,6 +44,9 @@
              <div class="col-md">
                   <strong> Processo:</strong><a href="{% url 'processo_detail' object.contrato.processo.processo_id.id %}"> {{ object.contrato.processo.processo_id.numero_sei }}</a>
              </div>
+             <div class="col-md">
+                  <strong> Classificação:</strong> {{ object.subgrupo }}
+             </div>
          </div>
     </div>
     <div class="row g-2 p-2 my-2">

@@ -7,7 +7,7 @@ from apps.base.custom_views import (
     CustomCreateView, CustomDetailView, CustomUpdateView
 )
 from apps.empresa.models import PessoaJuridica, PessoaFisica
-from apps.processos.models import ProcessoCompra
+from apps.processos.models import ProcessoCompra, Processo
 from apps.controle_eventos.models import OrdemFornecimento
 from .models import ContratoCompra, RevisaoContratoCompra
 from .filters import RevisaoContratoCompraFilter
@@ -30,12 +30,25 @@ class ContratoCompraNovo(CustomCreateView):
     template_name = 'contratos/compra_form.html'
     permission_codename = 'contratos.add_contratocompra'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if hasattr(self, 'object'):
+            kwargs.update({'instance': self.object})
+        if 'processo_id' in self.kwargs:
+            kwargs['processo_id'] = self.kwargs['processo_id']
+        return kwargs
+
     def get_context_data(self, **kwargs):
         data = super(ContratoCompraNovo, self).get_context_data(**kwargs)
         if self.request.POST:
             data['itens'] = ItemContratoCompraFormset(self.request.POST)
         else:
             data['itens'] = ItemContratoCompraFormset()
+            if 'processo_id' in self.kwargs:
+                processo_id = self.kwargs['processo_id']
+                processo = Processo.objects.get(id=processo_id)
+                data['num_pc'] = processo.numero_sei
+                data['descricao_pc'] = processo.descricao
         return data
 
     def form_valid(self, form):
@@ -72,6 +85,14 @@ class SubstitutivoCompraNovo(CustomCreateView):
     template_name = 'contratos/compra_form.html'
     permission_codename = 'contratos.add_contratocompra'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if hasattr(self, 'object'):
+            kwargs.update({'instance': self.object})
+        if 'processo_id' in self.kwargs:
+            kwargs['processo_id'] = self.kwargs['processo_id']
+        return kwargs
+
     def get_context_data(self, **kwargs):
         data = super(SubstitutivoCompraNovo, self).get_context_data(**kwargs)
         data['substitutivo'] = True
@@ -79,6 +100,11 @@ class SubstitutivoCompraNovo(CustomCreateView):
             data['itens'] = ItemContratoCompraFormset(self.request.POST)
         else:
             data['itens'] = ItemContratoCompraFormset()
+            if 'processo_id' in self.kwargs:
+                processo_id = self.kwargs['processo_id']
+                processo = Processo.objects.get(id=processo_id)
+                data['num_pc'] = processo.numero_sei
+                data['descricao_pc'] = processo.descricao
         return data
 
     def form_valid(self, form):
@@ -86,15 +112,18 @@ class SubstitutivoCompraNovo(CustomCreateView):
         num_contrato = form.cleaned_data.get('numero_contrato')
         if num_contrato != '':
             num_contrato = int(num_contrato.split('/')[0])
-        if self.kwargs:
-            processo = self.kwargs['processo_id']
-        else:
-            processo = form.cleaned_data.get('processo')
+        # if self.kwargs:
+        #     processo = self.kwargs['processo_id']
+        # else:
+        #     processo = form.cleaned_data.get('processo')
+        processo = form.cleaned_data.get('processo')
         fornecedor = form.cleaned_data.get('fornecedor')
         data_assinatura = form.cleaned_data.get('data_assinatura')
+        subtipo = form.cleaned_data.get('subtipo')
         contrato.contrato = ContratoCompra.objects.create(
             processo=processo, numero=num_contrato,
-            fornecedor=fornecedor, tipo='CCO', data_assinatura=data_assinatura,
+            fornecedor=fornecedor, tipo='CCO', subtipo=subtipo,
+            data_assinatura=data_assinatura,
         )
         contrato.save()
         context = self.get_context_data()

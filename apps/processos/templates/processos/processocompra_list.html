@@ -67,7 +67,14 @@ Processos de Compras
                                     <label for="data_fim">Até</label>
                                   </div>
                               </div>
-
+                              <div class="col-3">
+                                  <div class="form-floating">
+                                    {{filter.form.comprador|htmlattributes:"class: form-select form-select-sm" }}
+                                    <label for="comprador">Comprador</label>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="row g-2 p-2 form-in">
                               <div class="col-6">
                                 <div class="form-floating">
                                   {{ filter.form.ordem|htmlattributes:"class: form-select form-select-sm"}}
@@ -99,6 +106,7 @@ Processos de Compras
                           <th scope="col">Objeto</th>
                           <th scope="col">Modalidade</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Comprador</th>
                           <th scope="col">Data de Entrada</th>
                         </tr>
                     </thead>
@@ -110,6 +118,7 @@ Processos de Compras
                           <td>{{ processo.processo_id.descricao }}</td>
                           <td>{{ processo.modalidade }}</td>
                           <td>{{ processo.status }}</td>
+                          <td>{% if processo.comprador %}{{ processo.comprador }}{% else %}----{% endif %}</td>
                           <td>{{ processo.data_gco|date:"SHORT_DATE_FORMAT"}}</td>
                         </tr>
                         {% empty %}

@@ -14,6 +14,6 @@ urlpatterns = [
          name='processo_detail'),
     path('novo/', ProcessoCompraNovo.as_view(),
          name='processo_novo'),
-    path('edit/<int:pk>', ProcessoCompraEdit.as_view(),
+    path('edit/<int:pk>', never_cache(ProcessoCompraEdit.as_view()),
          name='processo_edit'),
     ]

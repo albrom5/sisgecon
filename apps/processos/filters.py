@@ -1,7 +1,10 @@
+from django.db.models import Q
+
 import django_filters
 from django_filters import OrderingFilter
 
 from apps.processos.models import ProcessoCompra
+from apps.empresa.models import Funcionario
 
 
 class ProcessoFilter(django_filters.FilterSet):
@@ -11,6 +14,11 @@ class ProcessoFilter(django_filters.FilterSet):
                                              lookup_expr='gte')
     data_gco_fim = django_filters.DateFilter(field_name='data_gco',
                                              lookup_expr='lte')
+
+    comprador = django_filters.ModelChoiceFilter(
+        queryset=Funcionario.objects.filter(Q(ativo=True) & Q(pregoeiro=True))
+    )
+
     ordem = OrderingFilter(
         # tuple-mapping retains order
         fields=(
@@ -26,7 +34,7 @@ class ProcessoFilter(django_filters.FilterSet):
 
     class Meta:
         model = ProcessoCompra
-        fields = ['modalidade', 'status']
+        fields = ['modalidade', 'status', 'comprador']
 
     @property
     def qs(self):

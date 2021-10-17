@@ -30,9 +30,14 @@
               <div class="col-md">
                   <strong>Modalidade:</strong> {{ object.modalidade }}
               </div>
+         </div>
+         <div class="row g-2 p-2">
              <div class="col-md">
                   <strong>Classificação:</strong> {{ object.subgrupo.id }} - {{ object.subgrupo }}
-              </div>
+             </div>
+             <div class="col-md">
+                  <strong>Comprador:</strong> {{ object.comprador }}
+             </div>
          </div>
         </div>
         {# Fim do cabeçalho da DetailView #}
@@ -92,6 +97,18 @@
         <div id="botoes">
         <div class="row g-2 p-2">
             <div class="col-3">
+                <a href="{% url 'contratocompra_novo_pc' object.processo_id.id %}" class="btn btn-primary">
+                    Lançar contrato
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="{% url 'substitutivo_novo_pc' object.processo_id.id %}" class="btn btn-primary">
+                    Lançar AS/OC
+                </a>
+            </div>
+        </div>
+        <div class="row g-2 p-2">
+            <div class="col-3">
                 <a href="{% url 'processo_edit' object.processo_id.id %}" class="btn btn-primary">
                     Alterar dados
                 </a>
@@ -104,6 +121,7 @@
                 </a>
             </div>
         </div>
+
         </div>
         {# Fim da seção de botões #}
      </div>

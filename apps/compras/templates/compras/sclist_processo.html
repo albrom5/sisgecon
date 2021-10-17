@@ -46,7 +46,7 @@ Solicitações de Compra a incluir
                           <input type="checkbox" name="select_sc" class="selectitem" data-ajax-url="{% url 'vincula_sc' processo sc.id %}" {% if sc.processo %}checked{% endif %}>
                       </td>
                       <td>{{ sc.numsc }}</td>
-                      <td>{{ sc.descricao }}</td>
+                      <td>{{ sc.objeto }}</td>
                       <td>{{ sc.processo.processo_id.numero_sei }}</td>
                       <td>R$ {{ sc.valor_total|floatformat:2 }}</td>
                       <td>{{ sc.data_emissao|date:"D, d/m/Y" }}</td>

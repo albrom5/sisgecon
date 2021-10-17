@@ -6,7 +6,7 @@ from django.db.models import Sum
 
 from apps.base.models import BaseModel, Status
 from apps.empresa.models import Departamento, Funcionario, Pessoa
-from apps.processos.models import ProcessoCompra
+from apps.processos.models import ProcessoCompra, Modalidade
 from apps.produtos.models import Produto, SubGrupoProduto
 
 
@@ -29,6 +29,9 @@ class ContratoCompra(BaseModel):
     tipo = models.CharField(max_length=3, choices=TIPO_CONTRATO)
     subtipo = models.CharField(max_length=2, choices=SUBTIPO, null=True,
                                blank=True)
+    modalidade = models.ForeignKey(Modalidade, on_delete=models.SET_NULL,
+                                   null=True, blank=True,
+                                   limit_choices_to={'ativo': True})
     numero = models.PositiveSmallIntegerField(null=True, blank=True)
     numero_format_ano = models.CharField(max_length=9, null=True, blank=True)
     fornecedor = models.ForeignKey(Pessoa, on_delete=models.PROTECT,
