@@ -28,6 +28,11 @@ class Pessoa(BaseModel):
     cep = models.CharField(verbose_name='CEP', max_length=9,
                            null=True, blank=True)
 
+    @property
+    def endereco_completo(self):
+        return f'{self.logradouro}, {self.ender_num} {self.ender_compl} - ' \
+               f'{self.bairro}'
+
     def __str__(self):
         return f'{self.nome}'
 
