@@ -70,7 +70,7 @@ def export_asoc_to_excel(request, pk):
 
 
 
-    filepath = os.path.join(BASE_DIR, 'static\excel\ASEXCEL2021.xlsx')
+    filepath = os.path.join(BASE_DIR, 'static/excel/ASEXCEL2021.xlsx')
     # filepath = '/home/alberto/projetos/django/sisgecon/sisgecon/static/excel/ASEXCEL2021.xlsx'
     wb = load_workbook(filepath)
     sheet = wb.get_sheet_by_name('dados')
