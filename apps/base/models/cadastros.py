@@ -9,6 +9,7 @@ class Status(BaseModel):
     tipo = models.CharField(max_length=2, null=True, blank=True,
                             choices=TIPO_STATUS)
     descricao = models.CharField(max_length=30)
+    contabiliza_saldo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.descricao

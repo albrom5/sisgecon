@@ -44,6 +44,13 @@ Consulta de Saldo - Dispensa de Licitação
                 </div>
             </div>
         </div>
+        <br>
+        <br>
+
+        <h2>Saldo Disponível em {{ hoje|date:"SHORT_DATE_FORMAT" }}: R$ {{ saldo_disponivel|floatformat:2 }}</h2>
+        <br>
+        <br>
+
         <h4>Processos em andamento</h4>
         <table class="table table-hover table-sm">
             <thead>
@@ -51,7 +58,6 @@ Consulta de Saldo - Dispensa de Licitação
                   <th scope="col">Número</th>
                   <th scope="col">Objeto</th>
                   <th scope="col">Valor Total</th>
-                  <th scope="col">Data de Assinatura</th>
                 </tr>
             </thead>
              <tbody>
@@ -60,10 +66,9 @@ Consulta de Saldo - Dispensa de Licitação
                   <td>{{ processo.processo_id.numero_sei }}</td>
                   <td>{{ processo.processo_id.descricao }}</td>
                   <td>R$ {{ processo.total|floatformat:2 }}</td>
-                  <td>{{ contrato.data_assinatura|date:"SHORT_DATE_FORMAT" }}</td>
                 </tr>
                 {% empty %}
-                    <li>Não há SC's que atendam aos critérios selecionados.</li>
+                    <li>Não há processos em andamento com a classificação selecionada.</li>
                 {% endfor %}
              </tbody>
 
@@ -91,7 +96,7 @@ Consulta de Saldo - Dispensa de Licitação
                   <td>{{ contrato.data_assinatura|date:"SHORT_DATE_FORMAT" }}</td>
                 </tr>
                 {% empty %}
-                    <li>Não há SC's que atendam aos critérios selecionados.</li>
+                    <li>Não há contratações efetivadas nos últimos 30 dias para a classificação selecionada.</li>
                 {% endfor %}
              </tbody>
         </table>

@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import transaction
 from django.db.models import Q, Sum
 from django.http import JsonResponse
@@ -15,7 +17,7 @@ from apps.compras.forms import (
 from apps.contratos.models import RevisaoContratoCompra
 from apps.compras.models import SolicitacaoCompra
 from apps.processos.models import ProcessoCompra
-
+from apps.produtos.models import SubGrupoProduto
 
 class SolicitacaoCompraNova(CustomCreateView):
     form_class = SolicitacaoCompraForm
@@ -145,9 +147,18 @@ def consulta_saldo_dl(request):
     subgrupo = request.GET.get('subgrupo')
     context['form'] = form(request.GET)
     processos = ProcessoCompra.objects.filter(
-        ativo=True,
-        subgrupo=subgrupo,
-        modalidade__sigla='DL - Art. 29 II'
+        Q(
+            ativo=True,
+            subgrupo=subgrupo,
+            modalidade__sigla='DL - Art. 29 II',
+            status__contabiliza_saldo=True
+        ) |
+        Q(
+            ativo=True,
+            subgrupo=subgrupo,
+            modalidade__sigla='DL - Art. 29 I',
+            status__contabiliza_saldo=True
+        )
     ).annotate(
         total=Sum('solicitacaocompra__valor_total'))
     valores_pcs = []
@@ -156,11 +167,22 @@ def consulta_saldo_dl(request):
     context['total_andamento'] = sum(valores_pcs)
 
     context['processos'] = processos
-
+    data_de_corte = datetime.date.today() - datetime.timedelta(days=30)
     contratos = RevisaoContratoCompra.objects.filter(
-        ativo=True,
-        subgrupo=subgrupo,
-        contrato__modalidade__sigla='DL - Art. 29 II'
+        Q(
+            ativo=True,
+            subgrupo=subgrupo,
+            contrato__modalidade__sigla='DL - Art. 29 II',
+            data_assinatura__gte=data_de_corte,
+            is_vigente=True
+        ) |
+        Q(
+            ativo=True,
+            subgrupo=subgrupo,
+            contrato__modalidade__sigla='DL - Art. 29 I',
+            data_assinatura__gte=data_de_corte,
+            is_vigente=True
+        )
     )
 
     context['contratos'] = contratos
@@ -169,4 +191,16 @@ def consulta_saldo_dl(request):
     for contrato in contratos:
         valores_contratos.append(contrato.valor_total)
     context['total_contratado'] = sum(valores_contratos)
+
+    limite_dl = 50000
+
+    if subgrupo:
+        classe = SubGrupoProduto.objects.get(id=subgrupo)
+
+        if classe.classe.descricao == 'Serviço de Engenharia':
+            limite_dl = 100000
+
+    saldo_disponivel = limite_dl - (sum(valores_contratos) + sum(valores_pcs))
+    context['saldo_disponivel'] = saldo_disponivel
+    context['hoje'] = datetime.date.today()
     return render(request, template_name, context)
