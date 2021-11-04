@@ -2,7 +2,7 @@ from django import forms
 
 from dal import autocomplete
 
-from .models import SolicitacaoCompra, ItemSC
+from .models import SolicitacaoCompra, ItemSC, Pesquisa
 
 from apps.processos.models import Processo
 from apps.produtos.models import SubGrupoProduto
@@ -77,6 +77,7 @@ class ItemSCForm(forms.ModelForm):
 class ConsultaSaldoForm(forms.Form):
     subgrupo = forms.ModelChoiceField(
         queryset=SubGrupoProduto.objects.filter(ativo=True))
+
     def __init__(self, *args, **kwargs):
         super(ConsultaSaldoForm, self).__init__(*args, **kwargs)
         self.fields['subgrupo'].widget.attrs.update(
@@ -87,3 +88,10 @@ class ConsultaSaldoForm(forms.Form):
 ItemSCFormset = forms.inlineformset_factory(SolicitacaoCompra,
                                             ItemSC, form=ItemSCForm,
                                             extra=1, can_delete=True)
+
+
+class PesquisaForm(forms.ModelForm):
+
+    class Meta:
+        model = Pesquisa
+        fields = ['processo', 'responsavel', 'contrato']

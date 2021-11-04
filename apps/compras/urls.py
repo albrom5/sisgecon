@@ -3,9 +3,10 @@ from django.views.decorators.cache import never_cache
 
 from apps.compras.views import (
     SolicitacaoCompraNova, SolicitacaoCompraList, SolicitacaoCompraDetail,
-    SolicitacaoCompraEdit, SCListProcesso, vinculasc, consulta_saldo_dl
-)
-from apps.compras.autocomplete_views import (
+    SolicitacaoCompraEdit, SCListProcesso, vinculasc, consulta_saldo_dl,
+    nova_pesquisa_processo, edita_pesquisa,
+
+    # Autocomplete Views
     AreaAutocomplete, ResponsavelAutocomplete, CentroCustoAutocomplete,
     ContaContabilAutocomplete, ProdutoAutocomplete
 )
@@ -23,6 +24,12 @@ urlpatterns = [
     path('ajax/<int:processo_id>/vincula_sc/<int:pk>', vinculasc,
          name='vincula_sc'),
     path('consulta_saldo_dl/', consulta_saldo_dl, name='consulta_saldo_dl'),
+
+    # Pesquisa de mercado
+    path('<int:processo_id>/nova_pesquisa/', nova_pesquisa_processo,
+         name='nova_pesquisa_processo'),
+    path('edita_pesquisa/<int:pk>', edita_pesquisa,
+         name='edita_pesquisa'),
 
     # Autocomplete
     path('area_autocomplete/', AreaAutocomplete.as_view(),

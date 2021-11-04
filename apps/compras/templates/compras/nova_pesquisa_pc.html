@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nova Pesquisa de mercado para o processo {{ processo }}
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+    {# Início do cabeçalho da DetailView #}
+    <div id="detailheader">
+        <div class="row g-2 p-2">
+              <div class="col-md">
+                  <p>Processo: {{ processo }}</p>
+              </div>
+             <div class="col-md">
+                  <strong> Responsável:</strong> {{ user.first_name }}
+              </div>
+         </div>
+
+    </div>
+    <div class="row g-2 p-2 my-2">
+         <h5>Itens</h5>
+        <div class="row g-2 p-2 border-top">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itens %}
+                    <tr>
+                        <td>{{ item.ord_item }}</td>
+                        <td>{{ item.produto }}</td>
+                        <td>{{ item.quantidade|floatformat:2 }}</td>
+                    </tr>
+                        {% empty %}
+                         Processo sem itens cadastrados.
+                        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row g-2 p-2">
+      <div class="col-md">
+          <form method="post">
+              {% csrf_token %}
+
+              <button class="btn btn-success">Confirmar</button>
+
+          </form>
+      </div>
+    </div>
+
+    {# Fim do cabeçalho da DetailView #}
+     {# Início da seção de botões #}
+
+    {# Fim da seção de botões #}
+    </div>
+{% endblock %}

@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from .models import (
-    SolicitacaoCompra, ItemSC, Pregao, Lote, ItemLote
+    SolicitacaoCompra, ItemSC, Pregao, Lote, ItemLote, Pesquisa, Proposta,
+    ItemProposta, ItemPesquisa
 )
 
 
@@ -94,3 +95,12 @@ class ItemLoteAdmin(admin.ModelAdmin):
         'lote',
         'produto'
     )
+
+
+admin.site.register(Pesquisa)
+
+admin.site.register(Proposta)
+
+admin.site.register(ItemProposta)
+
+admin.site.register(ItemPesquisa)
