@@ -11,13 +11,31 @@
             <p class="text-danger"> {{ message }} </p>
             {% endfor %}
         </div>
-        <div class="col">
-            Olá {{ usuario }}
 
-        </div>
-        <div class="col">
-            <a href="{% url 'logout' %}">Logout</a>
-
-        </div>
      </div>
+    <div class="row">
+        <h1>Contratos vigentes da {{ user.funcionario.departamento }}</h1>
+    </div>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <th>Número</th>
+                <th>Objeto</th>
+                <th>Fornecedor</th>
+                <th>Fim da vigência</th>
+            </thead>
+            <tbody>
+
+                {% for contrato in contratos %}
+                    <tr>
+                        <td><a href="{% url 'compra_detail' contrato.pk %}">{{ contrato.contrato.numero_formatado_com_tipo }}</a></td>
+                        <td>{{ contrato.objeto }}</td>
+                        <td><a href="{% url 'fornecedor_detail' contrato.contrato.fornecedor_id%}">{{ contrato.contrato.fornecedor }}</a></td>
+                        <td>{{ contrato.data_fim|date:"SHORT_DATE_FORMAT" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
 {% endblock %}

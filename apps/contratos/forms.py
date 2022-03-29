@@ -100,7 +100,8 @@ class ContratoCompraEditForm(forms.ModelForm):
     class Meta:
         model = RevisaoContratoCompra
         fields = ['data_ini', 'data_fim', 'gestor', 'fiscal',
-                  'data_assinatura', 'objeto', 'nome_simplificado', 'subgrupo']
+                  'data_assinatura', 'objeto', 'nome_simplificado', 'subgrupo',
+                  'area']
         widgets = {
             'subgrupo': autocomplete.ModelSelect2(
                 url='subgrupo_autocomplete',

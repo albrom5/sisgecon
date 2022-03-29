@@ -6,6 +6,7 @@ from apps.contratos.views import (
     SubstitutivoCompraNovo, ContratoCompraEdit, RevisaContratoCompra,
     buscafornecedor, buscaprocesso
 )
+
 from apps.contratos.reports import export_asoc_to_excel
 urlpatterns = [
     path('compras/contrato_novo/', ContratoCompraNovo.as_view(),
@@ -31,5 +32,5 @@ urlpatterns = [
     path('ajax/busca_processo/', buscaprocesso,
          name='busca_processo'),
 
-    path('reports/asoc_excel/<int:pk>', export_asoc_to_excel, name='asoc_excel')
+    path('reports/asoc_excel/<int:pk>', export_asoc_to_excel, name='asoc_excel'),
 ]
